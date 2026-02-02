@@ -1,0 +1,15 @@
+---
+title: "Running simulations"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Running simulations}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(collapse = TRUE, comment = "#>")
+```
+
+This vignette describes the `simulate_power()` workflow and how to summarize
+results with `power()` and `summarize_simulations()`.

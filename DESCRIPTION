@@ -1,0 +1,21 @@
+Package: mixpower
+Title: Simulation-Based Power Analysis for Linear Mixed-Effects Models
+Version: 0.1.0
+Authors@R: c(
+    person("Mixpower", "Authors", role = c("aut", "cre"), email = "maintainer@example.com")
+)
+Description: Simulation-based power analysis for Gaussian linear mixed-effects models,
+    including diagnostics for convergence and simulation uncertainty.
+License: MIT + file LICENSE
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.3.1
+Depends: R (>= 4.1)
+Imports:
+    stats
+Suggests:
+    testthat (>= 3.0.0),
+    knitr,
+    rmarkdown
+VignetteBuilder: knitr
+Config/testthat/edition: 3
