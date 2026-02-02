@@ -1,0 +1,9 @@
+citHeader("To cite mixpower in publications use:")
+
+citEntry(
+  entry = "Manual",
+  title = "mixpower: Simulation-Based Power Analysis for Linear Mixed-Effects Models",
+  author = person("Mixpower", "Authors"),
+  year = "2024",
+  note = "R package version 0.1.0"
+)

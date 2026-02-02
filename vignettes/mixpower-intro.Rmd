@@ -1,0 +1,14 @@
+---
+title: "mixpower intro"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{mixpower intro}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(collapse = TRUE, comment = "#>")
+```
+
+mixpower provides simulation-based power analysis for Gaussian linear mixed-effects models.

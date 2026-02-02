@@ -1,0 +1,15 @@
+---
+title: "Diagnostics and sensitivity"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Diagnostics and sensitivity}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(collapse = TRUE, comment = "#>")
+```
+
+This vignette shows how to assess simulation uncertainty and summarize
+sensitivity analyses with `sensitivity()`.

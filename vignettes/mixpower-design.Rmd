@@ -1,0 +1,15 @@
+---
+title: "Designing studies"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Designing studies}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(collapse = TRUE, comment = "#>")
+```
+
+This vignette outlines how to capture study designs with `design()` and
+assumptions with `assumptions()`.
