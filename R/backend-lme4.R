@@ -1,121 +1,127 @@
-#' lme4 backend for Gaussian linear mixed-effects models
-#'
-#' Provides engine functions (`simulate_fun`, `fit_fun`, `test_fun`) compatible
-#' with `mp_scenario()` and `mp_power()`.
-#'
-#' @param outcome Name of outcome variable (default "y").
-#' @param predictor Name of focal fixed-effect predictor to test (default "condition").
-#' @param subject Name of subject grouping factor in simulated data (default "subject").
-#' @param item Optional name of item grouping factor in simulated data (default NULL).
-#' @param re_subject_intercept_sd SD of subject random intercepts.
-#' @param re_item_intercept_sd Optional SD of item random intercepts.
-#' @param optimizer lme4 optimizer name.
-#' @param check_singular Whether to compute singular fits via `lme4::isSingular`.
-#'
-#' @return A named list with `simulate_fun`, `fit_fun`, and `test_fun`.
+#' Build an lme4 backend for MixPower scenarios
+#' @param predictor Predictor column name.
+#' @param subject Subject ID column name.
+#' @param outcome Outcome column name.
+#' @param item Optional item ID column name.
+#' @param test_method Inference method: `"wald"` (default) or `"lrt"`.
+#' @param null_formula Optional null-model formula required when `test_method = "lrt"`.
+#' @return A list containing `simulate_fun`, `fit_fun`, and `test_fun`.
 #' @export
-mp_backend_lme4 <- function(outcome = "y",
-                            predictor = "condition",
+mp_backend_lme4 <- function(predictor = "condition",
                             subject = "subject",
+                            outcome = "y",
                             item = NULL,
-                            re_subject_intercept_sd = 1,
-                            re_item_intercept_sd = NULL,
-                            optimizer = "bobyqa",
-                            check_singular = TRUE) {
-  if (!is.character(outcome) || length(outcome) != 1) .stop("`outcome` must be a single string.")
-  if (!is.character(predictor) || length(predictor) != 1) .stop("`predictor` must be a single string.")
-  if (!is.character(subject) || length(subject) != 1) .stop("`subject` must be a single string.")
-  if (!is.null(item) && (!is.character(item) || length(item) != 1)) .stop("`item` must be NULL or a single string.")
-  .assert_is_nonneg_num(re_subject_intercept_sd, "re_subject_intercept_sd")
-  if (!is.null(re_item_intercept_sd)) .assert_is_nonneg_num(re_item_intercept_sd, "re_item_intercept_sd")
+                            test_method = c("wald", "lrt"),
+                            null_formula = NULL) {
+  test_method <- match.arg(test_method)
 
-  simulate_fun <- function(scn, seed) {
+  simulate_fun <- function(scenario, seed = NULL) {
     simulate_lmm_data(
-      scenario = scn,
+      scenario = scenario,
       seed = seed,
-      outcome = outcome,
       predictor = predictor,
       subject = subject,
-      item = item,
-      re_subject_intercept_sd = re_subject_intercept_sd,
-      re_item_intercept_sd = re_item_intercept_sd
+      outcome = outcome,
+      item = item
     )
   }
 
-  fit_fun <- function(dat, scn) {
-    # Ensure grouping vars exist
-    if (!subject %in% names(dat)) .stop(sprintf("Simulated data missing subject column '%s'.", subject))
-    if (!is.null(item) && !item %in% names(dat)) .stop(sprintf("Simulated data missing item column '%s'.", item))
-
-    # Fit lmer; fixed formula comes from scenario
-    ctrl <- lme4::lmerControl(optimizer = optimizer, calc.derivs = FALSE)
-    fit <- lme4::lmer(formula = scn$formula, data = dat, control = ctrl)
-
-    # Attach singular flag so mp_power can read it without importing lme4 logic
-    if (check_singular) {
-      attr(fit, "singular") <- isTRUE(lme4::isSingular(fit, tol = 1e-4))
+  fit_fun <- function(data, scenario) {
+    if (!requireNamespace("lme4", quietly = TRUE)) {
+      stop("Package `lme4` is required for `mp_backend_lme4()`.", call. = FALSE)
     }
+
+    fit <- lme4::lmer(
+      formula = scenario$formula,
+      data = data,
+      REML = FALSE
+    )
+
+    attr(fit, "singular") <- lme4::isSingular(fit, tol = 1e-04)
     fit
   }
 
-  test_fun <- function(fit, scn) {
-    # Wald test using normal approx (fast, CRAN-safe). For LRT add later.
-    cf <- lme4::fixef(fit)
-    vc <- as.matrix(stats::vcov(fit))
+  test_fun <- function(fit, scenario) {
+    method <- if (is.list(scenario$test)) scenario$test$method else NULL
+    method <- `%||%`(method, test_method)
 
-    if (!predictor %in% names(cf)) {
-      .stop(sprintf("Predictor '%s' not found among fixed effects: %s",
-                    predictor, paste(names(cf), collapse = ", ")))
+    if (identical(method, "wald")) {
+      term <- if (is.list(scenario$test)) scenario$test$term else NULL
+      term <- `%||%`(term, predictor)
+
+      beta <- lme4::fixef(fit)[[term]]
+      se <- sqrt(diag(stats::vcov(fit)))[[term]]
+      z <- beta / se
+      p_val <- 2 * stats::pnorm(abs(z), lower.tail = FALSE)
+      return(list(p_value = as.numeric(p_val)))
     }
 
-    idx <- match(predictor, names(cf))
-    est <- unname(cf[[idx]])
-    se <- sqrt(vc[idx, idx])
+    if (identical(method, "lrt")) {
+      null_f <- if (is.list(scenario$test)) scenario$test$null_formula else NULL
+      null_f <- `%||%`(null_f, null_formula)
+      if (is.null(null_f) || !inherits(null_f, "formula")) {
+        stop("`null_formula` must be provided as a formula when `test_method = \"lrt\"`.", call. = FALSE)
+      }
 
-    if (!is.finite(se) || se <= 0) {
-      return(list(p_value = NA_real_, estimate = est, se = se))
+      fit0 <- stats::update(fit, formula = null_f)
+      tab <- stats::anova(fit0, fit, refit = FALSE)
+
+      p_val <- tab[2, "Pr(>Chisq)"]
+      return(list(p_value = as.numeric(p_val)))
     }
 
-    z <- est / se
-    p <- 2 * stats::pnorm(-abs(z))
-
-    list(p_value = as.numeric(p), estimate = est, se = se, z = z)
+    stop("Unsupported test method: ", method, call. = FALSE)
   }
 
   list(simulate_fun = simulate_fun, fit_fun = fit_fun, test_fun = test_fun)
 }
 
-#' Convenience constructor for an lme4-based scenario
-#'
-#' @param formula A mixed-model formula compatible with `lme4::lmer`.
-#' @param design `mp_design()`.
-#' @param assumptions `mp_assumptions()`.
-#' @param predictor Name of fixed effect to test (must match fixed effect column name).
-#' @param subject Subject grouping factor name.
-#' @param item Optional item grouping factor name.
-#' @param ... Passed to `mp_backend_lme4()`.
-#'
-#' @return An `mp_scenario` with engine functions filled.
+#' Create a fully specified MixPower scenario with the lme4 backend
+#' @param formula Model formula.
+#' @param design A `mp_design` object.
+#' @param assumptions A `mp_assumptions` object.
+#' @param predictor Predictor column name.
+#' @param subject Subject ID column name.
+#' @param outcome Outcome column name.
+#' @param item Optional item ID column name.
+#' @param test_term Optional explicit term to test. Defaults to `predictor`.
+#' @param test_method Inference method: `"wald"` (default) or `"lrt"`.
+#' @param null_formula Optional null-model formula required for `test_method = "lrt"`.
+#' @return An object of class `mp_scenario`.
 #' @export
 mp_scenario_lme4 <- function(formula,
                              design,
                              assumptions,
                              predictor = "condition",
                              subject = "subject",
+                             outcome = "y",
                              item = NULL,
-                             ...) {
+                             test_term = predictor,
+                             test_method = c("wald", "lrt"),
+                             null_formula = NULL) {
+  test_method <- match.arg(test_method)
+  if (identical(test_method, "lrt") && (is.null(null_formula) || !inherits(null_formula, "formula"))) {
+    stop("`null_formula` must be provided as a formula when `test_method = \"lrt\"`.", call. = FALSE)
+  }
+
   backend <- mp_backend_lme4(
     predictor = predictor,
     subject = subject,
+    outcome = outcome,
     item = item,
-    ...
+    test_method = test_method,
+    null_formula = null_formula
   )
 
   mp_scenario(
     formula = formula,
     design = design,
     assumptions = assumptions,
-    test = "wald",
+    test = list(
+      term = test_term,
+      method = test_method,
+      null_formula = null_formula
+    ),
     simulate_fun = backend$simulate_fun,
     fit_fun = backend$fit_fun,
     test_fun = backend$test_fun

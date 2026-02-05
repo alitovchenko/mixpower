@@ -18,6 +18,7 @@
 #'   - `"minimal"`: only per-sim summary rows.
 #'   - `"fits"`: also store fit objects (may be large).
 #'   - `"data"`: also store simulated data (can be very large).
+#' @param conf_level Confidence level for the Wald interval (default 0.95).
 #'
 #' @return An object of class `mp_power`.
 #' @export
@@ -54,11 +55,14 @@ mp_power <- function(scenario,
                      alpha = 0.05,
                      seed = NULL,
                      failure_policy = c("count_as_nondetect", "exclude"),
-                     keep = c("minimal", "fits", "data")) {
+                     keep = c("minimal", "fits", "data"),
+                     conf_level = 0.95) {
   .assert_class(scenario, "mp_scenario", "scenario")
   .assert_is_pos_int(nsim, "nsim")
   .assert_is_num(alpha, "alpha")
   if (alpha <= 0 || alpha >= 1) .stop("`alpha` must be in (0, 1).")
+  .assert_is_num(conf_level, "conf_level")
+  if (conf_level <= 0 || conf_level >= 1) .stop("`conf_level` must be in (0, 1).")
   failure_policy <- match.arg(failure_policy)
   keep <- match.arg(keep)
 
@@ -101,9 +105,10 @@ mp_power <- function(scenario,
   power_hat <- if (denom == 0) NA_real_ else detected / denom
   # MCSE and CI (simple Wald CI; conservative alternatives can be added later)
   mcse <- if (is.na(power_hat)) NA_real_ else sqrt(power_hat * (1 - power_hat) / denom)
+  z <- stats::qnorm(1 - (1 - conf_level) / 2)
   ci <- if (is.na(power_hat)) c(NA_real_, NA_real_) else {
-    lo <- max(0, power_hat - 1.96 * mcse)
-    hi <- min(1, power_hat + 1.96 * mcse)
+    lo <- max(0, power_hat - z * mcse)
+    hi <- min(1, power_hat + z * mcse)
     c(lo, hi)
   }
 
@@ -117,6 +122,7 @@ mp_power <- function(scenario,
     seed = seed,
     failure_policy = failure_policy,
     keep = keep,
+    conf_level = conf_level,
     sims = sim_tbl,
     power = power_hat,
     mcse = mcse,
@@ -165,7 +171,15 @@ mp_power <- function(scenario,
 
   # ---- Simulate ----
   sim_res <- tryCatch(
-    .capture_warnings(.with_seed(seed, eng$simulate_fun(scenario, seed = seed))),
+    .capture_warnings(.with_seed(
+      seed,
+      if (!is.null(names(formals(eng$simulate_fun))) &&
+        "seed" %in% names(formals(eng$simulate_fun))) {
+        eng$simulate_fun(scenario, seed = seed)
+      } else {
+        eng$simulate_fun(scenario)
+      }
+    )),
     error = function(e) {
       err <<- conditionMessage(e)
       NULL
@@ -235,9 +249,12 @@ print.mp_power <- function(x, ...) {
   cat(sprintf("  failure_policy: %s\n", x$failure_policy))
   cat(sprintf("  power: %s\n", ifelse(is.na(x$power), "NA", formatC(x$power, digits = 3, format = "f"))))
   cat(sprintf("  mcse: %s\n", ifelse(is.na(x$mcse), "NA", formatC(x$mcse, digits = 3, format = "f"))))
-  cat(sprintf("  95%% CI: [%s, %s]\n",
-              ifelse(is.na(x$ci[1]), "NA", formatC(x$ci[1], digits = 3, format = "f")),
-              ifelse(is.na(x$ci[2]), "NA", formatC(x$ci[2], digits = 3, format = "f"))))
+  cat(sprintf(
+    "  %d%% CI: [%s, %s]\n",
+    round(x$conf_level * 100),
+    ifelse(is.na(x$ci[1]), "NA", formatC(x$ci[1], digits = 3, format = "f")),
+    ifelse(is.na(x$ci[2]), "NA", formatC(x$ci[2], digits = 3, format = "f"))
+  ))
   cat("  diagnostics:\n")
   cat(sprintf("    - fail_rate: %s\n", formatC(x$diagnostics$fail_rate, digits = 3, format = "f")))
   cat(sprintf("    - singular_rate: %s\n", formatC(x$diagnostics$singular_rate, digits = 3, format = "f")))
@@ -253,6 +270,7 @@ summary.mp_power <- function(object, ...) {
     diagnostics = object$diagnostics,
     nsim = object$nsim,
     alpha = object$alpha,
-    failure_policy = object$failure_policy
+    failure_policy = object$failure_policy,
+    conf_level = object$conf_level
   )
 }

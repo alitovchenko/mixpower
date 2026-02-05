@@ -22,7 +22,7 @@ mp_scenario(
 
 \item{assumptions}{An \code{mp_assumptions}.}
 
-\item{test}{Character string identifying the test type (metadata).}
+\item{test}{Character string or list identifying the test type (metadata).}
 
 \item{simulate_fun}{Function or NULL.}
 

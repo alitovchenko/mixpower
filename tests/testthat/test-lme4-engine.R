@@ -10,8 +10,7 @@ testthat::test_that("lme4 backend produces runnable scenario and mp_power execut
     assumptions = a,
     predictor = "condition",
     subject = "subject",
-    outcome = "y",
-    re_subject_intercept_sd = 1
+    outcome = "y"
   )
 
   res <- mp_power(s, nsim = 20, seed = 123)  # small for CRAN

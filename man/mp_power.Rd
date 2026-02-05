@@ -10,7 +10,8 @@ mp_power(
   alpha = 0.05,
   seed = NULL,
   failure_policy = c("count_as_nondetect", "exclude"),
-  keep = c("minimal", "fits", "data")
+  keep = c("minimal", "fits", "data"),
+  conf_level = 0.95
 )
 }
 \arguments{
@@ -34,6 +35,8 @@ mp_power(
 \item \code{"fits"}: also store fit objects (may be large).
 \item \code{"data"}: also store simulated data (can be very large).
 }}
+
+\item{conf_level}{Confidence level for the Wald interval (default 0.95).}
 }
 \value{
 An object of class \code{mp_power}.

@@ -2,7 +2,7 @@
 % Please edit documentation in R/backend-lme4.R
 \name{mp_scenario_lme4}
 \alias{mp_scenario_lme4}
-\title{Convenience constructor for an lme4-based scenario}
+\title{Create a fully specified MixPower scenario with the lme4 backend}
 \usage{
 mp_scenario_lme4(
   formula,
@@ -10,28 +10,37 @@ mp_scenario_lme4(
   assumptions,
   predictor = "condition",
   subject = "subject",
+  outcome = "y",
   item = NULL,
-  ...
+  test_term = predictor,
+  test_method = c("wald", "lrt"),
+  null_formula = NULL
 )
 }
 \arguments{
-\item{formula}{A mixed-model formula compatible with \code{lme4::lmer}.}
+\item{formula}{Model formula.}
 
-\item{design}{\code{mp_design()}.}
+\item{design}{A \code{mp_design} object.}
 
-\item{assumptions}{\code{mp_assumptions()}.}
+\item{assumptions}{A \code{mp_assumptions} object.}
 
-\item{predictor}{Name of fixed effect to test (must match fixed effect column name).}
+\item{predictor}{Predictor column name.}
 
-\item{subject}{Subject grouping factor name.}
+\item{subject}{Subject ID column name.}
 
-\item{item}{Optional item grouping factor name.}
+\item{outcome}{Outcome column name.}
 
-\item{...}{Passed to \code{mp_backend_lme4()}.}
+\item{item}{Optional item ID column name.}
+
+\item{test_term}{Optional explicit term to test. Defaults to \code{predictor}.}
+
+\item{test_method}{Inference method: \code{"wald"} (default) or \code{"lrt"}.}
+
+\item{null_formula}{Optional null-model formula required for \code{test_method = "lrt"}.}
 }
 \value{
-An \code{mp_scenario} with engine functions filled.
+An object of class \code{mp_scenario}.
 }
 \description{
-Convenience constructor for an lme4-based scenario
+Create a fully specified MixPower scenario with the lme4 backend
 }

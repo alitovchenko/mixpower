@@ -2,40 +2,33 @@
 % Please edit documentation in R/backend-lme4.R
 \name{mp_backend_lme4}
 \alias{mp_backend_lme4}
-\title{lme4 backend for Gaussian linear mixed-effects models}
+\title{Build an lme4 backend for MixPower scenarios}
 \usage{
 mp_backend_lme4(
-  outcome = "y",
   predictor = "condition",
   subject = "subject",
+  outcome = "y",
   item = NULL,
-  re_subject_intercept_sd = 1,
-  re_item_intercept_sd = NULL,
-  optimizer = "bobyqa",
-  check_singular = TRUE
+  test_method = c("wald", "lrt"),
+  null_formula = NULL
 )
 }
 \arguments{
-\item{outcome}{Name of outcome variable (default "y").}
+\item{predictor}{Predictor column name.}
 
-\item{predictor}{Name of focal fixed-effect predictor to test (default "condition").}
+\item{subject}{Subject ID column name.}
 
-\item{subject}{Name of subject grouping factor in simulated data (default "subject").}
+\item{outcome}{Outcome column name.}
 
-\item{item}{Optional name of item grouping factor in simulated data (default NULL).}
+\item{item}{Optional item ID column name.}
 
-\item{re_subject_intercept_sd}{SD of subject random intercepts.}
+\item{test_method}{Inference method: \code{"wald"} (default) or \code{"lrt"}.}
 
-\item{re_item_intercept_sd}{Optional SD of item random intercepts.}
-
-\item{optimizer}{lme4 optimizer name.}
-
-\item{check_singular}{Whether to compute singular fits via \code{lme4::isSingular}.}
+\item{null_formula}{Optional null-model formula required when \code{test_method = "lrt"}.}
 }
 \value{
-A named list with \code{simulate_fun}, \code{fit_fun}, and \code{test_fun}.
+A list containing \code{simulate_fun}, \code{fit_fun}, and \code{test_fun}.
 }
 \description{
-Provides engine functions (\code{simulate_fun}, \code{fit_fun}, \code{test_fun}) compatible
-with \code{mp_scenario()} and \code{mp_power()}.
+Build an lme4 backend for MixPower scenarios
 }
