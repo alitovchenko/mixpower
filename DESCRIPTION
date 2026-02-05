@@ -5,7 +5,7 @@ Authors@R: c(
     person("Mixpower", "Alex Litovchenko",
            role = c("aut", "cre"),
            email = "al4877@columbia.edu")
-)
+ )
 Description: Simulation-based power analysis for Gaussian linear mixed-effects models,
     including diagnostics for convergence and simulation uncertainty.
 License: MIT + file LICENSE

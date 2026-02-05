@@ -13,7 +13,7 @@
 #' @param formula A model formula (stored for later backends).
 #' @param design An `mp_design`.
 #' @param assumptions An `mp_assumptions`.
-#' @param test Character string identifying the test type (metadata).
+#' @param test Character string or list identifying the test type (metadata).
 #' @param simulate_fun Function or NULL.
 #' @param fit_fun Function or NULL.
 #' @param test_fun Function or NULL.
@@ -38,7 +38,11 @@ mp_scenario <- function(formula,
   if (!inherits(formula, "formula")) .stop("`formula` must be a formula.")
   .assert_class(design, "mp_design", "design")
   .assert_class(assumptions, "mp_assumptions", "assumptions")
-  test <- match.arg(test)
+  if (is.character(test)) {
+    test <- match.arg(test)
+  } else if (!is.list(test)) {
+    .stop("`test` must be a character string or list.")
+  }
 
   .assert_fun_or_null(simulate_fun, "simulate_fun")
   .assert_fun_or_null(fit_fun, "fit_fun")
@@ -68,7 +72,12 @@ mp_scenario <- function(formula,
 print.mp_scenario <- function(x, ...) {
   cat("<mp_scenario>\n")
   cat(sprintf("  formula: %s\n", deparse(x$formula)))
-  cat(sprintf("  test: %s\n", x$test))
+  if (is.list(x$test)) {
+    method <- x$test$method %||% "custom"
+    cat(sprintf("  test: %s\n", method))
+  } else {
+    cat(sprintf("  test: %s\n", x$test))
+  }
   cat("  engine:\n")
   cat(sprintf("    - simulate_fun: %s\n", ifelse(is.null(x$engine$simulate_fun), "NULL", "set")))
   cat(sprintf("    - fit_fun: %s\n", ifelse(is.null(x$engine$fit_fun), "NULL", "set")))

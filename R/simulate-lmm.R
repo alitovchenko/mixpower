@@ -1,5 +1,8 @@
 #' Simulate Gaussian data for a minimal linear mixed-effects design
 #' @noRd
+`%||%` <- function(x, y) {
+  if (is.null(x)) y else x
+}
 simulate_lmm_data <- function(scenario,
                               seed,
                               outcome = "y",
@@ -47,9 +50,10 @@ simulate_lmm_data <- function(scenario,
   N <- n_subject * trials
 
   dat <- data.frame(
+    rep(seq_len(n_subject), each = trials),
     stringsAsFactors = FALSE
   )
-  dat[[subject]] <- rep(seq_len(n_subject), each = trials)
+  names(dat) <- subject
 
   # Predictor: within-subject Bernoulli(0.5)
   dat[[predictor]] <- stats::rbinom(N, 1, 0.5)
