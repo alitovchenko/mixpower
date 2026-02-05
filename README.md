@@ -7,3 +7,92 @@ mixpower provides simulation-based power analysis for Gaussian linear mixed-effe
 - Initial release.
 - Supports simulation-based power analysis for Gaussian linear mixed-effects models.
 - Includes diagnostics for convergence and simulation uncertainty.
+
+## Sensitivity analysis
+
+```r
+sens <- mp_sensitivity(
+  scn,
+  vary = list(`fixed_effects.condition` = c(0.2, 0.4, 0.6)),
+  nsim = 50,
+  seed = 123
+)
+plot(sens)
+```
+
+## Wald vs LRT sensitivity comparison
+
+```r
+d <- mp_design(clusters = list(subject = 40), trials_per_cell = 8)
+a <- mp_assumptions(
+  fixed_effects = list(`(Intercept)` = 0, condition = 0.4),
+  residual_sd = 1,
+  icc = list(subject = 0.1)
+)
+
+scn_wald <- mp_scenario_lme4(
+  y ~ condition + (1 | subject),
+  design = d,
+  assumptions = a,
+  predictor = "condition",
+  subject = "subject",
+  outcome = "y",
+  test_method = "wald"
+)
+
+scn_lrt <- mp_scenario_lme4(
+  y ~ condition + (1 | subject),
+  design = d,
+  assumptions = a,
+  predictor = "condition",
+  subject = "subject",
+  outcome = "y",
+  test_method = "lrt",
+  null_formula = y ~ 1 + (1 | subject)
+)
+
+vary_spec <- list(`clusters.subject` = c(30, 50, 80))
+
+sens_wald <- mp_sensitivity(scn_wald, vary = vary_spec, nsim = 50, seed = 123)
+sens_lrt  <- mp_sensitivity(scn_lrt,  vary = vary_spec, nsim = 50, seed = 123)
+
+comp <- rbind(
+  transform(sens_wald$results, method = "wald"),
+  transform(sens_lrt$results,  method = "lrt")
+)
+
+comp
+
+wald_dat <- comp[comp$method == "wald", ]
+lrt_dat  <- comp[comp$method == "lrt", ]
+
+x <- "clusters.subject"
+
+plot(
+  wald_dat[[x]], wald_dat$estimate,
+  type = "b", pch = 16, lty = 1,
+  ylim = c(0, 1),
+  xlab = x, ylab = "Power estimate",
+  col = "steelblue"
+)
+lines(
+  lrt_dat[[x]], lrt_dat$estimate,
+  type = "b", pch = 17, lty = 2,
+  col = "firebrick"
+)
+legend(
+  "bottomright",
+  legend = c("Wald", "LRT"),
+  col = c("steelblue", "firebrick"),
+  lty = c(1, 2), pch = c(16, 17), bty = "n"
+)
+
+diag_comp <- comp[, c(
+  "method",
+  "clusters.subject",
+  "estimate", "mcse", "conf_low", "conf_high",
+  "failure_rate", "singular_rate", "n_effective", "nsim"
+)]
+
+diag_comp[order(diag_comp$method, diag_comp$`clusters.subject`), ]
+```
