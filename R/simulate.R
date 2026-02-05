@@ -6,7 +6,7 @@
 #' @export
 simulate_power <- function(scenario, nsim = 100, seed = NULL) {
   if (!is.null(seed)) {
-    set_seed(seed)
+    base::set.seed(seed)
   }
 
   data.frame(
