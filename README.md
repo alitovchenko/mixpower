@@ -2,6 +2,13 @@
 
 mixpower provides simulation-based power analysis for Gaussian linear mixed-effects models.
 
+## CI expectations
+
+- `R-CMD-check`: full multi-OS package checks (release, devel, oldrel-1).
+- `tests`: quick `devtools::test()` on PRs.
+- `coverage`: runs tests then uploads coverage.
+- `pkgdown`: builds and deploys docs from `main`.
+
 ## mixpower 0.1.0
 
 - Initial release.

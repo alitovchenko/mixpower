@@ -1,4 +1,4 @@
-name: coverage
+name: tests
 
 on:
   pull_request:
@@ -6,8 +6,10 @@ on:
     branches: [main]
 
 jobs:
-  coverage:
+  testthat:
     runs-on: ubuntu-latest
+    env:
+      CI_FAST: "false"
     steps:
       - uses: actions/checkout@v4
 
@@ -18,15 +20,9 @@ jobs:
 
       - uses: r-lib/actions/setup-r-dependencies@v2
         with:
-          extra-packages: any::covr, any::devtools
-          needs: coverage
+          extra-packages: any::devtools
+          needs: test
 
-      - name: Run tests before coverage
+      - name: Run testthat
         run: devtools::test()
-        shell: Rscript {0}
-
-      - name: Compute and upload coverage
-        env:
-          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
-        run: covr::codecov(quiet = FALSE)
         shell: Rscript {0}
