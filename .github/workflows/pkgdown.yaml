@@ -26,6 +26,10 @@ jobs:
           extra-packages: any::pkgdown, any::devtools
           needs: website
 
+      - name: Clean pkgdown site
+        run: pkgdown::clean_site(force = TRUE)
+        shell: Rscript {0}
+
       - name: Build pkgdown site
         run: pkgdown::build_site(install = FALSE)
         shell: Rscript {0}
