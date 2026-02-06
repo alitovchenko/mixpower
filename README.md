@@ -18,6 +18,17 @@ mixpower provides simulation-based power analysis for Gaussian linear mixed-effe
 ## Sensitivity analysis
 
 ```r
+d <- mp_design(clusters = list(subject = 30), trials_per_cell = 4)
+a <- mp_assumptions(
+  fixed_effects = list(`(Intercept)` = 0, condition = 0.3),
+  residual_sd = 1
+)
+scn <- mp_scenario_lme4(
+  y ~ condition + (1 | subject),
+  design = d,
+  assumptions = a
+)
+
 sens <- mp_sensitivity(
   scn,
   vary = list(`fixed_effects.condition` = c(0.2, 0.4, 0.6)),
@@ -30,6 +41,13 @@ plot(sens)
 ## Quick Wald vs LRT compare
 
 ```r
+d <- mp_design(clusters = list(subject = 40), trials_per_cell = 8)
+a <- mp_assumptions(
+  fixed_effects = list(`(Intercept)` = 0, condition = 0.4),
+  residual_sd = 1,
+  icc = list(subject = 0.1)
+)
+
 scn_wald <- mp_scenario_lme4(
   y ~ condition + (1 | subject),
   design = d, assumptions = a,
