@@ -69,7 +69,7 @@
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/Columbia-University/mixpower/" class="external-link">
+  <a href="https://github.com/alitovchenko/mixpower/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
 
   </a>
@@ -117,7 +117,18 @@
 <h2 id="sensitivity-analysis">Sensitivity analysis<a class="anchor" aria-label="anchor" href="#sensitivity-analysis"></a>
 </h2>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">sens</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/mp_sensitivity.html">mp_sensitivity</a></span><span class="op">(</span></span>
+<code class="sourceCode R"><span><span class="va">d</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/mp_design.html">mp_design</a></span><span class="op">(</span>clusters <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>subject <span class="op">=</span> <span class="fl">30</span><span class="op">)</span>, trials_per_cell <span class="op">=</span> <span class="fl">4</span><span class="op">)</span></span>
+<span><span class="va">a</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/mp_assumptions.html">mp_assumptions</a></span><span class="op">(</span></span>
+<span>  fixed_effects <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>`(Intercept)` <span class="op">=</span> <span class="fl">0</span>, condition <span class="op">=</span> <span class="fl">0.3</span><span class="op">)</span>,</span>
+<span>  residual_sd <span class="op">=</span> <span class="fl">1</span></span>
+<span><span class="op">)</span></span>
+<span><span class="va">scn</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/mp_scenario_lme4.html">mp_scenario_lme4</a></span><span class="op">(</span></span>
+<span>  <span class="va">y</span> <span class="op">~</span> <span class="va">condition</span> <span class="op">+</span> <span class="op">(</span><span class="fl">1</span> <span class="op">|</span> <span class="va">subject</span><span class="op">)</span>,</span>
+<span>  design <span class="op">=</span> <span class="va">d</span>,</span>
+<span>  assumptions <span class="op">=</span> <span class="va">a</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">sens</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/mp_sensitivity.html">mp_sensitivity</a></span><span class="op">(</span></span>
 <span>  <span class="va">scn</span>,</span>
 <span>  vary <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>`fixed_effects.condition` <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.2</span>, <span class="fl">0.4</span>, <span class="fl">0.6</span><span class="op">)</span><span class="op">)</span>,</span>
 <span>  nsim <span class="op">=</span> <span class="fl">50</span>,</span>
@@ -129,7 +140,14 @@
 <h2 id="quick-wald-vs-lrt-compare">Quick Wald vs LRT compare<a class="anchor" aria-label="anchor" href="#quick-wald-vs-lrt-compare"></a>
 </h2>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">scn_wald</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/mp_scenario_lme4.html">mp_scenario_lme4</a></span><span class="op">(</span></span>
+<code class="sourceCode R"><span><span class="va">d</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/mp_design.html">mp_design</a></span><span class="op">(</span>clusters <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>subject <span class="op">=</span> <span class="fl">40</span><span class="op">)</span>, trials_per_cell <span class="op">=</span> <span class="fl">8</span><span class="op">)</span></span>
+<span><span class="va">a</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/mp_assumptions.html">mp_assumptions</a></span><span class="op">(</span></span>
+<span>  fixed_effects <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>`(Intercept)` <span class="op">=</span> <span class="fl">0</span>, condition <span class="op">=</span> <span class="fl">0.4</span><span class="op">)</span>,</span>
+<span>  residual_sd <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>  icc <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>subject <span class="op">=</span> <span class="fl">0.1</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">scn_wald</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/mp_scenario_lme4.html">mp_scenario_lme4</a></span><span class="op">(</span></span>
 <span>  <span class="va">y</span> <span class="op">~</span> <span class="va">condition</span> <span class="op">+</span> <span class="op">(</span><span class="fl">1</span> <span class="op">|</span> <span class="va">subject</span><span class="op">)</span>,</span>
 <span>  design <span class="op">=</span> <span class="va">d</span>, assumptions <span class="op">=</span> <span class="va">a</span>,</span>
 <span>  test_method <span class="op">=</span> <span class="st">"wald"</span></span>
@@ -230,8 +248,8 @@
     <div class="links">
 <h2 data-toc-skip>Links</h2>
 <ul class="list-unstyled">
-<li><a href="https://github.com/Columbia-University/mixpower/" class="external-link">Browse source code</a></li>
-<li><a href="https://github.com/Columbia-University/mixpower/issues" class="external-link">Report a bug</a></li>
+<li><a href="https://github.com/alitovchenko/mixpower/" class="external-link">Browse source code</a></li>
+<li><a href="https://github.com/alitovchenko/mixpower/issues" class="external-link">Report a bug</a></li>
 </ul>
 </div>
 
