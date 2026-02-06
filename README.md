@@ -20,6 +20,27 @@ sens <- mp_sensitivity(
 plot(sens)
 ```
 
+## Quick Wald vs LRT compare
+
+```r
+scn_wald <- mp_scenario_lme4(
+  y ~ condition + (1 | subject),
+  design = d, assumptions = a,
+  test_method = "wald"
+)
+
+scn_lrt <- mp_scenario_lme4(
+  y ~ condition + (1 | subject),
+  design = d, assumptions = a,
+  test_method = "lrt",
+  null_formula = y ~ 1 + (1 | subject)
+)
+
+vary_spec <- list(`clusters.subject` = c(30, 50, 80))
+sens_wald <- mp_sensitivity(scn_wald, vary = vary_spec, nsim = 50, seed = 123)
+sens_lrt  <- mp_sensitivity(scn_lrt,  vary = vary_spec, nsim = 50, seed = 123)
+```
+
 ## Wald vs LRT sensitivity comparison
 
 ```r
