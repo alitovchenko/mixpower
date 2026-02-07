@@ -241,6 +241,48 @@
 <span></span>
 <span><span class="va">diag_comp</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/order.html" class="external-link">order</a></span><span class="op">(</span><span class="va">diag_comp</span><span class="op">$</span><span class="va">method</span>, <span class="va">diag_comp</span><span class="op">$</span><span class="va">`clusters.subject`</span><span class="op">)</span>, <span class="op">]</span></span></code></pre></div>
 </div>
+<div class="section level2">
+<h2 id="binomial-glmm-power-binary-outcome">Binomial GLMM power (binary outcome)<a class="anchor" aria-label="anchor" href="#binomial-glmm-power-binary-outcome"></a>
+</h2>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">d</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/mp_design.html">mp_design</a></span><span class="op">(</span>clusters <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>subject <span class="op">=</span> <span class="fl">40</span><span class="op">)</span>, trials_per_cell <span class="op">=</span> <span class="fl">8</span><span class="op">)</span></span>
+<span><span class="va">a</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/mp_assumptions.html">mp_assumptions</a></span><span class="op">(</span></span>
+<span>  fixed_effects <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>`(Intercept)` <span class="op">=</span> <span class="fl">0</span>, condition <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span>,</span>
+<span>  residual_sd <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>  icc <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>subject <span class="op">=</span> <span class="fl">0.4</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">scn_bin</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/mp_scenario_lme4_binomial.html">mp_scenario_lme4_binomial</a></span><span class="op">(</span></span>
+<span>  <span class="va">y</span> <span class="op">~</span> <span class="va">condition</span> <span class="op">+</span> <span class="op">(</span><span class="fl">1</span> <span class="op">|</span> <span class="va">subject</span><span class="op">)</span>,</span>
+<span>  design <span class="op">=</span> <span class="va">d</span>,</span>
+<span>  assumptions <span class="op">=</span> <span class="va">a</span>,</span>
+<span>  test_method <span class="op">=</span> <span class="st">"wald"</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">res_bin</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/mp_power.html">mp_power</a></span><span class="op">(</span><span class="va">scn_bin</span>, nsim <span class="op">=</span> <span class="fl">50</span>, seed <span class="op">=</span> <span class="fl">123</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">res_bin</span><span class="op">)</span></span></code></pre></div>
+</div>
+<div class="section level2">
+<h2 id="poisson-glmm-power-count-outcome">Poisson GLMM power (count outcome)<a class="anchor" aria-label="anchor" href="#poisson-glmm-power-count-outcome"></a>
+</h2>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">d</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/mp_design.html">mp_design</a></span><span class="op">(</span>clusters <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>subject <span class="op">=</span> <span class="fl">40</span><span class="op">)</span>, trials_per_cell <span class="op">=</span> <span class="fl">8</span><span class="op">)</span></span>
+<span><span class="va">a</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/mp_assumptions.html">mp_assumptions</a></span><span class="op">(</span></span>
+<span>  fixed_effects <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>`(Intercept)` <span class="op">=</span> <span class="fl">0</span>, condition <span class="op">=</span> <span class="fl">0.4</span><span class="op">)</span>,</span>
+<span>  residual_sd <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>  icc <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>subject <span class="op">=</span> <span class="fl">0.3</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">scn_pois</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/mp_scenario_lme4_poisson.html">mp_scenario_lme4_poisson</a></span><span class="op">(</span></span>
+<span>  <span class="va">y</span> <span class="op">~</span> <span class="va">condition</span> <span class="op">+</span> <span class="op">(</span><span class="fl">1</span> <span class="op">|</span> <span class="va">subject</span><span class="op">)</span>,</span>
+<span>  design <span class="op">=</span> <span class="va">d</span>,</span>
+<span>  assumptions <span class="op">=</span> <span class="va">a</span>,</span>
+<span>  test_method <span class="op">=</span> <span class="st">"wald"</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">res_pois</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/mp_power.html">mp_power</a></span><span class="op">(</span><span class="va">scn_pois</span>, nsim <span class="op">=</span> <span class="fl">50</span>, seed <span class="op">=</span> <span class="fl">123</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">res_pois</span><span class="op">)</span></span></code></pre></div>
+</div>
 </div>
   </div>
 
