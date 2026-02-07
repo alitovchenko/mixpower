@@ -106,3 +106,48 @@ Interpretation notes:
 - Compare `failure_rate` and `singular_rate` alongside power; higher failures can depress usable inference.
 - Keep `nsim` modest in examples, and increase in final study planning runs.
 - Prefer explicit `null_formula` documentation in reports for LRT reproducibility.
+
+## Binary outcomes (binomial GLMM)
+
+MixPower supports binomial GLMM power analysis via the `lme4::glmer()` backend.
+This keeps design assumptions explicit and diagnostics visible.
+
+Extremely large effect sizes can lead to quasi-separation. In those cases,
+`glmer()` may warn or return unstable estimates. MixPower records these as
+failed simulations (via `NA` p-values), preserving transparency.
+
+```{r binomial-scenario}
+d <- mp_design(clusters = list(subject = 40), trials_per_cell = 8)
+a <- mp_assumptions(
+  fixed_effects = list(`(Intercept)` = 0, condition = 0.5),
+  residual_sd = 1,
+  icc = list(subject = 0.4)
+)
+
+scn_bin <- mp_scenario_lme4_binomial(
+  y ~ condition + (1 | subject),
+  design = d,
+  assumptions = a,
+  test_method = "wald"
+)
+
+res_bin <- mp_power(scn_bin, nsim = 50, seed = 123)
+summary(res_bin)
+```
+
+## Sensitivity curve for binomial outcomes
+
+```{r binomial-sensitivity}
+sens_bin <- mp_sensitivity(
+  scn_bin,
+  vary = list(`fixed_effects.condition` = c(0.2, 0.4, 0.6)),
+  nsim = 50,
+  seed = 123
+)
+
+plot(sens_bin)
+sens_bin$results
+
+# Inspect failure_rate and singular_rate alongside power.
+# Increase nsim for final study reporting.
+```
