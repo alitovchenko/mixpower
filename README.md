@@ -142,3 +142,45 @@ diag_comp <- comp[, c(
 
 diag_comp[order(diag_comp$method, diag_comp$`clusters.subject`), ]
 ```
+
+## Binomial GLMM power (binary outcome)
+
+```r
+d <- mp_design(clusters = list(subject = 40), trials_per_cell = 8)
+a <- mp_assumptions(
+  fixed_effects = list(`(Intercept)` = 0, condition = 0.5),
+  residual_sd = 1,
+  icc = list(subject = 0.4)
+)
+
+scn_bin <- mp_scenario_lme4_binomial(
+  y ~ condition + (1 | subject),
+  design = d,
+  assumptions = a,
+  test_method = "wald"
+)
+
+res_bin <- mp_power(scn_bin, nsim = 50, seed = 123)
+summary(res_bin)
+```
+
+## Poisson GLMM power (count outcome)
+
+```r
+d <- mp_design(clusters = list(subject = 40), trials_per_cell = 8)
+a <- mp_assumptions(
+  fixed_effects = list(`(Intercept)` = 0, condition = 0.4),
+  residual_sd = 1,
+  icc = list(subject = 0.3)
+)
+
+scn_pois <- mp_scenario_lme4_poisson(
+  y ~ condition + (1 | subject),
+  design = d,
+  assumptions = a,
+  test_method = "wald"
+)
+
+res_pois <- mp_power(scn_pois, nsim = 50, seed = 123)
+summary(res_pois)
+```
