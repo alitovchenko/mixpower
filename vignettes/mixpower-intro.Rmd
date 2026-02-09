@@ -151,3 +151,65 @@ sens_bin$results
 # Inspect failure_rate and singular_rate alongside power.
 # Increase nsim for final study reporting.
 ```
+
+## Count outcomes (Poisson vs Negative Binomial)
+
+MixPower supports count outcomes through Poisson and Negative Binomial GLMMs.
+Poisson is appropriate when variance ≈ mean; NB handles over-dispersion.
+
+```{r poisson-scenario}
+d <- mp_design(clusters = list(subject = 40), trials_per_cell = 8)
+a <- mp_assumptions(
+  fixed_effects = list(`(Intercept)` = 0, condition = 0.4),
+  residual_sd = 1,
+  icc = list(subject = 0.3)
+)
+
+scn_pois <- mp_scenario_lme4_poisson(
+  y ~ condition + (1 | subject),
+  design = d,
+  assumptions = a,
+  test_method = "wald"
+)
+
+res_pois <- mp_power(scn_pois, nsim = 50, seed = 123)
+summary(res_pois)
+
+a_nb <- a
+a_nb$theta <- 1.5  # NB dispersion (size parameter)
+
+scn_nb <- mp_scenario_lme4_nb(
+  y ~ condition + (1 | subject),
+  design = d,
+  assumptions = a_nb,
+  test_method = "wald"
+)
+
+res_nb <- mp_power(scn_nb, nsim = 50, seed = 123)
+summary(res_nb)
+```
+
+## Sensitivity curves (count outcomes)
+
+```{r count-sensitivity}
+sens_pois <- mp_sensitivity(
+  scn_pois,
+  vary = list(`fixed_effects.condition` = c(0.2, 0.4, 0.6)),
+  nsim = 50,
+  seed = 123
+)
+
+sens_nb <- mp_sensitivity(
+  scn_nb,
+  vary = list(`fixed_effects.condition` = c(0.2, 0.4, 0.6)),
+  nsim = 50,
+  seed = 123
+)
+
+plot(sens_pois)
+plot(sens_nb)
+
+# Compare power estimates and failure/singularity rates across Poisson vs NB.
+# Overdispersion can reduce power relative to Poisson.
+# Increase nsim for final reports.
+```
