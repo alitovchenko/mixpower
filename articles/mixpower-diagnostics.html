@@ -97,7 +97,36 @@
     
     
 <p>This vignette shows how to assess simulation uncertainty and
-summarize sensitivity analyses with <code>sensitivity()</code>.</p>
+summarize sensitivity analyses with <code><a href="../reference/mp_sensitivity.html">mp_sensitivity()</a></code>.</p>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/alitovchenko/mixpower" class="external-link">mixpower</a></span><span class="op">)</span></span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">d</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/mp_design.html">mp_design</a></span><span class="op">(</span>clusters <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>subject <span class="op">=</span> <span class="fl">20</span><span class="op">)</span>, trials_per_cell <span class="op">=</span> <span class="fl">4</span><span class="op">)</span></span>
+<span><span class="va">a</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/mp_assumptions.html">mp_assumptions</a></span><span class="op">(</span></span>
+<span>  fixed_effects <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>`(Intercept)` <span class="op">=</span> <span class="fl">0</span>, condition <span class="op">=</span> <span class="fl">0.3</span><span class="op">)</span>,</span>
+<span>  residual_sd <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>  icc <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>subject <span class="op">=</span> <span class="fl">0.1</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">scn</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/mp_scenario_lme4.html">mp_scenario_lme4</a></span><span class="op">(</span></span>
+<span>  <span class="va">y</span> <span class="op">~</span> <span class="va">condition</span> <span class="op">+</span> <span class="op">(</span><span class="fl">1</span> <span class="op">|</span> <span class="va">subject</span><span class="op">)</span>,</span>
+<span>  design <span class="op">=</span> <span class="va">d</span>,</span>
+<span>  assumptions <span class="op">=</span> <span class="va">a</span>,</span>
+<span>  test_method <span class="op">=</span> <span class="st">"wald"</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">sens</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/mp_sensitivity.html">mp_sensitivity</a></span><span class="op">(</span></span>
+<span>  <span class="va">scn</span>,</span>
+<span>  vary <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>`fixed_effects.condition` <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.2</span>, <span class="fl">0.4</span>, <span class="fl">0.6</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>  nsim <span class="op">=</span> <span class="fl">10</span>,</span>
+<span>  seed <span class="op">=</span> <span class="fl">1</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">sens</span><span class="op">$</span><span class="va">results</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"estimate"</span>, <span class="st">"mcse"</span>, <span class="st">"failure_rate"</span>, <span class="st">"singular_rate"</span><span class="op">)</span><span class="op">]</span></span>
+<span><span class="co">#&gt;   estimate mcse failure_rate singular_rate</span></span>
+<span><span class="co">#&gt; 1        0    0            0             0</span></span>
+<span><span class="co">#&gt; 2        0    0            0             0</span></span>
+<span><span class="co">#&gt; 3        0    0            0             0</span></span></code></pre></div>
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

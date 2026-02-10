@@ -96,9 +96,55 @@
 
     
     
-<p>This vignette describes the <code><a href="../reference/simulate_power.html">simulate_power()</a></code> workflow
-and how to summarize results with <code><a href="https://rdrr.io/r/stats/power.html" class="external-link">power()</a></code> and
-<code><a href="../reference/summarize_simulations.html">summarize_simulations()</a></code>.</p>
+<p>This vignette describes the <code><a href="../reference/mp_power.html">mp_power()</a></code> workflow and how
+to summarize results with <code><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary()</a></code>.</p>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/alitovchenko/mixpower" class="external-link">mixpower</a></span><span class="op">)</span></span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">d</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/mp_design.html">mp_design</a></span><span class="op">(</span>clusters <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>subject <span class="op">=</span> <span class="fl">20</span><span class="op">)</span>, trials_per_cell <span class="op">=</span> <span class="fl">4</span><span class="op">)</span></span>
+<span><span class="va">a</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/mp_assumptions.html">mp_assumptions</a></span><span class="op">(</span></span>
+<span>  fixed_effects <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>`(Intercept)` <span class="op">=</span> <span class="fl">0</span>, condition <span class="op">=</span> <span class="fl">0.4</span><span class="op">)</span>,</span>
+<span>  residual_sd <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>  icc <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>subject <span class="op">=</span> <span class="fl">0.1</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">scn</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/mp_scenario_lme4.html">mp_scenario_lme4</a></span><span class="op">(</span></span>
+<span>  <span class="va">y</span> <span class="op">~</span> <span class="va">condition</span> <span class="op">+</span> <span class="op">(</span><span class="fl">1</span> <span class="op">|</span> <span class="va">subject</span><span class="op">)</span>,</span>
+<span>  design <span class="op">=</span> <span class="va">d</span>,</span>
+<span>  assumptions <span class="op">=</span> <span class="va">a</span>,</span>
+<span>  test_method <span class="op">=</span> <span class="st">"wald"</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/mp_power.html">mp_power</a></span><span class="op">(</span><span class="va">scn</span>, nsim <span class="op">=</span> <span class="fl">10</span>, seed <span class="op">=</span> <span class="fl">42</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">res</span><span class="op">)</span></span>
+<span><span class="co">#&gt; $power</span></span>
+<span><span class="co">#&gt; [1] 0</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $mcse</span></span>
+<span><span class="co">#&gt; [1] 0</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $ci</span></span>
+<span><span class="co">#&gt; [1] 0 0</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $diagnostics</span></span>
+<span><span class="co">#&gt; $diagnostics$fail_rate</span></span>
+<span><span class="co">#&gt; [1] 0</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $diagnostics$singular_rate</span></span>
+<span><span class="co">#&gt; [1] 0</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $nsim</span></span>
+<span><span class="co">#&gt; [1] 10</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $alpha</span></span>
+<span><span class="co">#&gt; [1] 0.05</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $failure_policy</span></span>
+<span><span class="co">#&gt; [1] "count_as_nondetect"</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $conf_level</span></span>
+<span><span class="co">#&gt; [1] 0.95</span></span></code></pre></div>
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
