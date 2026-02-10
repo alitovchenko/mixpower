@@ -22,12 +22,15 @@
 <url><loc>/reference/mp_backend_lme4_poisson.html</loc></url>
 <url><loc>/reference/mp_design.html</loc></url>
 <url><loc>/reference/mp_power.html</loc></url>
+<url><loc>/reference/mp_power_curve.html</loc></url>
 <url><loc>/reference/mp_scenario.html</loc></url>
 <url><loc>/reference/mp_scenario_lme4.html</loc></url>
 <url><loc>/reference/mp_scenario_lme4_binomial.html</loc></url>
 <url><loc>/reference/mp_scenario_lme4_nb.html</loc></url>
 <url><loc>/reference/mp_scenario_lme4_poisson.html</loc></url>
 <url><loc>/reference/mp_sensitivity.html</loc></url>
+<url><loc>/reference/mp_solve_sample_size.html</loc></url>
+<url><loc>/reference/plot.mp_power_curve.html</loc></url>
 <url><loc>/reference/plot.mp_sensitivity.html</loc></url>
 <url><loc>/reference/plot_power.html</loc></url>
 <url><loc>/reference/run_parallel.html</loc></url>
