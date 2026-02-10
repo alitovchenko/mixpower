@@ -38,6 +38,39 @@ sens <- mp_sensitivity(
 plot(sens)
 ```
 
+## Power curve and sample-size solver
+
+```r
+d <- mp_design(clusters = list(subject = 30), trials_per_cell = 4)
+a <- mp_assumptions(
+  fixed_effects = list(`(Intercept)` = 0, condition = 0.3),
+  residual_sd = 1
+)
+scn <- mp_scenario_lme4(
+  y ~ condition + (1 | subject),
+  design = d,
+  assumptions = a
+)
+
+curve <- mp_power_curve(
+  scn,
+  vary = list(`clusters.subject` = c(20, 30, 40, 50)),
+  nsim = 50,
+  seed = 123
+)
+plot(curve)
+
+solve <- mp_solve_sample_size(
+  scn,
+  parameter = "clusters.subject",
+  grid = c(20, 30, 40, 50),
+  target_power = 0.8,
+  nsim = 50,
+  seed = 123
+)
+solve$solution
+```
+
 ## Quick Wald vs LRT compare
 
 ```r
