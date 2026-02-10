@@ -321,6 +321,134 @@ p-values), preserving transparency.</p>
 <span><span class="co"># Inspect failure_rate and singular_rate alongside power.</span></span>
 <span><span class="co"># Increase nsim for final study reporting.</span></span></code></pre></div>
 </div>
+<div class="section level2">
+<h2 id="count-outcomes-poisson-vs-negative-binomial">Count outcomes (Poisson vs Negative Binomial)<a class="anchor" aria-label="anchor" href="#count-outcomes-poisson-vs-negative-binomial"></a>
+</h2>
+<p>MixPower supports count outcomes through Poisson and Negative
+Binomial GLMMs. Poisson is appropriate when variance ≈ mean; NB handles
+over-dispersion.</p>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">d</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/mp_design.html">mp_design</a></span><span class="op">(</span>clusters <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>subject <span class="op">=</span> <span class="fl">40</span><span class="op">)</span>, trials_per_cell <span class="op">=</span> <span class="fl">8</span><span class="op">)</span></span>
+<span><span class="va">a</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/mp_assumptions.html">mp_assumptions</a></span><span class="op">(</span></span>
+<span>  fixed_effects <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>`(Intercept)` <span class="op">=</span> <span class="fl">0</span>, condition <span class="op">=</span> <span class="fl">0.4</span><span class="op">)</span>,</span>
+<span>  residual_sd <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>  icc <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>subject <span class="op">=</span> <span class="fl">0.3</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">scn_pois</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/mp_scenario_lme4_poisson.html">mp_scenario_lme4_poisson</a></span><span class="op">(</span></span>
+<span>  <span class="va">y</span> <span class="op">~</span> <span class="va">condition</span> <span class="op">+</span> <span class="op">(</span><span class="fl">1</span> <span class="op">|</span> <span class="va">subject</span><span class="op">)</span>,</span>
+<span>  design <span class="op">=</span> <span class="va">d</span>,</span>
+<span>  assumptions <span class="op">=</span> <span class="va">a</span>,</span>
+<span>  test_method <span class="op">=</span> <span class="st">"wald"</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">res_pois</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/mp_power.html">mp_power</a></span><span class="op">(</span><span class="va">scn_pois</span>, nsim <span class="op">=</span> <span class="fl">50</span>, seed <span class="op">=</span> <span class="fl">123</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">res_pois</span><span class="op">)</span></span>
+<span><span class="co">#&gt; $power</span></span>
+<span><span class="co">#&gt; [1] 0</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $mcse</span></span>
+<span><span class="co">#&gt; [1] 0</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $ci</span></span>
+<span><span class="co">#&gt; [1] 0 0</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $diagnostics</span></span>
+<span><span class="co">#&gt; $diagnostics$fail_rate</span></span>
+<span><span class="co">#&gt; [1] 0</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $diagnostics$singular_rate</span></span>
+<span><span class="co">#&gt; [1] 0</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $nsim</span></span>
+<span><span class="co">#&gt; [1] 50</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $alpha</span></span>
+<span><span class="co">#&gt; [1] 0.05</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $failure_policy</span></span>
+<span><span class="co">#&gt; [1] "count_as_nondetect"</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $conf_level</span></span>
+<span><span class="co">#&gt; [1] 0.95</span></span>
+<span></span>
+<span><span class="va">a_nb</span> <span class="op">&lt;-</span> <span class="va">a</span></span>
+<span><span class="va">a_nb</span><span class="op">$</span><span class="va">theta</span> <span class="op">&lt;-</span> <span class="fl">1.5</span>  <span class="co"># NB dispersion (size parameter)</span></span>
+<span></span>
+<span><span class="va">scn_nb</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/mp_scenario_lme4_nb.html">mp_scenario_lme4_nb</a></span><span class="op">(</span></span>
+<span>  <span class="va">y</span> <span class="op">~</span> <span class="va">condition</span> <span class="op">+</span> <span class="op">(</span><span class="fl">1</span> <span class="op">|</span> <span class="va">subject</span><span class="op">)</span>,</span>
+<span>  design <span class="op">=</span> <span class="va">d</span>,</span>
+<span>  assumptions <span class="op">=</span> <span class="va">a_nb</span>,</span>
+<span>  test_method <span class="op">=</span> <span class="st">"wald"</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">res_nb</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/mp_power.html">mp_power</a></span><span class="op">(</span><span class="va">scn_nb</span>, nsim <span class="op">=</span> <span class="fl">50</span>, seed <span class="op">=</span> <span class="fl">123</span><span class="op">)</span></span>
+<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">res_nb</span><span class="op">)</span></span>
+<span><span class="co">#&gt; $power</span></span>
+<span><span class="co">#&gt; [1] 0</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $mcse</span></span>
+<span><span class="co">#&gt; [1] 0</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $ci</span></span>
+<span><span class="co">#&gt; [1] 0 0</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $diagnostics</span></span>
+<span><span class="co">#&gt; $diagnostics$fail_rate</span></span>
+<span><span class="co">#&gt; [1] 0</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $diagnostics$singular_rate</span></span>
+<span><span class="co">#&gt; [1] 0.04</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $nsim</span></span>
+<span><span class="co">#&gt; [1] 50</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $alpha</span></span>
+<span><span class="co">#&gt; [1] 0.05</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $failure_policy</span></span>
+<span><span class="co">#&gt; [1] "count_as_nondetect"</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $conf_level</span></span>
+<span><span class="co">#&gt; [1] 0.95</span></span></code></pre></div>
+</div>
+<div class="section level2">
+<h2 id="sensitivity-curves-count-outcomes">Sensitivity curves (count outcomes)<a class="anchor" aria-label="anchor" href="#sensitivity-curves-count-outcomes"></a>
+</h2>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">sens_pois</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/mp_sensitivity.html">mp_sensitivity</a></span><span class="op">(</span></span>
+<span>  <span class="va">scn_pois</span>,</span>
+<span>  vary <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>`fixed_effects.condition` <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.2</span>, <span class="fl">0.4</span>, <span class="fl">0.6</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>  nsim <span class="op">=</span> <span class="fl">50</span>,</span>
+<span>  seed <span class="op">=</span> <span class="fl">123</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">sens_nb</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/mp_sensitivity.html">mp_sensitivity</a></span><span class="op">(</span></span>
+<span>  <span class="va">scn_nb</span>,</span>
+<span>  vary <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>`fixed_effects.condition` <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.2</span>, <span class="fl">0.4</span>, <span class="fl">0.6</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>  nsim <span class="op">=</span> <span class="fl">50</span>,</span>
+<span>  seed <span class="op">=</span> <span class="fl">123</span></span>
+<span><span class="op">)</span></span>
+<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">sens_pois</span><span class="op">)</span></span></code></pre></div>
+<p><img src="mixpower-intro_files/figure-html/count-sensitivity-1.png" class="r-plt" alt="" width="700"></p>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">sens_nb</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Compare power estimates and failure/singularity rates across Poisson vs NB.</span></span>
+<span><span class="co"># Overdispersion can reduce power relative to Poisson.</span></span>
+<span><span class="co"># Increase nsim for final reports.</span></span></code></pre></div>
+</div>
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
