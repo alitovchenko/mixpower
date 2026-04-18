@@ -20,7 +20,13 @@ jobs:
 
       - uses: r-lib/actions/setup-r-dependencies@v2
         with:
-          extra-packages: any::devtools
+          extra-packages: |
+            any::devtools
+            any::glmmTMB
+            any::ggplot2
+            any::tibble
+            any::dplyr
+            any::tidyr
           needs: test
 
       - name: Run testthat

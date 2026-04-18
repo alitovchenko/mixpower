@@ -19,6 +19,9 @@
 #'   - `"fits"`: also store fit objects (may be large).
 #'   - `"data"`: also store simulated data (can be very large).
 #' @param conf_level Confidence level for the Wald interval (default 0.95).
+#' @param aggregate `"full"` (default) stores every replicate in `sims`. `"streaming"`
+#'   accumulates counts only (lower memory); requires `keep = "minimal"` and returns
+#'   an empty `sims` data frame with the same column names as the full run.
 #'
 #' @return An object of class `mp_power`.
 #' @export
@@ -56,7 +59,8 @@ mp_power <- function(scenario,
                      seed = NULL,
                      failure_policy = c("count_as_nondetect", "exclude"),
                      keep = c("minimal", "fits", "data"),
-                     conf_level = 0.95) {
+                     conf_level = 0.95,
+                     aggregate = c("full", "streaming")) {
   .assert_class(scenario, "mp_scenario", "scenario")
   .assert_is_pos_int(nsim, "nsim")
   .assert_is_num(alpha, "alpha")
@@ -65,6 +69,10 @@ mp_power <- function(scenario,
   if (conf_level <= 0 || conf_level >= 1) .stop("`conf_level` must be in (0, 1).")
   failure_policy <- match.arg(failure_policy)
   keep <- match.arg(keep)
+  aggregate <- match.arg(aggregate)
+  if (identical(aggregate, "streaming") && !identical(keep, "minimal")) {
+    .stop('`aggregate = "streaming"` requires `keep = "minimal"`.')
+  }
 
   eng <- scenario$engine
   if (is.null(eng$simulate_fun) || is.null(eng$fit_fun) || is.null(eng$test_fun)) {
@@ -73,7 +81,83 @@ mp_power <- function(scenario,
 
   rep_seeds <- .rep_seeds(seed, nsim)
 
-  # Storage
+  if (identical(aggregate, "streaming")) {
+    n_fail <- 0L
+    n_sing <- 0L
+    detected <- 0L
+    denom_exc <- 0L
+
+    for (i in seq_len(nsim)) {
+      si <- rep_seeds[[i]]
+      out_i <- .run_one_rep(scenario, alpha = alpha, seed = si)
+      row <- out_i$row
+      if (!isTRUE(row$fit_ok)) n_fail <- n_fail + 1L
+      if (isTRUE(row$singular)) n_sing <- n_sing + 1L
+      p <- row$p_value
+      if (failure_policy == "count_as_nondetect") {
+        if (!is.na(p) && p < alpha) detected <- detected + 1L
+      } else {
+        if (!is.na(p)) {
+          denom_exc <- denom_exc + 1L
+          if (p < alpha) detected <- detected + 1L
+        }
+      }
+    }
+
+    if (failure_policy == "count_as_nondetect") {
+      denom <- nsim
+    } else {
+      denom <- denom_exc
+    }
+
+    power_hat <- if (denom == 0L) NA_real_ else as.numeric(detected) / as.numeric(denom)
+    mcse <- if (is.na(power_hat)) NA_real_ else sqrt(power_hat * (1 - power_hat) / denom)
+    z <- stats::qnorm(1 - (1 - conf_level) / 2)
+    ci <- if (is.na(power_hat)) c(NA_real_, NA_real_) else {
+      lo <- max(0, power_hat - z * mcse)
+      hi <- min(1, power_hat + z * mcse)
+      c(lo, hi)
+    }
+
+    fail_rate <- n_fail / nsim
+    singular_rate <- n_sing / nsim
+
+    sim_tbl <- data.frame(
+      replicate = integer(),
+      p_value = double(),
+      detected = logical(),
+      fit_ok = logical(),
+      singular = logical(),
+      warning = character(),
+      error = character()
+    )
+    attr(sim_tbl, "aggregate") <- "streaming"
+
+    res <- list(
+      scenario = scenario,
+      nsim = as.integer(nsim),
+      alpha = alpha,
+      seed = seed,
+      failure_policy = failure_policy,
+      keep = keep,
+      conf_level = conf_level,
+      aggregate = aggregate,
+      sims = sim_tbl,
+      power = power_hat,
+      mcse = mcse,
+      ci = ci,
+      diagnostics = list(
+        fail_rate = fail_rate,
+        singular_rate = singular_rate
+      ),
+      fits = NULL,
+      data = NULL
+    )
+    class(res) <- "mp_power"
+    return(res)
+  }
+
+  # Storage (full aggregate)
   rows <- vector("list", nsim)
   fits <- if (keep %in% c("fits", "data")) vector("list", nsim) else NULL
   datas <- if (keep == "data") vector("list", nsim) else NULL
@@ -123,6 +207,7 @@ mp_power <- function(scenario,
     failure_policy = failure_policy,
     keep = keep,
     conf_level = conf_level,
+    aggregate = aggregate,
     sims = sim_tbl,
     power = power_hat,
     mcse = mcse,

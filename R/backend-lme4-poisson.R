@@ -74,7 +74,13 @@ mp_backend_lme4_poisson <- function(predictor = "condition",
     stop("Unsupported `test_method`: ", method, call. = FALSE)
   }
 
-  list(simulate_fun = simulate_fun, fit_fun = fit_fun, test_fun = test_fun)
+  mp_backend(
+    simulate_fun = simulate_fun,
+    fit_fun = fit_fun,
+    test_fun = test_fun,
+    name = "lme4_poisson",
+    capabilities = list(families = "poisson", supports_lrt = TRUE)
+  )
 }
 
 #' Create a fully specified MixPower scenario with the Poisson lme4 backend

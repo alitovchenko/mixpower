@@ -73,7 +73,13 @@ mp_backend_lme4_nb <- function(predictor = "condition",
     stop("Unsupported `test_method`: ", method, call. = FALSE)
   }
 
-  list(simulate_fun = simulate_fun, fit_fun = fit_fun, test_fun = test_fun)
+  mp_backend(
+    simulate_fun = simulate_fun,
+    fit_fun = fit_fun,
+    test_fun = test_fun,
+    name = "lme4_nb",
+    capabilities = list(families = "negative_binomial", supports_lrt = TRUE)
+  )
 }
 
 #' Create a fully specified MixPower scenario with the NB lme4 backend

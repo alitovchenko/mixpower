@@ -67,3 +67,17 @@ test_that("mp_solve_sample_size returns NA when target never achieved", {
 
   expect_identical(out$solution, NA_real_)
 })
+
+test_that("mp_grid_sample_size returns valid grid for solver", {
+  g1 <- mp_grid_sample_size(20, 100, length.out = 9)
+  expect_equal(length(g1), 9)
+  expect_equal(g1[1], 20)
+  expect_equal(g1[9], 100)
+  expect_true(is.numeric(g1))
+
+  g2 <- mp_grid_sample_size(20, 100, by = 10)
+  expect_equal(g2, c(20, 30, 40, 50, 60, 70, 80, 90, 100))
+
+  expect_error(mp_grid_sample_size(20, 100), "Specify either")
+  expect_error(mp_grid_sample_size(20, 100, length.out = 5, by = 10), "Specify only one")
+})

@@ -73,7 +73,13 @@ mp_backend_lme4 <- function(predictor = "condition",
     stop("Unsupported test method: ", method, call. = FALSE)
   }
 
-  list(simulate_fun = simulate_fun, fit_fun = fit_fun, test_fun = test_fun)
+  mp_backend(
+    simulate_fun = simulate_fun,
+    fit_fun = fit_fun,
+    test_fun = test_fun,
+    name = "lme4",
+    capabilities = list(families = "gaussian", supports_lrt = TRUE, supports_random_slopes = FALSE)
+  )
 }
 
 #' Create a fully specified MixPower scenario with the lme4 backend

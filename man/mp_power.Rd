@@ -11,7 +11,8 @@ mp_power(
   seed = NULL,
   failure_policy = c("count_as_nondetect", "exclude"),
   keep = c("minimal", "fits", "data"),
-  conf_level = 0.95
+  conf_level = 0.95,
+  aggregate = c("full", "streaming")
 )
 }
 \arguments{
@@ -37,6 +38,10 @@ mp_power(
 }}
 
 \item{conf_level}{Confidence level for the Wald interval (default 0.95).}
+
+\item{aggregate}{\code{"full"} (default) stores every replicate in \code{sims}. \code{"streaming"}
+accumulates counts only (lower memory); requires \code{keep = "minimal"} and returns
+an empty \code{sims} data frame with the same column names as the full run.}
 }
 \value{
 An object of class \code{mp_power}.

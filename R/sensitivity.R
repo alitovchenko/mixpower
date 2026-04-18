@@ -193,32 +193,58 @@ summary.mp_sensitivity <- function(object, ...) {
   object$results
 }
 
-#' Plot a one-dimensional sensitivity curve
+#' Plot a sensitivity analysis
+#'
+#' For one varying parameter: line plot with optional CI segments when
+#' `y = "estimate"`. For two varying parameters: heatmap. More than two
+#' parameters is not supported.
+#'
 #' @param x An `mp_sensitivity` object.
-#' @param y What to plot on the y-axis (`"estimate"` or `"failure_rate"`).
-#' @param ... Additional graphical arguments passed to [graphics::plot()].
-#' @return Invisibly returns the plotted data.
+#' @param y What to plot: `"estimate"` (power), `"failure_rate"`,
+#'   `"singular_rate"`, or `"n_effective"`.
+#' @param ... Additional graphical arguments passed to [graphics::plot()] (1D)
+#'   or [graphics::image()] (2D).
+#' @return Invisibly returns the plotted data (1D: ordered data frame; 2D: matrix).
 #' @export
-plot.mp_sensitivity <- function(x, y = c("estimate", "failure_rate"), ...) {
+plot.mp_sensitivity <- function(x, y = c("estimate", "failure_rate", "singular_rate", "n_effective"), ...) {
   y <- match.arg(y)
 
-  if (length(x$vary) != 1L) {
-    stop("`plot.mp_sensitivity()` currently supports one varying parameter.", call. = FALSE)
+  nv <- length(x$vary)
+  if (nv == 1L) {
+    param <- names(x$vary)[[1]]
+    dat <- x$results[order(x$results[[param]]), , drop = FALSE]
+    graphics::plot(dat[[param]], dat[[y]], xlab = param, ylab = y, ...)
+    if (identical(y, "estimate")) {
+      graphics::segments(
+        x0 = dat[[param]],
+        y0 = dat$conf_low,
+        x1 = dat[[param]],
+        y1 = dat$conf_high
+      )
+    }
+    return(invisible(dat))
   }
 
-  param <- names(x$vary)[[1]]
-  dat <- x$results[order(x$results[[param]]), , drop = FALSE]
-
-  graphics::plot(dat[[param]], dat[[y]], xlab = param, ylab = y, ...)
-
-  if (identical(y, "estimate")) {
-    graphics::segments(
-      x0 = dat[[param]],
-      y0 = dat$conf_low,
-      x1 = dat[[param]],
-      y1 = dat$conf_high
+  if (nv == 2L) {
+    p1 <- names(x$vary)[[1]]
+    p2 <- names(x$vary)[[2]]
+    u1 <- sort(unique(x$results[[p1]]))
+    u2 <- sort(unique(x$results[[p2]]))
+    z <- matrix(
+      NA_real_,
+      nrow = length(u1),
+      ncol = length(u2),
+      dimnames = list(as.character(u1), as.character(u2))
     )
+    for (i in seq_len(nrow(x$results))) {
+      r <- x$results[i, , drop = FALSE]
+      i1 <- match(r[[p1]], u1)
+      i2 <- match(r[[p2]], u2)
+      z[i1, i2] <- r[[y]]
+    }
+    graphics::image(u1, u2, z, xlab = p1, ylab = p2, ...)
+    return(invisible(z))
   }
 
-  invisible(dat)
+  stop("`plot.mp_sensitivity()` supports one varying parameter (line plot) or two (heatmap), not ", nv, ".", call. = FALSE)
 }

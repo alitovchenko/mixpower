@@ -81,7 +81,13 @@ mp_backend_lme4_binomial <- function(predictor = "condition",
     stop("Unsupported `test_method`: ", method, call. = FALSE)
   }
 
-  list(simulate_fun = simulate_fun, fit_fun = fit_fun, test_fun = test_fun)
+  mp_backend(
+    simulate_fun = simulate_fun,
+    fit_fun = fit_fun,
+    test_fun = test_fun,
+    name = "lme4_binomial",
+    capabilities = list(families = "binomial", supports_lrt = TRUE)
+  )
 }
 
 #' Create a fully specified MixPower scenario with the binomial lme4 backend
