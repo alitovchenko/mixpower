@@ -38,7 +38,13 @@
       <a href="../articles/mixpower-diagnostics.html">Diagnostics and sensitivity</a>
     </li>
     <li>
+      <a href="../articles/mixpower-extending.html">Extending mixpower with custom backends</a>
+    </li>
+    <li>
       <a href="../articles/mixpower-intro.html">mixpower intro</a>
+    </li>
+    <li>
+      <a href="../articles/mixpower-reproducibility.html">Reproducibility workflow</a>
     </li>
     <li>
       <a href="../articles/mixpower-simulations.html">Running simulations</a>
@@ -70,13 +76,33 @@
           <p class="section-desc"></p>
         </th>
       </tr></tbody><tbody><tr><td>
+          <p><code><a href="as_tibble.mp_power.html">as_tibble(<i>&lt;mp_power&gt;</i>)</a></code> </p>
+        </td>
+        <td><p>Coerce mixpower results to a tibble</p></td>
+      </tr><tr><td>
+          <p><code><a href="autoplot.mp_sensitivity.html">autoplot(<i>&lt;mp_sensitivity&gt;</i>)</a></code> </p>
+        </td>
+        <td><p>ggplot2 diagnostic plot for sensitivity or power curve</p></td>
+      </tr><tr><td>
           <p><code><a href="fit_model.html">fit_model()</a></code> </p>
         </td>
         <td><p>Fit a model for a single simulated dataset</p></td>
       </tr><tr><td>
+          <p><code><a href="mixpower-package.html">mixpower-package</a></code> <code><a href="mixpower-package.html">mixpower</a></code> </p>
+        </td>
+        <td><p>Simulation-Based Power Analysis for Mixed-Effects Models</p></td>
+      </tr><tr><td>
           <p><code><a href="mp_assumptions.html">mp_assumptions()</a></code> </p>
         </td>
         <td><p>Create modeling assumptions for simulation-based power</p></td>
+      </tr><tr><td>
+          <p><code><a href="mp_backend.html">mp_backend()</a></code> </p>
+        </td>
+        <td><p>MixPower backend contract</p></td>
+      </tr><tr><td>
+          <p><code><a href="mp_backend_glmmtmb.html">mp_backend_glmmtmb()</a></code> </p>
+        </td>
+        <td><p>Build a glmmTMB backend for Gaussian LMM scenarios</p></td>
       </tr><tr><td>
           <p><code><a href="mp_backend_lme4.html">mp_backend_lme4()</a></code> </p>
         </td>
@@ -94,9 +120,21 @@
         </td>
         <td><p>Build an lme4 backend for Poisson GLMM scenarios</p></td>
       </tr><tr><td>
+          <p><code><a href="mp_bundle_results.html">mp_bundle_results()</a></code> </p>
+        </td>
+        <td><p>Bundle results with manifest and optional labels</p></td>
+      </tr><tr><td>
           <p><code><a href="mp_design.html">mp_design()</a></code> </p>
         </td>
         <td><p>Create a study design specification</p></td>
+      </tr><tr><td>
+          <p><code><a href="mp_grid_sample_size.html">mp_grid_sample_size()</a></code> </p>
+        </td>
+        <td><p>Create a grid of values for sample-size search</p></td>
+      </tr><tr><td>
+          <p><code><a href="mp_manifest.html">mp_manifest()</a></code> </p>
+        </td>
+        <td><p>Reproducibility manifest for power analyses</p></td>
       </tr><tr><td>
           <p><code><a href="mp_power.html">mp_power()</a></code> </p>
         </td>
@@ -106,9 +144,25 @@
         </td>
         <td><p>Power curve for a single design/assumption parameter</p></td>
       </tr><tr><td>
+          <p><code><a href="mp_power_curve_parallel.html">mp_power_curve_parallel()</a></code> </p>
+        </td>
+        <td><p>Parallel power curve evaluation</p></td>
+      </tr><tr><td>
+          <p><code><a href="mp_quick_power.html">mp_quick_power()</a></code> </p>
+        </td>
+        <td><p>Quick power run for a single LMM design</p></td>
+      </tr><tr><td>
+          <p><code><a href="mp_report_table.html">mp_report_table()</a></code> </p>
+        </td>
+        <td><p>Publication-ready summary table for power results</p></td>
+      </tr><tr><td>
           <p><code><a href="mp_scenario.html">mp_scenario()</a></code> </p>
         </td>
         <td><p>Create a power-analysis scenario</p></td>
+      </tr><tr><td>
+          <p><code><a href="mp_scenario_glmmtmb_lmm.html">mp_scenario_glmmtmb_lmm()</a></code> </p>
+        </td>
+        <td><p>Gaussian LMM scenario using glmmTMB</p></td>
       </tr><tr><td>
           <p><code><a href="mp_scenario_lme4.html">mp_scenario_lme4()</a></code> </p>
         </td>
@@ -130,9 +184,17 @@
         </td>
         <td><p>Run power sensitivity analysis over a parameter grid</p></td>
       </tr><tr><td>
+          <p><code><a href="mp_sensitivity_parallel.html">mp_sensitivity_parallel()</a></code> </p>
+        </td>
+        <td><p>Parallel sensitivity analysis over a parameter grid</p></td>
+      </tr><tr><td>
           <p><code><a href="mp_solve_sample_size.html">mp_solve_sample_size()</a></code> </p>
         </td>
         <td><p>Solve for minimum sample size achieving target power</p></td>
+      </tr><tr><td>
+          <p><code><a href="mp_write_results.html">mp_write_results()</a></code> </p>
+        </td>
+        <td><p>Write results or bundle to CSV or JSON</p></td>
       </tr><tr><td>
           <p><code><a href="plot.mp_power_curve.html">plot(<i>&lt;mp_power_curve&gt;</i>)</a></code> </p>
         </td>
@@ -140,7 +202,7 @@
       </tr><tr><td>
           <p><code><a href="plot.mp_sensitivity.html">plot(<i>&lt;mp_sensitivity&gt;</i>)</a></code> </p>
         </td>
-        <td><p>Plot a one-dimensional sensitivity curve</p></td>
+        <td><p>Plot a sensitivity analysis</p></td>
       </tr><tr><td>
           <p><code><a href="plot_power.html">plot_power()</a></code> </p>
         </td>
@@ -173,6 +235,10 @@
           <p><code><a href="test_effect.html">test_effect()</a></code> </p>
         </td>
         <td><p>Extract a test statistic for a model term</p></td>
+      </tr><tr><td>
+          <p><code><a href="validate_mp_backend.html">validate_mp_backend()</a></code> </p>
+        </td>
+        <td><p>Validate a MixPower backend</p></td>
       </tr></tbody></table></div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

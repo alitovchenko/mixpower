@@ -39,7 +39,13 @@ the scenario's test decision rule (typically p &amp;lt; alpha)."><!-- mathjax --
       <a href="../articles/mixpower-diagnostics.html">Diagnostics and sensitivity</a>
     </li>
     <li>
+      <a href="../articles/mixpower-extending.html">Extending mixpower with custom backends</a>
+    </li>
+    <li>
       <a href="../articles/mixpower-intro.html">mixpower intro</a>
+    </li>
+    <li>
+      <a href="../articles/mixpower-reproducibility.html">Reproducibility workflow</a>
     </li>
     <li>
       <a href="../articles/mixpower-simulations.html">Running simulations</a>
@@ -81,7 +87,8 @@ the scenario's test decision rule (typically p &lt; alpha).</p>
 <span>  seed <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  failure_policy <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"count_as_nondetect"</span>, <span class="st">"exclude"</span><span class="op">)</span>,</span>
 <span>  keep <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"minimal"</span>, <span class="st">"fits"</span>, <span class="st">"data"</span><span class="op">)</span>,</span>
-<span>  conf_level <span class="op">=</span> <span class="fl">0.95</span></span>
+<span>  conf_level <span class="op">=</span> <span class="fl">0.95</span>,</span>
+<span>  aggregate <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"full"</span>, <span class="st">"streaming"</span><span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -120,6 +127,12 @@ the scenario's test decision rule (typically p &lt; alpha).</p>
 
 <dt id="arg-conf-level">conf_level<a class="anchor" aria-label="anchor" href="#arg-conf-level"></a></dt>
 <dd><p>Confidence level for the Wald interval (default 0.95).</p></dd>
+
+
+<dt id="arg-aggregate">aggregate<a class="anchor" aria-label="anchor" href="#arg-aggregate"></a></dt>
+<dd><p><code>"full"</code> (default) stores every replicate in <code>sims</code>. <code>"streaming"</code>
+accumulates counts only (lower memory); requires <code>keep = "minimal"</code> and returns
+an empty <code>sims</code> data frame with the same column names as the full run.</p></dd>
 
 </dl></div>
     <div id="value">
