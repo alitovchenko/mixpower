@@ -33,7 +33,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">mixpower</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.0</span>
       </span>
     </div>
 
@@ -183,7 +183,7 @@
 <span><span class="va">a</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/mp_assumptions.html">mp_assumptions</a></span><span class="op">(</span></span>
 <span>  fixed_effects <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>`(Intercept)` <span class="op">=</span> <span class="fl">0</span>, condition <span class="op">=</span> <span class="fl">0.4</span><span class="op">)</span>,</span>
 <span>  residual_sd <span class="op">=</span> <span class="fl">1</span>,</span>
-<span>  icc <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>subject <span class="op">=</span> <span class="fl">0.1</span><span class="op">)</span></span>
+<span>  random_effects <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>subject <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>intercept_sd <span class="op">=</span> <span class="fl">0.1</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">scn_wald</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/mp_scenario_lme4.html">mp_scenario_lme4</a></span><span class="op">(</span></span>
@@ -211,7 +211,7 @@
 <span><span class="va">a</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/mp_assumptions.html">mp_assumptions</a></span><span class="op">(</span></span>
 <span>  fixed_effects <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>`(Intercept)` <span class="op">=</span> <span class="fl">0</span>, condition <span class="op">=</span> <span class="fl">0.4</span><span class="op">)</span>,</span>
 <span>  residual_sd <span class="op">=</span> <span class="fl">1</span>,</span>
-<span>  icc <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>subject <span class="op">=</span> <span class="fl">0.1</span><span class="op">)</span></span>
+<span>  random_effects <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>subject <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>intercept_sd <span class="op">=</span> <span class="fl">0.1</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">scn_wald</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/mp_scenario_lme4.html">mp_scenario_lme4</a></span><span class="op">(</span></span>
@@ -288,7 +288,7 @@
 <span><span class="va">a</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/mp_assumptions.html">mp_assumptions</a></span><span class="op">(</span></span>
 <span>  fixed_effects <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>`(Intercept)` <span class="op">=</span> <span class="fl">0</span>, condition <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span>,</span>
 <span>  residual_sd <span class="op">=</span> <span class="fl">1</span>,</span>
-<span>  icc <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>subject <span class="op">=</span> <span class="fl">0.4</span><span class="op">)</span></span>
+<span>  random_effects <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>subject <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>intercept_sd <span class="op">=</span> <span class="fl">0.4</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">scn_bin</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/mp_scenario_lme4_binomial.html">mp_scenario_lme4_binomial</a></span><span class="op">(</span></span>
@@ -309,7 +309,7 @@
 <span><span class="va">a</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/mp_assumptions.html">mp_assumptions</a></span><span class="op">(</span></span>
 <span>  fixed_effects <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>`(Intercept)` <span class="op">=</span> <span class="fl">0</span>, condition <span class="op">=</span> <span class="fl">0.4</span><span class="op">)</span>,</span>
 <span>  residual_sd <span class="op">=</span> <span class="fl">1</span>,</span>
-<span>  icc <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>subject <span class="op">=</span> <span class="fl">0.3</span><span class="op">)</span></span>
+<span>  random_effects <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>subject <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>intercept_sd <span class="op">=</span> <span class="fl">0.3</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Count outcome (Poisson GLMM)</span></span>
@@ -338,7 +338,7 @@
 <span><span class="va">a</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/mp_assumptions.html">mp_assumptions</a></span><span class="op">(</span></span>
 <span>  fixed_effects <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>`(Intercept)` <span class="op">=</span> <span class="fl">0</span>, condition <span class="op">=</span> <span class="fl">0.4</span><span class="op">)</span>,</span>
 <span>  residual_sd <span class="op">=</span> <span class="fl">1</span>,</span>
-<span>  icc <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>subject <span class="op">=</span> <span class="fl">0.3</span><span class="op">)</span></span>
+<span>  random_effects <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>subject <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>intercept_sd <span class="op">=</span> <span class="fl">0.3</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">scn_pois</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/mp_scenario_lme4_poisson.html">mp_scenario_lme4_poisson</a></span><span class="op">(</span></span>
@@ -359,7 +359,7 @@
 <span><span class="va">a</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/mp_assumptions.html">mp_assumptions</a></span><span class="op">(</span></span>
 <span>  fixed_effects <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>`(Intercept)` <span class="op">=</span> <span class="fl">0</span>, condition <span class="op">=</span> <span class="fl">0.4</span><span class="op">)</span>,</span>
 <span>  residual_sd <span class="op">=</span> <span class="fl">1</span>,</span>
-<span>  icc <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>subject <span class="op">=</span> <span class="fl">0.3</span><span class="op">)</span></span>
+<span>  random_effects <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>subject <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>intercept_sd <span class="op">=</span> <span class="fl">0.3</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span><span class="va">a</span><span class="op">$</span><span class="va">theta</span> <span class="op">&lt;-</span> <span class="fl">1.5</span></span>
 <span></span>

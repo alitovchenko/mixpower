@@ -20,7 +20,7 @@ mp_power() via ... (e.g. failure_policy, conf_level, keep)."><!-- mathjax --><sc
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">mixpower</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.0</span>
       </span>
     </div>
 
@@ -93,6 +93,7 @@ random intercept. All arguments are explicit; pass further options to
 <span>  <span class="va">nsim</span>,</span>
 <span>  alpha <span class="op">=</span> <span class="fl">0.05</span>,</span>
 <span>  seed <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  random_effects <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  icc <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  test_method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"wald"</span>, <span class="st">"lrt"</span><span class="op">)</span>,</span>
 <span>  null_formula <span class="op">=</span> <span class="cn">NULL</span>,</span>
@@ -141,8 +142,14 @@ Include intercept as <code>(Intercept)</code> if needed.</p></dd>
 <dd><p>Optional seed for reproducibility.</p></dd>
 
 
+<dt id="arg-random-effects">random_effects<a class="anchor" aria-label="anchor" href="#arg-random-effects"></a></dt>
+<dd><p>Optional named list of random-effect sizes, e.g.
+<code>list(subject = list(intercept_sd = 0.5))</code>. See <code><a href="mp_assumptions.html">mp_assumptions()</a></code>.</p></dd>
+
+
 <dt id="arg-icc">icc<a class="anchor" aria-label="anchor" href="#arg-icc"></a></dt>
-<dd><p>Optional named list of ICCs (e.g. <code>list(subject = 0.1)</code>).</p></dd>
+<dd><p>Deprecated; interpreted as a random-intercept SD. Use
+<code>random_effects</code>.</p></dd>
 
 
 <dt id="arg-test-method">test_method<a class="anchor" aria-label="anchor" href="#arg-test-method"></a></dt>
