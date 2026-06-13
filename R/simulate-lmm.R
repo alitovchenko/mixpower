@@ -9,7 +9,7 @@ simulate_lmm_data <- function(scenario,
                               predictor = "condition",
                               subject = "subject",
                               item = NULL,
-                              re_subject_intercept_sd = 1,
+                              re_subject_intercept_sd = NULL,
                               re_item_intercept_sd = NULL) {
   .assert_class(scenario, "mp_scenario", "scenario")
 
@@ -62,12 +62,19 @@ simulate_lmm_data <- function(scenario,
     dat[[item]] <- base::sample(seq_len(n_item), size = N, replace = TRUE)
   }
 
+  # Random intercept SDs: explicit argument overrides assumptions; otherwise
+  # read from the canonical random-effects spec (or legacy icc), defaulting to
+  # 1 when unspecified so a `(1 | group)` term is not degenerate.
+  sd_subject <- `%||%`(re_subject_intercept_sd, .mp_re_intercept_sd(asm, subject, default = 1))
+  .assert_is_nonneg_num(sd_subject, "subject intercept SD")
+
   # Random intercepts
-  b_subject <- stats::rnorm(n_subject, mean = 0, sd = re_subject_intercept_sd)
+  b_subject <- stats::rnorm(n_subject, mean = 0, sd = sd_subject)
   eta <- beta * dat[[predictor]] + b_subject[dat[[subject]]]
 
   if (!is.null(item)) {
-    sd_item <- if (is.null(re_item_intercept_sd)) 1 else re_item_intercept_sd
+    sd_item <- `%||%`(re_item_intercept_sd, .mp_re_intercept_sd(asm, item, default = 1))
+    .assert_is_nonneg_num(sd_item, "item intercept SD")
     b_item <- stats::rnorm(n_item, mean = 0, sd = sd_item)
     eta <- eta + b_item[dat[[item]]]
   }

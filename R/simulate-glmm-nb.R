@@ -29,8 +29,9 @@ simulate_glmm_nb_data <- function(scenario,
   beta0 <- `%||%`(assumptions$fixed_effects[["(Intercept)"]], 0)
   beta1 <- `%||%`(assumptions$fixed_effects[[predictor]], 0)
 
-  re_subject <- if (!is.null(assumptions$icc$subject)) {
-    stats::rnorm(n_subjects, mean = 0, sd = assumptions$icc$subject)
+  sd_subject <- .mp_re_intercept_sd(assumptions, subject, default = 0)
+  re_subject <- if (sd_subject > 0) {
+    stats::rnorm(n_subjects, mean = 0, sd = sd_subject)
   } else {
     rep(0, n_subjects)
   }
@@ -38,10 +39,11 @@ simulate_glmm_nb_data <- function(scenario,
   subject_id <- rep(seq_len(n_subjects), each = n_trials)
   eta <- beta0 + beta1 * x + re_subject[subject_id]
 
-  if (!is.null(item) && !is.null(assumptions$icc$item)) {
+  sd_item <- if (!is.null(item)) .mp_re_intercept_sd(assumptions, item, default = 0) else 0
+  if (!is.null(item) && sd_item > 0) {
     n_items <- `%||%`(design$clusters$item, n_trials)
     item_id <- rep(seq_len(n_items), length.out = n)
-    re_item <- stats::rnorm(n_items, mean = 0, sd = assumptions$icc$item)
+    re_item <- stats::rnorm(n_items, mean = 0, sd = sd_item)
     eta <- eta + re_item[item_id]
   } else {
     item_id <- NULL

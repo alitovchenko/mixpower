@@ -1,21 +1,34 @@
 #' Create modeling assumptions for simulation-based power
 #'
-#' Assumptions encode effect sizes and nuisance parameters. Values may be scalars
-#' or vectors (for later sensitivity workflows), but `mp_power()` expects scalars
-#' unless used inside a grid wrapper.
+#' Assumptions encode effect sizes and the variance components used to simulate
+#' data. Random-effect sizes are given as standard deviations on the linear
+#' predictor (the scale lme4 reports), via `random_effects`.
 #'
-#' @param fixed_effects Named list of numeric values (e.g., `list(condition = 0.4)`).
-#' @param icc Optional named list of ICC values in [0, 1).
-#' @param residual_sd Optional non-negative numeric residual SD.
+#' @param fixed_effects Named list of numeric values (e.g.,
+#'   `list("(Intercept)" = 0, condition = 0.4)`).
+#' @param random_effects Optional named list keyed by grouping factor. Each
+#'   element is a named list with `intercept_sd`, the standard deviation of that
+#'   factor's random intercepts (a non-negative number on the linear-predictor
+#'   scale), e.g. `list(subject = list(intercept_sd = 0.5))`.
+#' @param icc Deprecated. Previously documented as an intraclass correlation
+#'   but used as a random-intercept SD. If supplied it is interpreted as
+#'   `intercept_sd` and folded into `random_effects` with a warning. Use
+#'   `random_effects` instead.
+#' @param residual_sd Optional non-negative numeric residual SD (Gaussian).
 #' @param notes Optional free text.
 #'
 #' @return An object of class `mp_assumptions`.
 #' @export
 #'
 #' @examples
-#' a <- mp_assumptions(fixed_effects = list(condition = 0.4), residual_sd = 1)
+#' a <- mp_assumptions(
+#'   fixed_effects = list("(Intercept)" = 0, condition = 0.4),
+#'   random_effects = list(subject = list(intercept_sd = 0.5)),
+#'   residual_sd = 1
+#' )
 #' a
 mp_assumptions <- function(fixed_effects,
+                           random_effects = NULL,
                            icc = NULL,
                            residual_sd = NULL,
                            notes = NULL) {
@@ -27,14 +40,18 @@ mp_assumptions <- function(fixed_effects,
     }
   }
 
+  .mp_validate_random_effects(random_effects)
+
+  # Legacy `icc` is interpreted as a random-intercept SD and folded in.
   if (!is.null(icc)) {
     .assert_named_list(icc, "icc")
     for (nm in names(icc)) {
       v <- icc[[nm]]
-      if (!is.numeric(v) || length(v) != 1 || is.na(v) || v < 0 || v >= 1) {
-        .stop(sprintf("`icc$%s` must be a single number in [0, 1).", nm))
+      if (!is.numeric(v) || length(v) != 1 || is.na(v) || v < 0) {
+        .stop(sprintf("`icc$%s` must be a single non-negative number.", nm))
       }
     }
+    random_effects <- .mp_absorb_icc(random_effects, icc)
   }
 
   if (!is.null(residual_sd)) .assert_is_nonneg_num(residual_sd, "residual_sd")
@@ -45,6 +62,8 @@ mp_assumptions <- function(fixed_effects,
 
   out <- list(
     fixed_effects = fixed_effects,
+    random_effects = random_effects,
+    # Legacy echo kept for back-compat with code reading `$icc` directly.
     icc = icc,
     residual_sd = residual_sd,
     notes = notes
@@ -65,9 +84,11 @@ print.mp_assumptions <- function(x, ...) {
       cat(sprintf("    - %s: [%s]\n", nm, paste(v, collapse = ", ")))
     }
   }
-  if (!is.null(x$icc)) {
-    cat("  icc:\n")
-    for (nm in names(x$icc)) cat(sprintf("    - %s: %g\n", nm, x$icc[[nm]]))
+  if (!is.null(x$random_effects)) {
+    cat("  random_effects (SD on linear predictor):\n")
+    for (nm in names(x$random_effects)) {
+      cat(sprintf("    - %s: intercept_sd = %g\n", nm, x$random_effects[[nm]]$intercept_sd))
+    }
   }
   if (!is.null(x$residual_sd)) cat(sprintf("  residual_sd: %g\n", x$residual_sd))
   if (!is.null(x$notes)) cat(sprintf("  notes: %s\n", x$notes))

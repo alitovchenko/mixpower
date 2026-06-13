@@ -36,8 +36,7 @@ as_tibble.mp_power_curve <- function(x, ...) {
 #' [plot.mp_sensitivity()] / [plot.mp_power_curve()].
 #'
 #' @param object An `mp_sensitivity` or `mp_power_curve` object.
-#' @param mapping,... Unused; reserved for consistency with ggplot2 generics.
-#' @param environment Unused.
+#' @param ... Unused; reserved for consistency with ggplot2 generics.
 #' @param y For sensitivity/curve objects: same as `plot()` — `"estimate"`,
 #'   `"failure_rate"`, `"singular_rate"`, or `"n_effective"`.
 #' @return A \pkg{ggplot2} object.

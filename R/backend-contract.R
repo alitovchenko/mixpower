@@ -14,7 +14,7 @@
 #' backends can also be plain lists with those three names; `validate_mp_backend()`
 #' checks the contract without requiring the class.
 #'
-#' @param simulate_fun,data.frame-generating simulator (see Details).
+#' @param simulate_fun A data.frame-generating simulator (see Details).
 #' @param fit_fun Model fitter (see Details).
 #' @param test_fun Extracts a scalar p-value (see Details).
 #' @param name Short label for printing and manifests (default `"custom"`).

@@ -5,7 +5,7 @@ test_that("binomial backend handles extreme effects without crashing", {
   a <- mp_assumptions(
     fixed_effects = list(`(Intercept)` = 0, condition = 5),
     residual_sd = 1,
-    icc = list(subject = 0.1)
+    random_effects = list(subject = list(intercept_sd = 0.1))
   )
 
   scn <- mp_scenario_lme4_binomial(
@@ -27,7 +27,7 @@ test_that("binomial LRT returns NA rather than crashing on irregular LRT output"
   a <- mp_assumptions(
     fixed_effects = list(`(Intercept)` = 0, condition = 4),
     residual_sd = 1,
-    icc = list(subject = 0.1)
+    random_effects = list(subject = list(intercept_sd = 0.1))
   )
 
   scn <- mp_scenario_lme4_binomial(

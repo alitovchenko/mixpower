@@ -13,6 +13,7 @@ mp_quick_power(
   nsim,
   alpha = 0.05,
   seed = NULL,
+  random_effects = NULL,
   icc = NULL,
   test_method = c("wald", "lrt"),
   null_formula = NULL,
@@ -41,7 +42,11 @@ Include intercept as \code{(Intercept)} if needed.}
 
 \item{seed}{Optional seed for reproducibility.}
 
-\item{icc}{Optional named list of ICCs (e.g. \code{list(subject = 0.1)}).}
+\item{random_effects}{Optional named list of random-effect sizes, e.g.
+\code{list(subject = list(intercept_sd = 0.5))}. See \code{\link[=mp_assumptions]{mp_assumptions()}}.}
+
+\item{icc}{Deprecated; interpreted as a random-intercept SD. Use
+\code{random_effects}.}
 
 \item{test_method}{\code{"wald"} (default) or \code{"lrt"}.}
 

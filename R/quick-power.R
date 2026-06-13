@@ -14,7 +14,10 @@
 #' @param nsim Number of simulations.
 #' @param alpha Significance level (default 0.05).
 #' @param seed Optional seed for reproducibility.
-#' @param icc Optional named list of ICCs (e.g. `list(subject = 0.1)`).
+#' @param random_effects Optional named list of random-effect sizes, e.g.
+#'   `list(subject = list(intercept_sd = 0.5))`. See [mp_assumptions()].
+#' @param icc Deprecated; interpreted as a random-intercept SD. Use
+#'   `random_effects`.
 #' @param test_method `"wald"` (default) or `"lrt"`.
 #' @param null_formula Required when `test_method = "lrt"` (e.g. `y ~ 1 + (1 | subject)`).
 #' @param predictor Predictor column name (default `"condition"`).
@@ -42,6 +45,7 @@ mp_quick_power <- function(formula,
                            nsim,
                            alpha = 0.05,
                            seed = NULL,
+                           random_effects = NULL,
                            icc = NULL,
                            test_method = c("wald", "lrt"),
                            null_formula = NULL,
@@ -55,6 +59,7 @@ mp_quick_power <- function(formula,
   design <- mp_design(clusters = clusters, trials_per_cell = trials_per_cell)
   assumptions <- mp_assumptions(
     fixed_effects = fixed_effects,
+    random_effects = random_effects,
     residual_sd = residual_sd,
     icc = icc
   )

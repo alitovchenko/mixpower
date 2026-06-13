@@ -10,13 +10,20 @@ mp_validate_variation_key <- function(key) {
   }
 
   root <- path[[1]]
-  allowed_roots <- c("fixed_effects", "residual_sd", "icc", "clusters", "trials_per_cell")
+  allowed_roots <- c("fixed_effects", "random_effects", "residual_sd", "icc",
+                     "clusters", "trials_per_cell")
   if (!root %in% allowed_roots) {
     stop("Unsupported variation key: ", key, call. = FALSE)
   }
 
   if (root %in% c("fixed_effects", "icc", "clusters") && length(path) < 2L) {
     stop("`", root, "` keys must include a subfield, e.g. `", root, ".name`.", call. = FALSE)
+  }
+
+  if (root == "random_effects" &&
+      (length(path) != 3L || !identical(path[[3]], "intercept_sd"))) {
+    stop("`random_effects` keys must be of the form ",
+         "`random_effects.<group>.intercept_sd`.", call. = FALSE)
   }
 
   if (root %in% c("residual_sd", "trials_per_cell") && length(path) != 1L) {
@@ -75,7 +82,7 @@ mp_apply_variation <- function(scenario, key, value) {
   path <- strsplit(key, "\\.", fixed = FALSE)[[1]]
   root <- path[[1]]
 
-  if (root %in% c("fixed_effects", "icc")) {
+  if (root %in% c("fixed_effects", "random_effects", "icc")) {
     scenario$assumptions <- mp_set_nested_value(scenario$assumptions, path, value)
     return(scenario)
   }

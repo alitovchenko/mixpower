@@ -15,7 +15,7 @@ mp_backend(
 )
 }
 \arguments{
-\item{simulate_fun, data.frame-generating}{simulator (see Details).}
+\item{simulate_fun}{A data.frame-generating simulator (see Details).}
 
 \item{fit_fun}{Model fitter (see Details).}
 

@@ -5,7 +5,7 @@ test_that("binomial lme4 backend runs end-to-end", {
   a <- mp_assumptions(
     fixed_effects = list(`(Intercept)` = 0, condition = 0.6),
     residual_sd = 1,
-    icc = list(subject = 0.4)
+    random_effects = list(subject = list(intercept_sd = 0.4))
   )
 
   scn <- mp_scenario_lme4_binomial(

@@ -5,7 +5,7 @@ test_that("lme4 backend supports Wald and LRT methods", {
   a <- mp_assumptions(
     fixed_effects = list(`(Intercept)` = 0, condition = 0.4),
     residual_sd = 1,
-    icc = list(subject = 0.1)
+    random_effects = list(subject = list(intercept_sd = 0.1))
   )
 
   scn_wald <- mp_scenario_lme4(

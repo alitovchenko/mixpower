@@ -18,6 +18,7 @@ test_that("mp_scenario_glmmtmb_lmm runs mp_power without error", {
 
 test_that("glmmTMB and lme4 Gaussian give similar power on same seed (rough)", {
   skip_if_not_installed("glmmTMB")
+  skip_if_not(glmmtmb_tmb_ok(), "glmmTMB built against a different TMB ABI; fits unreliable")
 
   d <- mp_design(clusters = list(subject = 25), trials_per_cell = 3)
   a <- mp_assumptions(

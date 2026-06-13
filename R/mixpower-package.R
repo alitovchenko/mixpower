@@ -86,3 +86,7 @@
 #' @name mixpower-package
 #' @aliases mixpower
 "_PACKAGE"
+
+# `.data` is the rlang/ggplot2 pronoun used inside autoplot() tidy-eval; declare
+# it so R CMD check does not flag it as an undefined global.
+utils::globalVariables(".data")

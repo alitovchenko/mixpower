@@ -5,7 +5,7 @@ test_that("negative binomial backend runs end-to-end", {
   a <- mp_assumptions(
     fixed_effects = list(`(Intercept)` = 0, condition = 0.4),
     residual_sd = 1,
-    icc = list(subject = 0.3)
+    random_effects = list(subject = list(intercept_sd = 0.3))
   )
   a$theta <- 1.5
 

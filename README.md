@@ -78,7 +78,7 @@ d <- mp_design(clusters = list(subject = 40), trials_per_cell = 8)
 a <- mp_assumptions(
   fixed_effects = list(`(Intercept)` = 0, condition = 0.4),
   residual_sd = 1,
-  icc = list(subject = 0.1)
+  random_effects = list(subject = list(intercept_sd = 0.1))
 )
 
 scn_wald <- mp_scenario_lme4(
@@ -106,7 +106,7 @@ d <- mp_design(clusters = list(subject = 40), trials_per_cell = 8)
 a <- mp_assumptions(
   fixed_effects = list(`(Intercept)` = 0, condition = 0.4),
   residual_sd = 1,
-  icc = list(subject = 0.1)
+  random_effects = list(subject = list(intercept_sd = 0.1))
 )
 
 scn_wald <- mp_scenario_lme4(
@@ -183,7 +183,7 @@ d <- mp_design(clusters = list(subject = 40), trials_per_cell = 8)
 a <- mp_assumptions(
   fixed_effects = list(`(Intercept)` = 0, condition = 0.5),
   residual_sd = 1,
-  icc = list(subject = 0.4)
+  random_effects = list(subject = list(intercept_sd = 0.4))
 )
 
 scn_bin <- mp_scenario_lme4_binomial(
@@ -204,7 +204,7 @@ d <- mp_design(clusters = list(subject = 40), trials_per_cell = 8)
 a <- mp_assumptions(
   fixed_effects = list(`(Intercept)` = 0, condition = 0.4),
   residual_sd = 1,
-  icc = list(subject = 0.3)
+  random_effects = list(subject = list(intercept_sd = 0.3))
 )
 
 # Count outcome (Poisson GLMM)
@@ -233,7 +233,7 @@ d <- mp_design(clusters = list(subject = 40), trials_per_cell = 8)
 a <- mp_assumptions(
   fixed_effects = list(`(Intercept)` = 0, condition = 0.4),
   residual_sd = 1,
-  icc = list(subject = 0.3)
+  random_effects = list(subject = list(intercept_sd = 0.3))
 )
 
 scn_pois <- mp_scenario_lme4_poisson(
@@ -254,7 +254,7 @@ d <- mp_design(clusters = list(subject = 40), trials_per_cell = 8)
 a <- mp_assumptions(
   fixed_effects = list(`(Intercept)` = 0, condition = 0.4),
   residual_sd = 1,
-  icc = list(subject = 0.3)
+  random_effects = list(subject = list(intercept_sd = 0.3))
 )
 a$theta <- 1.5
 

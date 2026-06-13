@@ -13,12 +13,10 @@
 \arguments{
 \item{object}{An \code{mp_sensitivity} or \code{mp_power_curve} object.}
 
+\item{...}{Unused; reserved for consistency with ggplot2 generics.}
+
 \item{y}{For sensitivity/curve objects: same as \code{plot()} — \code{"estimate"},
 \code{"failure_rate"}, \code{"singular_rate"}, or \code{"n_effective"}.}
-
-\item{mapping, ...}{Unused; reserved for consistency with ggplot2 generics.}
-
-\item{environment}{Unused.}
 }
 \value{
 A \pkg{ggplot2} object.
