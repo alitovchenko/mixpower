@@ -32,7 +32,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">mixpower</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.3.0</span>
       </span>
     </div>
 
@@ -213,9 +213,6 @@ transparent.</p>
 <span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
 <span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
 <span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
 <span></span>
 <span><span class="va">sens_lrt</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/mp_sensitivity.html">mp_sensitivity</a></span><span class="op">(</span></span>
 <span>  <span class="va">scn_lrt</span>,</span>
@@ -223,9 +220,6 @@ transparent.</p>
 <span>  nsim <span class="op">=</span> <span class="fl">50</span>,</span>
 <span>  seed <span class="op">=</span> <span class="fl">123</span></span>
 <span><span class="op">)</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
 <span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
 <span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
 <span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
@@ -296,20 +290,20 @@ transparent.</p>
 <span>  <span class="st">"method"</span>, <span class="st">"clusters.subject"</span>, <span class="st">"estimate"</span>, <span class="st">"mcse"</span>,</span>
 <span>  <span class="st">"conf_low"</span>, <span class="st">"conf_high"</span>, <span class="st">"failure_rate"</span>, <span class="st">"singular_rate"</span></span>
 <span><span class="op">)</span><span class="op">]</span></span>
-<span><span class="co">#&gt;   method clusters.subject estimate      mcse  conf_low conf_high failure_rate</span></span>
-<span><span class="co">#&gt; 1   wald               30     0.88 0.0459565 0.7899269 0.9700731            0</span></span>
-<span><span class="co">#&gt; 2   wald               50     1.00 0.0000000 1.0000000 1.0000000            0</span></span>
-<span><span class="co">#&gt; 3   wald               80     1.00 0.0000000 1.0000000 1.0000000            0</span></span>
-<span><span class="co">#&gt; 4    lrt               30     0.00 0.0000000 0.0000000 0.0000000            0</span></span>
-<span><span class="co">#&gt; 5    lrt               50     0.00 0.0000000 0.0000000 0.0000000            0</span></span>
-<span><span class="co">#&gt; 6    lrt               80     0.00 0.0000000 0.0000000 0.0000000            0</span></span>
+<span><span class="co">#&gt;   method clusters.subject estimate       mcse  conf_low conf_high failure_rate</span></span>
+<span><span class="co">#&gt; 1   wald               30     0.78 0.05858327 0.6651789 0.8948211            0</span></span>
+<span><span class="co">#&gt; 2   wald               50     0.98 0.01979899 0.9411947 1.0000000            0</span></span>
+<span><span class="co">#&gt; 3   wald               80     1.00 0.00000000 1.0000000 1.0000000            0</span></span>
+<span><span class="co">#&gt; 4    lrt               30     0.00 0.00000000 0.0000000 0.0000000            0</span></span>
+<span><span class="co">#&gt; 5    lrt               50     0.00 0.00000000 0.0000000 0.0000000            0</span></span>
+<span><span class="co">#&gt; 6    lrt               80     0.00 0.00000000 0.0000000 0.0000000            0</span></span>
 <span><span class="co">#&gt;   singular_rate</span></span>
-<span><span class="co">#&gt; 1          0.46</span></span>
-<span><span class="co">#&gt; 2          0.54</span></span>
-<span><span class="co">#&gt; 3          0.26</span></span>
-<span><span class="co">#&gt; 4          0.46</span></span>
-<span><span class="co">#&gt; 5          0.54</span></span>
-<span><span class="co">#&gt; 6          0.26</span></span>
+<span><span class="co">#&gt; 1          0.38</span></span>
+<span><span class="co">#&gt; 2          0.48</span></span>
+<span><span class="co">#&gt; 3          0.34</span></span>
+<span><span class="co">#&gt; 4          0.38</span></span>
+<span><span class="co">#&gt; 5          0.48</span></span>
+<span><span class="co">#&gt; 6          0.34</span></span>
 <span></span>
 <span><span class="va">wald_dat</span> <span class="op">&lt;-</span> <span class="va">comparison</span><span class="op">[</span><span class="va">comparison</span><span class="op">$</span><span class="va">method</span> <span class="op">==</span> <span class="st">"wald"</span>, <span class="op">]</span></span>
 <span><span class="va">lrt_dat</span>  <span class="op">&lt;-</span> <span class="va">comparison</span><span class="op">[</span><span class="va">comparison</span><span class="op">$</span><span class="va">method</span> <span class="op">==</span> <span class="st">"lrt"</span>, <span class="op">]</span></span>

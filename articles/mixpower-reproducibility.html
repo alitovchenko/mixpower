@@ -32,7 +32,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">mixpower</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.3.0</span>
       </span>
     </div>
 
@@ -139,19 +139,15 @@ repo.</p>
 <span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
 <span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
 <span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
 <span><span class="va">manifest</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/mp_manifest.html">mp_manifest</a></span><span class="op">(</span><span class="va">scn</span>, seed <span class="op">=</span> <span class="va">seed</span>, session <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span><span class="va">manifest</span></span>
 <span><span class="co">#&gt; &lt;mp_manifest&gt;</span></span>
 <span><span class="co">#&gt;   scenario_digest: 9b663cd7e54e2ee4 ...</span></span>
 <span><span class="co">#&gt;   seed:123 (fixed)</span></span>
-<span><span class="co">#&gt;   timestamp: 2026-06-15 21:05:06 UTC </span></span>
+<span><span class="co">#&gt;   timestamp: 2026-06-15 22:50:07 UTC </span></span>
 <span><span class="co">#&gt;   r_version: 4.6.0 </span></span>
-<span><span class="co">#&gt;   mixpower_version: 0.2.0 </span></span>
-<span><span class="co">#&gt;   git_sha: 3a943e7</span></span></code></pre></div>
+<span><span class="co">#&gt;   mixpower_version: 0.3.0 </span></span>
+<span><span class="co">#&gt;   git_sha: c65ce94</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="bundle-results-and-export">Bundle results and export<a class="anchor" aria-label="anchor" href="#bundle-results-and-export"></a>
@@ -175,15 +171,15 @@ and labels) to disk.</p>
 <span><span class="co">#&gt; &lt;mp_manifest&gt;</span></span>
 <span><span class="co">#&gt;   scenario_digest: 9b663cd7e54e2ee4 ...</span></span>
 <span><span class="co">#&gt;   seed:123 (fixed)</span></span>
-<span><span class="co">#&gt;   timestamp: 2026-06-15 21:05:06 UTC </span></span>
+<span><span class="co">#&gt;   timestamp: 2026-06-15 22:50:07 UTC </span></span>
 <span><span class="co">#&gt;   r_version: 4.6.0 </span></span>
-<span><span class="co">#&gt;   mixpower_version: 0.2.0 </span></span>
-<span><span class="co">#&gt;   git_sha: 3a943e7</span></span></code></pre></div>
+<span><span class="co">#&gt;   mixpower_version: 0.3.0 </span></span>
+<span><span class="co">#&gt;   git_sha: c65ce94</span></span></code></pre></div>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">tab</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/mp_report_table.html">mp_report_table</a></span><span class="op">(</span><span class="va">bundle</span><span class="op">)</span></span>
 <span><span class="va">tab</span></span>
 <span><span class="co">#&gt;   power_estimate    ci_low   ci_high failure_rate singular_rate n_effective</span></span>
-<span><span class="co">#&gt; 1            0.5 0.2808694 0.7191306            0          0.55          20</span></span>
+<span><span class="co">#&gt; 1           0.35 0.1409627 0.5590373            0          0.35          20</span></span>
 <span><span class="co">#&gt;   nsim</span></span>
 <span><span class="co">#&gt; 1   20</span></span></code></pre></div>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
@@ -219,10 +215,6 @@ matches.</p>
 <span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
 <span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
 <span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/all.equal.html" class="external-link">all.equal</a></span><span class="op">(</span><span class="va">res</span><span class="op">$</span><span class="va">power</span>, <span class="va">res2</span><span class="op">$</span><span class="va">power</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] TRUE</span></span></code></pre></div>
 </div>
@@ -248,9 +240,9 @@ to a log) by building it from the list, omitting the long
 <span><span class="co">#&gt;                                                    scenario_digest seed</span></span>
 <span><span class="co">#&gt; 1 9b663cd7e54e2ee4cef1c3f2b63b4796a86f4f365916fd35865354e676268028  123</span></span>
 <span><span class="co">#&gt;   seed_strategy               timestamp r_version mixpower_version</span></span>
-<span><span class="co">#&gt; 1         fixed 2026-06-15 21:05:06 UTC     4.6.0            0.2.0</span></span>
+<span><span class="co">#&gt; 1         fixed 2026-06-15 22:50:07 UTC     4.6.0            0.3.0</span></span>
 <span><span class="co">#&gt;                                    git_sha</span></span>
-<span><span class="co">#&gt; 1 3a943e7083a664c32a773ce0770256fef2704724</span></span></code></pre></div>
+<span><span class="co">#&gt; 1 c65ce94e10eee387d9bace9b8e39dd80ff265b9a</span></span></code></pre></div>
 </div>
   </div>
 

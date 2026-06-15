@@ -19,7 +19,7 @@ predictor (the scale lme4 reports), via random_effects."><!-- mathjax --><script
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">mixpower</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.3.0</span>
       </span>
     </div>
 
@@ -102,9 +102,12 @@ predictor (the scale lme4 reports), via <code>random_effects</code>.</p>
 
 <dt id="arg-random-effects">random_effects<a class="anchor" aria-label="anchor" href="#arg-random-effects"></a></dt>
 <dd><p>Optional named list keyed by grouping factor. Each
-element is a named list with <code>intercept_sd</code>, the standard deviation of that
-factor's random intercepts (a non-negative number on the linear-predictor
-scale), e.g. <code>list(subject = list(intercept_sd = 0.5))</code>.</p></dd>
+element is a named list with <code>intercept_sd</code> (the random-intercept SD on the
+linear-predictor scale) and, optionally, <code>slopes</code> (a one-element named list
+giving the random-slope SD for a predictor) and <code>cor</code> (the intercept-slope
+correlation in <code>[-1, 1]</code>). For example,
+<code>list(subject = list(intercept_sd = 0.5, slopes = list(condition = 0.3), cor = 0.2))</code>
+encodes a correlated random intercept and slope, i.e. <code>(1 + condition | subject)</code>.</p></dd>
 
 
 <dt id="arg-icc">icc<a class="anchor" aria-label="anchor" href="#arg-icc"></a></dt>
@@ -140,7 +143,7 @@ but used as a random-intercept SD. If supplied it is interpreted as
 <span class="r-out co"><span class="r-pr">#&gt;</span>     - (Intercept): 0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     - condition: 0.4</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   random_effects (SD on linear predictor):</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     - subject: intercept_sd = 0.5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     - subject: intercept_sd = 0.5 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   residual_sd: 1</span>
 </code></pre></div>
     </div>
