@@ -7,9 +7,12 @@
 #' @param fixed_effects Named list of numeric values (e.g.,
 #'   `list("(Intercept)" = 0, condition = 0.4)`).
 #' @param random_effects Optional named list keyed by grouping factor. Each
-#'   element is a named list with `intercept_sd`, the standard deviation of that
-#'   factor's random intercepts (a non-negative number on the linear-predictor
-#'   scale), e.g. `list(subject = list(intercept_sd = 0.5))`.
+#'   element is a named list with `intercept_sd` (the random-intercept SD on the
+#'   linear-predictor scale) and, optionally, `slopes` (a one-element named list
+#'   giving the random-slope SD for a predictor) and `cor` (the intercept-slope
+#'   correlation in `[-1, 1]`). For example,
+#'   `list(subject = list(intercept_sd = 0.5, slopes = list(condition = 0.3), cor = 0.2))`
+#'   encodes a correlated random intercept and slope, i.e. `(1 + condition | subject)`.
 #' @param icc Deprecated. Previously documented as an intraclass correlation
 #'   but used as a random-intercept SD. If supplied it is interpreted as
 #'   `intercept_sd` and folded into `random_effects` with a warning. Use
@@ -87,7 +90,16 @@ print.mp_assumptions <- function(x, ...) {
   if (!is.null(x$random_effects)) {
     cat("  random_effects (SD on linear predictor):\n")
     for (nm in names(x$random_effects)) {
-      cat(sprintf("    - %s: intercept_sd = %g\n", nm, x$random_effects[[nm]]$intercept_sd))
+      spec <- x$random_effects[[nm]]
+      line <- sprintf("    - %s: intercept_sd = %g", nm, spec$intercept_sd)
+      if (!is.null(spec$slopes) && length(spec$slopes) > 0) {
+        sl <- names(spec$slopes)[[1]]
+        line <- paste0(line, sprintf(", slope[%s]_sd = %g", sl, spec$slopes[[sl]]))
+      }
+      if (!is.null(spec$cor)) {
+        line <- paste0(line, sprintf(", cor = %g", spec$cor))
+      }
+      cat(line, "\n")
     }
   }
   if (!is.null(x$residual_sd)) cat(sprintf("  residual_sd: %g\n", x$residual_sd))

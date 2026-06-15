@@ -1,3 +1,24 @@
+# mixpower 0.3.0
+
+## Features
+
+- **Random slopes.** `random_effects` now accepts a random slope and an
+  intercept-slope correlation per grouping factor, e.g.
+  `random_effects = list(subject = list(intercept_sd = 0.5,
+  slopes = list(condition = 0.3), cor = 0.2))`, simulating `(1 + condition |
+  subject)`. This is essential for correctly-sized power: omitting a present
+  random slope inflates Type I error (Barr et al., 2013).
+
+## Internal
+
+- Unified data-generating engine. The Gaussian, binomial, Poisson, and
+  negative-binomial simulators now share a single formula-agnostic core
+  (`.mp_simulate_mixed`) that builds a balanced within-subject design, adds
+  fixed effects and correlated random effects (intercept + optional slope, via
+  a base-R Cholesky draw with no new dependency), and applies the family
+  response. The four `simulate_*` functions are thin wrappers, so random-effect
+  handling and slopes are defined once rather than duplicated per family.
+
 # mixpower 0.2.0
 
 ## Correctness

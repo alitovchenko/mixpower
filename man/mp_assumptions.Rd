@@ -17,9 +17,12 @@ mp_assumptions(
 \code{list("(Intercept)" = 0, condition = 0.4)}).}
 
 \item{random_effects}{Optional named list keyed by grouping factor. Each
-element is a named list with \code{intercept_sd}, the standard deviation of that
-factor's random intercepts (a non-negative number on the linear-predictor
-scale), e.g. \code{list(subject = list(intercept_sd = 0.5))}.}
+element is a named list with \code{intercept_sd} (the random-intercept SD on the
+linear-predictor scale) and, optionally, \code{slopes} (a one-element named list
+giving the random-slope SD for a predictor) and \code{cor} (the intercept-slope
+correlation in \verb{[-1, 1]}). For example,
+\code{list(subject = list(intercept_sd = 0.5, slopes = list(condition = 0.3), cor = 0.2))}
+encodes a correlated random intercept and slope, i.e. \code{(1 + condition | subject)}.}
 
 \item{icc}{Deprecated. Previously documented as an intraclass correlation
 but used as a random-intercept SD. If supplied it is interpreted as
