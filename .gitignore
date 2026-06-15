@@ -1,6 +1,7 @@
 .Rhistory
 .RData
 .Rproj.user
-.Rbuildignore
 .Rcheck/
 inst/doc/
+.cran_tmp/
+tests/testthat/Rplots.pdf

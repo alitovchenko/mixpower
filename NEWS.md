@@ -2,6 +2,11 @@
 
 ## Correctness
 
+- Fixed a severe defect where every lme4-family Wald test errored internally
+  (`base::diag()` on the S4 `dpoMatrix` from `vcov(merMod)`), so `mp_power()`
+  silently returned 0 for all lme4 Gaussian/binomial/Poisson/NB designs. The
+  standard error is now read from the fitted-model coefficient table. Power is
+  correct (≈1 at a strongly-powered design; ≈alpha under the null).
 - Fixed a defect where the Gaussian backends ignored the random-intercept SD:
   `mp_scenario_lme4()` / `mp_scenario_glmmtmb_lmm()` always simulated a subject
   SD of 1, so `mp_sensitivity()` / `mp_power_curve()` over a random-effect size

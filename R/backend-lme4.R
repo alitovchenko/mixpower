@@ -48,12 +48,7 @@ mp_backend_lme4 <- function(predictor = "condition",
     if (identical(method, "wald")) {
       term <- if (is.list(scenario$test)) scenario$test$term else NULL
       term <- `%||%`(term, predictor)
-
-      beta <- lme4::fixef(fit)[[term]]
-      se <- sqrt(diag(stats::vcov(fit)))[[term]]
-      z <- beta / se
-      p_val <- 2 * stats::pnorm(abs(z), lower.tail = FALSE)
-      return(list(p_value = as.numeric(p_val)))
+      return(list(p_value = .mp_wald_p_value(fit, term)))
     }
 
     if (identical(method, "lrt")) {

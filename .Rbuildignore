@@ -1,0 +1,10 @@
+^\.github$
+^docs$
+^cran-comments\.md$
+^CODE_OF_CONDUCT\.md$
+^SECURITY\.md$
+^CONTRIBUTING\.md$
+^LICENSE\.md$
+^\.gitkeep$
+^HANDOFF\.md$
+^\.cran_tmp$

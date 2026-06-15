@@ -16,19 +16,21 @@ test_that("mp_scenario_glmmtmb_lmm runs mp_power without error", {
   expect_true(res$power >= 0 && res$power <= 1 || is.na(res$power))
 })
 
-test_that("glmmTMB and lme4 Gaussian give similar power on same seed (rough)", {
+test_that("glmmTMB and lme4 Gaussian agree at a well-powered design", {
   skip_if_not_installed("glmmTMB")
   skip_if_not(glmmtmb_tmb_ok(), "glmmTMB built against a different TMB ABI; fits unreliable")
 
-  d <- mp_design(clusters = list(subject = 25), trials_per_cell = 3)
+  # Use a strongly-powered design so both engines sit near the power ceiling;
+  # this is stable to Monte Carlo noise and to minor cross-engine differences.
+  d <- mp_design(clusters = list(subject = 40), trials_per_cell = 8)
   a <- mp_assumptions(
-    fixed_effects = list(`(Intercept)` = 0, condition = 0.4),
+    fixed_effects = list(`(Intercept)` = 0, condition = 0.8),
     residual_sd = 1
   )
   f <- y ~ condition + (1 | subject)
-  sc_l <- mp_scenario_lme4(f, design = d, assumptions = a)
-  sc_t <- mp_scenario_glmmtmb_lmm(f, design = d, assumptions = a)
-  pl <- mp_power(sc_l, nsim = 60, seed = 100)
-  pt <- mp_power(sc_t, nsim = 60, seed = 100)
-  expect_true(abs(pl$power - pt$power) < 0.25)
+  pl <- mp_power(mp_scenario_lme4(f, design = d, assumptions = a), nsim = 40, seed = 100)
+  pt <- mp_power(mp_scenario_glmmtmb_lmm(f, design = d, assumptions = a), nsim = 40, seed = 100)
+  expect_gt(pl$power, 0.7)
+  expect_gt(pt$power, 0.7)
+  expect_lt(abs(pl$power - pt$power), 0.2)
 })

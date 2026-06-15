@@ -7,8 +7,7 @@ is_ci_fast <- function() identical(Sys.getenv("CI_FAST"), "true")
 # internal check is unavailable, errors, or emits the build-version warning) is
 # treated as NOT ok, so the fragile numeric test only runs on a known-good env.
 glmmtmb_tmb_ok <- function() {
-  if (!requireNamespace("glmmTMB", quietly = TRUE) ||
-      !requireNamespace("TMB", quietly = TRUE)) {
+  if (!requireNamespace("glmmTMB", quietly = TRUE)) {
     return(FALSE)
   }
   saw_warning <- FALSE
