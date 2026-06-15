@@ -296,13 +296,13 @@ transparent.</p>
 <span>  <span class="st">"method"</span>, <span class="st">"clusters.subject"</span>, <span class="st">"estimate"</span>, <span class="st">"mcse"</span>,</span>
 <span>  <span class="st">"conf_low"</span>, <span class="st">"conf_high"</span>, <span class="st">"failure_rate"</span>, <span class="st">"singular_rate"</span></span>
 <span><span class="op">)</span><span class="op">]</span></span>
-<span><span class="co">#&gt;   method clusters.subject estimate mcse conf_low conf_high failure_rate</span></span>
-<span><span class="co">#&gt; 1   wald               30        0    0        0         0            0</span></span>
-<span><span class="co">#&gt; 2   wald               50        0    0        0         0            0</span></span>
-<span><span class="co">#&gt; 3   wald               80        0    0        0         0            0</span></span>
-<span><span class="co">#&gt; 4    lrt               30        0    0        0         0            0</span></span>
-<span><span class="co">#&gt; 5    lrt               50        0    0        0         0            0</span></span>
-<span><span class="co">#&gt; 6    lrt               80        0    0        0         0            0</span></span>
+<span><span class="co">#&gt;   method clusters.subject estimate      mcse  conf_low conf_high failure_rate</span></span>
+<span><span class="co">#&gt; 1   wald               30     0.88 0.0459565 0.7899269 0.9700731            0</span></span>
+<span><span class="co">#&gt; 2   wald               50     1.00 0.0000000 1.0000000 1.0000000            0</span></span>
+<span><span class="co">#&gt; 3   wald               80     1.00 0.0000000 1.0000000 1.0000000            0</span></span>
+<span><span class="co">#&gt; 4    lrt               30     0.00 0.0000000 0.0000000 0.0000000            0</span></span>
+<span><span class="co">#&gt; 5    lrt               50     0.00 0.0000000 0.0000000 0.0000000            0</span></span>
+<span><span class="co">#&gt; 6    lrt               80     0.00 0.0000000 0.0000000 0.0000000            0</span></span>
 <span><span class="co">#&gt;   singular_rate</span></span>
 <span><span class="co">#&gt; 1          0.46</span></span>
 <span><span class="co">#&gt; 2          0.54</span></span>
@@ -381,13 +381,13 @@ p-values), preserving transparency.</p>
 <span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">res_bin</span><span class="op">)</span></span>
 <span><span class="co">#&gt; $power</span></span>
-<span><span class="co">#&gt; [1] 0</span></span>
+<span><span class="co">#&gt; [1] 0.62</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $mcse</span></span>
-<span><span class="co">#&gt; [1] 0</span></span>
+<span><span class="co">#&gt; [1] 0.06864401</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $ci</span></span>
-<span><span class="co">#&gt; [1] 0 0</span></span>
+<span><span class="co">#&gt; [1] 0.4854602 0.7545398</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $diagnostics</span></span>
 <span><span class="co">#&gt; $diagnostics$fail_rate</span></span>
@@ -441,10 +441,10 @@ p-values), preserving transparency.</p>
 <p><img src="mixpower-intro_files/figure-html/binomial-sensitivity-1.png" class="r-plt" alt="" width="700"></p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">sens_bin</span><span class="op">$</span><span class="va">results</span></span>
-<span><span class="co">#&gt;   fixed_effects.condition estimate mcse conf_low conf_high failure_rate</span></span>
-<span><span class="co">#&gt; 1                     0.2        0    0        0         0            0</span></span>
-<span><span class="co">#&gt; 2                     0.4        0    0        0         0            0</span></span>
-<span><span class="co">#&gt; 3                     0.6        0    0        0         0            0</span></span>
+<span><span class="co">#&gt;   fixed_effects.condition estimate       mcse   conf_low conf_high failure_rate</span></span>
+<span><span class="co">#&gt; 1                     0.2     0.16 0.05184593 0.05838385 0.2616161            0</span></span>
+<span><span class="co">#&gt; 2                     0.4     0.42 0.06979971 0.28319508 0.5568049            0</span></span>
+<span><span class="co">#&gt; 3                     0.6     0.84 0.05184593 0.73838385 0.9416161            0</span></span>
 <span><span class="co">#&gt;   singular_rate n_effective nsim</span></span>
 <span><span class="co">#&gt; 1          0.12          50   50</span></span>
 <span><span class="co">#&gt; 2          0.10          50   50</span></span>
@@ -477,13 +477,13 @@ over-dispersion.</p>
 <span><span class="va">res_pois</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/mp_power.html">mp_power</a></span><span class="op">(</span><span class="va">scn_pois</span>, nsim <span class="op">=</span> <span class="fl">50</span>, seed <span class="op">=</span> <span class="fl">123</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">res_pois</span><span class="op">)</span></span>
 <span><span class="co">#&gt; $power</span></span>
-<span><span class="co">#&gt; [1] 0</span></span>
+<span><span class="co">#&gt; [1] 0.96</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $mcse</span></span>
-<span><span class="co">#&gt; [1] 0</span></span>
+<span><span class="co">#&gt; [1] 0.02771281</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $ci</span></span>
-<span><span class="co">#&gt; [1] 0 0</span></span>
+<span><span class="co">#&gt; [1] 0.9056839 1.0000000</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $diagnostics</span></span>
 <span><span class="co">#&gt; $diagnostics$fail_rate</span></span>
@@ -521,13 +521,13 @@ over-dispersion.</p>
 <span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">res_nb</span><span class="op">)</span></span>
 <span><span class="co">#&gt; $power</span></span>
-<span><span class="co">#&gt; [1] 0</span></span>
+<span><span class="co">#&gt; [1] 0.84</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $mcse</span></span>
-<span><span class="co">#&gt; [1] 0</span></span>
+<span><span class="co">#&gt; [1] 0.05184593</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $ci</span></span>
-<span><span class="co">#&gt; [1] 0 0</span></span>
+<span><span class="co">#&gt; [1] 0.7383839 0.9416161</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $diagnostics</span></span>
 <span><span class="co">#&gt; $diagnostics$fail_rate</span></span>
@@ -575,8 +575,10 @@ over-dispersion.</p>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">sens_pois</span><span class="op">)</span></span></code></pre></div>
 <p><img src="mixpower-intro_files/figure-html/count-sensitivity-1.png" class="r-plt" alt="" width="700"></p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">sens_nb</span><span class="op">)</span></span>
-<span></span>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">sens_nb</span><span class="op">)</span></span></code></pre></div>
+<p><img src="mixpower-intro_files/figure-html/count-sensitivity-2.png" class="r-plt" alt="" width="700"></p>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span></span>
 <span><span class="co"># Compare power estimates and failure/singularity rates across Poisson vs NB.</span></span>
 <span><span class="co"># Overdispersion can reduce power relative to Poisson.</span></span>
 <span><span class="co"># Increase nsim for final reports.</span></span></code></pre></div>
