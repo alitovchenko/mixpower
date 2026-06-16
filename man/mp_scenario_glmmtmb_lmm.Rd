@@ -34,9 +34,10 @@ mp_scenario_glmmtmb_lmm(
 
 \item{test_term}{Optional explicit term to test. Defaults to \code{predictor}.}
 
-\item{test_method}{Inference method: \code{"wald"} (default) or \code{"lrt"}.}
+\item{test_method}{Inference method: \code{"wald"} (default), \code{"satterthwaite"},
+\code{"kenward-roger"}, \code{"lrt"}, or \code{"pb"}. See \code{\link[=mp_backend_lme4]{mp_backend_lme4()}}.}
 
-\item{null_formula}{Optional null-model formula required for \code{test_method = "lrt"}.}
+\item{null_formula}{Null-model formula required for \code{"lrt"} and \code{"pb"}.}
 }
 \description{
 Same data-generating process as \code{\link[=mp_scenario_lme4]{mp_scenario_lme4()}} but fits with \strong{glmmTMB}

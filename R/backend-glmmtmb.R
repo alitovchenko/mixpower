@@ -44,45 +44,7 @@ mp_backend_glmmtmb <- function(predictor = "condition",
   }
 
   test_fun <- function(fit, scenario) {
-    method <- if (is.list(scenario$test)) scenario$test$method else NULL
-    if (is.null(method)) method <- test_method
-
-    if (identical(method, "wald")) {
-      term <- if (is.list(scenario$test)) scenario$test$term else NULL
-      if (is.null(term)) term <- predictor
-
-      coef_tab <- summary(fit)$coefficients$cond
-      if (!term %in% rownames(coef_tab)) {
-        return(list(p_value = NA_real_))
-      }
-      beta <- coef_tab[term, "Estimate"]
-      se <- coef_tab[term, "Std. Error"]
-      if (!is.finite(se) || se <= 0) {
-        return(list(p_value = NA_real_))
-      }
-      z <- beta / se
-      p_val <- 2 * stats::pnorm(abs(z), lower.tail = FALSE)
-      return(list(p_value = as.numeric(p_val)))
-    }
-
-    if (identical(method, "lrt")) {
-      null_f <- if (is.list(scenario$test)) scenario$test$null_formula else NULL
-      if (is.null(null_f)) null_f <- null_formula
-      if (is.null(null_f) || !inherits(null_f, "formula")) {
-        stop("`null_formula` must be provided as a formula when `test_method = \"lrt\"`.", call. = FALSE)
-      }
-
-      fit0 <- stats::update(fit, formula = null_f)
-      tab <- stats::anova(fit0, fit)
-      p_col <- grep("Pr\\(>Chi", colnames(tab), value = TRUE)
-      if (length(p_col) != 1L) {
-        return(list(p_value = NA_real_))
-      }
-      p_val <- as.numeric(tab[2, p_col])
-      return(list(p_value = p_val))
-    }
-
-    stop("Unsupported test method: ", method, call. = FALSE)
+    .mp_dispatch_test(fit, scenario, predictor, test_method, null_formula)
   }
 
   mp_backend(
@@ -90,7 +52,8 @@ mp_backend_glmmtmb <- function(predictor = "condition",
     fit_fun = fit_fun,
     test_fun = test_fun,
     name = "glmmtmb_gaussian",
-    capabilities = list(families = "gaussian", supports_lrt = TRUE, engine = "glmmTMB")
+    capabilities = list(families = "gaussian",
+                        test_methods = c("wald", "lrt"), engine = "glmmTMB")
   )
 }
 

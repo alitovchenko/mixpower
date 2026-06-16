@@ -1,3 +1,27 @@
+# mixpower 0.4.0
+
+## Correctness
+
+- Fixed a defect where likelihood-ratio tests (`test_method = "lrt"`) returned
+  `NA` for every replicate (hence power 0) in the simulation loop: the null
+  model was refit with `update()`, which could not resolve the simulated data
+  in that scope. Both models are now refit explicitly from the fitted model's
+  own data frame. This affected the lme4 (Gaussian and GLMM) and glmmTMB
+  backends.
+
+## Features
+
+- New small-sample inference methods for the Gaussian lme4 backend:
+  `test_method = "satterthwaite"` and `"kenward-roger"` (df-corrected t tests
+  via lmerTest/pbkrtest), recommended over Wald-z when the number of groups is
+  modest. Kenward-Roger is refit with REML internally as it requires.
+- New `test_method = "pb"` (parametric-bootstrap LRT via pbkrtest) for the
+  lme4 LMM and GLMM backends, with a `pb_nsim` control (default 100). It is
+  exact-er for small samples but costly: each power replicate refits the model
+  `pb_nsim` times.
+- Inference is now centralized in one dispatcher shared by all backends, so the
+  test logic is defined once rather than duplicated per family.
+
 # mixpower 0.3.0
 
 ## Features

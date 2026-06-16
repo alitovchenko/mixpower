@@ -22,9 +22,12 @@ mp_backend_glmmtmb(
 
 \item{item}{Optional item ID column name.}
 
-\item{test_method}{Inference method: \code{"wald"} (default) or \code{"lrt"}.}
+\item{test_method}{Inference method: \code{"wald"} (normal-approximation z test,
+the fast default), \code{"satterthwaite"} or \code{"kenward-roger"} (df-corrected
+t tests via lmerTest/pbkrtest; recommended for small samples), \code{"lrt"}
+(likelihood-ratio test), or \code{"pb"} (parametric-bootstrap LRT via pbkrtest).}
 
-\item{null_formula}{Optional null-model formula required when \code{test_method = "lrt"}.}
+\item{null_formula}{Null-model formula required for \code{"lrt"} and \code{"pb"}.}
 }
 \value{
 An object of class \code{mp_backend}.
