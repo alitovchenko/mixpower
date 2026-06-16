@@ -18,7 +18,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">mixpower</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.3.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.4.0</span>
       </span>
     </div>
 
@@ -131,11 +131,12 @@
 
 
 <dt id="arg-test-method">test_method<a class="anchor" aria-label="anchor" href="#arg-test-method"></a></dt>
-<dd><p>Inference method: <code>"wald"</code> (default) or <code>"lrt"</code>.</p></dd>
+<dd><p>Inference method: <code>"wald"</code> (default), <code>"satterthwaite"</code>,
+<code>"kenward-roger"</code>, <code>"lrt"</code>, or <code>"pb"</code>. See <code><a href="mp_backend_lme4.html">mp_backend_lme4()</a></code>.</p></dd>
 
 
 <dt id="arg-null-formula">null_formula<a class="anchor" aria-label="anchor" href="#arg-null-formula"></a></dt>
-<dd><p>Optional null-model formula required for <code>test_method = "lrt"</code>.</p></dd>
+<dd><p>Null-model formula required for <code>"lrt"</code> and <code>"pb"</code>.</p></dd>
 
 </dl></div>
 

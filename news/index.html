@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">mixpower</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.3.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.4.0</span>
       </span>
     </div>
 
@@ -72,6 +72,19 @@
       <small>Source: <a href="https://github.com/alitovchenko/mixpower/blob/main/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
     </div>
 
+    <div class="section level2">
+<h2 class="page-header" data-toc-text="0.4.0" id="mixpower-040">mixpower 0.4.0<a class="anchor" aria-label="anchor" href="#mixpower-040"></a></h2>
+<div class="section level3">
+<h3 id="correctness-0-4-0">Correctness<a class="anchor" aria-label="anchor" href="#correctness-0-4-0"></a></h3>
+<ul><li>Fixed a defect where likelihood-ratio tests (<code>test_method = "lrt"</code>) returned <code>NA</code> for every replicate (hence power 0) in the simulation loop: the null model was refit with <code><a href="https://rdrr.io/r/stats/update.html" class="external-link">update()</a></code>, which could not resolve the simulated data in that scope. Both models are now refit explicitly from the fitted model’s own data frame. This affected the lme4 (Gaussian and GLMM) and glmmTMB backends.</li>
+</ul></div>
+<div class="section level3">
+<h3 id="features-0-4-0">Features<a class="anchor" aria-label="anchor" href="#features-0-4-0"></a></h3>
+<ul><li>New small-sample inference methods for the Gaussian lme4 backend: <code>test_method = "satterthwaite"</code> and <code>"kenward-roger"</code> (df-corrected t tests via lmerTest/pbkrtest), recommended over Wald-z when the number of groups is modest. Kenward-Roger is refit with REML internally as it requires.</li>
+<li>New <code>test_method = "pb"</code> (parametric-bootstrap LRT via pbkrtest) for the lme4 LMM and GLMM backends, with a <code>pb_nsim</code> control (default 100). It is exact-er for small samples but costly: each power replicate refits the model <code>pb_nsim</code> times.</li>
+<li>Inference is now centralized in one dispatcher shared by all backends, so the test logic is defined once rather than duplicated per family.</li>
+</ul></div>
+</div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.3.0" id="mixpower-030">mixpower 0.3.0<a class="anchor" aria-label="anchor" href="#mixpower-030"></a></h2>
 <div class="section level3">

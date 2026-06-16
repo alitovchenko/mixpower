@@ -19,7 +19,7 @@ supported by glmmTMB but not lme4."><!-- mathjax --><script src="https://cdnjs.c
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">mixpower</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.3.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.4.0</span>
       </span>
     </div>
 
@@ -113,11 +113,14 @@ supported by glmmTMB but not lme4.</p>
 
 
 <dt id="arg-test-method">test_method<a class="anchor" aria-label="anchor" href="#arg-test-method"></a></dt>
-<dd><p>Inference method: <code>"wald"</code> (default) or <code>"lrt"</code>.</p></dd>
+<dd><p>Inference method: <code>"wald"</code> (normal-approximation z test,
+the fast default), <code>"satterthwaite"</code> or <code>"kenward-roger"</code> (df-corrected
+t tests via lmerTest/pbkrtest; recommended for small samples), <code>"lrt"</code>
+(likelihood-ratio test), or <code>"pb"</code> (parametric-bootstrap LRT via pbkrtest).</p></dd>
 
 
 <dt id="arg-null-formula">null_formula<a class="anchor" aria-label="anchor" href="#arg-null-formula"></a></dt>
-<dd><p>Optional null-model formula required when <code>test_method = "lrt"</code>.</p></dd>
+<dd><p>Null-model formula required for <code>"lrt"</code> and <code>"pb"</code>.</p></dd>
 
 </dl></div>
     <div id="value">

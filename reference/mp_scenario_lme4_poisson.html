@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">mixpower</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.3.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.4.0</span>
       </span>
     </div>
 
@@ -87,8 +87,9 @@
 <span>  outcome <span class="op">=</span> <span class="st">"y"</span>,</span>
 <span>  item <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  test_term <span class="op">=</span> <span class="va">predictor</span>,</span>
-<span>  test_method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"wald"</span>, <span class="st">"lrt"</span><span class="op">)</span>,</span>
-<span>  null_formula <span class="op">=</span> <span class="cn">NULL</span></span>
+<span>  test_method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"wald"</span>, <span class="st">"lrt"</span>, <span class="st">"pb"</span><span class="op">)</span>,</span>
+<span>  null_formula <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  pb_nsim <span class="op">=</span> <span class="fl">100L</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -129,11 +130,15 @@
 
 
 <dt id="arg-test-method">test_method<a class="anchor" aria-label="anchor" href="#arg-test-method"></a></dt>
-<dd><p>Inference method (<code>"wald"</code> or <code>"lrt"</code>).</p></dd>
+<dd><p>Inference method: <code>"wald"</code> (default), <code>"lrt"</code>, or <code>"pb"</code>.</p></dd>
 
 
 <dt id="arg-null-formula">null_formula<a class="anchor" aria-label="anchor" href="#arg-null-formula"></a></dt>
-<dd><p>Optional null model formula for <code>"lrt"</code> tests.</p></dd>
+<dd><p>Null-model formula required for <code>"lrt"</code> and <code>"pb"</code>.</p></dd>
+
+
+<dt id="arg-pb-nsim">pb_nsim<a class="anchor" aria-label="anchor" href="#arg-pb-nsim"></a></dt>
+<dd><p>Bootstrap replicates for <code>test_method = "pb"</code> (default 100).</p></dd>
 
 </dl></div>
     <div id="value">

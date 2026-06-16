@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">mixpower</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.3.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.4.0</span>
       </span>
     </div>
 
@@ -83,8 +83,9 @@
 <span>  subject <span class="op">=</span> <span class="st">"subject"</span>,</span>
 <span>  outcome <span class="op">=</span> <span class="st">"y"</span>,</span>
 <span>  item <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  test_method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"wald"</span>, <span class="st">"lrt"</span><span class="op">)</span>,</span>
-<span>  null_formula <span class="op">=</span> <span class="cn">NULL</span></span>
+<span>  test_method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"wald"</span>, <span class="st">"lrt"</span>, <span class="st">"satterthwaite"</span>, <span class="st">"kenward-roger"</span>, <span class="st">"pb"</span><span class="op">)</span>,</span>
+<span>  null_formula <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  pb_nsim <span class="op">=</span> <span class="fl">100L</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -109,11 +110,20 @@
 
 
 <dt id="arg-test-method">test_method<a class="anchor" aria-label="anchor" href="#arg-test-method"></a></dt>
-<dd><p>Inference method: <code>"wald"</code> (default) or <code>"lrt"</code>.</p></dd>
+<dd><p>Inference method: <code>"wald"</code> (normal-approximation z test,
+the fast default), <code>"satterthwaite"</code> or <code>"kenward-roger"</code> (df-corrected
+t tests via lmerTest/pbkrtest; recommended for small samples), <code>"lrt"</code>
+(likelihood-ratio test), or <code>"pb"</code> (parametric-bootstrap LRT via pbkrtest).</p></dd>
 
 
 <dt id="arg-null-formula">null_formula<a class="anchor" aria-label="anchor" href="#arg-null-formula"></a></dt>
-<dd><p>Optional null-model formula required when <code>test_method = "lrt"</code>.</p></dd>
+<dd><p>Null-model formula required for <code>"lrt"</code> and <code>"pb"</code>.</p></dd>
+
+
+<dt id="arg-pb-nsim">pb_nsim<a class="anchor" aria-label="anchor" href="#arg-pb-nsim"></a></dt>
+<dd><p>Bootstrap replicates for <code>test_method = "pb"</code> (default 100).
+Note this multiplies cost: each power replicate refits the model <code>pb_nsim</code>
+times.</p></dd>
 
 </dl></div>
     <div id="value">
