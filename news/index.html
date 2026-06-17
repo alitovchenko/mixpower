@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">mixpower</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.4.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.5.0</span>
       </span>
     </div>
 
@@ -72,6 +72,16 @@
       <small>Source: <a href="https://github.com/alitovchenko/mixpower/blob/main/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
     </div>
 
+    <div class="section level2">
+<h2 class="page-header" data-toc-text="0.5.0" id="mixpower-050">mixpower 0.5.0<a class="anchor" aria-label="anchor" href="#mixpower-050"></a></h2>
+<div class="section level3">
+<h3 id="features-0-5-0">Features<a class="anchor" aria-label="anchor" href="#features-0-5-0"></a></h3>
+<ul><li>Exact <strong>Clopper-Pearson</strong> confidence intervals for the power estimate are now the default (<code>mp_power(ci_method = "clopper-pearson")</code>); <code>"wald"</code> remains available. The previous Wald interval mis-behaved near power 0 or 1 (e.g. returning <code>[0, 0]</code>).</li>
+<li>
+<strong>Type S (sign) and Type M (magnitude/exaggeration) error rates</strong> (Gelman &amp; Carlin, 2014) are reported in <code><a href="../reference/mp_power.html">mp_power()</a></code> diagnostics and <code><a href="../reference/mp_report_table.html">mp_report_table()</a></code>, computed among significant replicates when the tested term’s true effect is known and non-zero. Type M &gt; 1 flags that statistically significant estimates exaggerate the effect (acute under low power).</li>
+<li>Backends now also return the fixed-effect estimate per replicate (used for Type S/M); custom engines can supply <code>estimate</code> in their <code>test_fun</code> output.</li>
+</ul></div>
+</div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.4.0" id="mixpower-040">mixpower 0.4.0<a class="anchor" aria-label="anchor" href="#mixpower-040"></a></h2>
 <div class="section level3">

@@ -32,7 +32,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">mixpower</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.4.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.5.0</span>
       </span>
     </div>
 
@@ -425,12 +425,12 @@ transparent.</p>
 <span>  <span class="st">"conf_low"</span>, <span class="st">"conf_high"</span>, <span class="st">"failure_rate"</span>, <span class="st">"singular_rate"</span></span>
 <span><span class="op">)</span><span class="op">]</span></span>
 <span><span class="co">#&gt;   method clusters.subject estimate       mcse  conf_low conf_high failure_rate</span></span>
-<span><span class="co">#&gt; 1   wald               30     0.78 0.05858327 0.6651789 0.8948211            0</span></span>
-<span><span class="co">#&gt; 2   wald               50     0.98 0.01979899 0.9411947 1.0000000            0</span></span>
-<span><span class="co">#&gt; 3   wald               80     1.00 0.00000000 1.0000000 1.0000000            0</span></span>
-<span><span class="co">#&gt; 4    lrt               30     0.78 0.05858327 0.6651789 0.8948211            0</span></span>
-<span><span class="co">#&gt; 5    lrt               50     0.98 0.01979899 0.9411947 1.0000000            0</span></span>
-<span><span class="co">#&gt; 6    lrt               80     1.00 0.00000000 1.0000000 1.0000000            0</span></span>
+<span><span class="co">#&gt; 1   wald               30     0.78 0.05858327 0.6403881 0.8847342            0</span></span>
+<span><span class="co">#&gt; 2   wald               50     0.98 0.01979899 0.8935305 0.9994938            0</span></span>
+<span><span class="co">#&gt; 3   wald               80     1.00 0.00000000 0.9288783 1.0000000            0</span></span>
+<span><span class="co">#&gt; 4    lrt               30     0.78 0.05858327 0.6403881 0.8847342            0</span></span>
+<span><span class="co">#&gt; 5    lrt               50     0.98 0.01979899 0.8935305 0.9994938            0</span></span>
+<span><span class="co">#&gt; 6    lrt               80     1.00 0.00000000 0.9288783 1.0000000            0</span></span>
 <span><span class="co">#&gt;   singular_rate</span></span>
 <span><span class="co">#&gt; 1          0.38</span></span>
 <span><span class="co">#&gt; 2          0.48</span></span>
@@ -515,7 +515,10 @@ p-values), preserving transparency.</p>
 <span><span class="co">#&gt; [1] 0.06864401</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $ci</span></span>
-<span><span class="co">#&gt; [1] 0.4854602 0.7545398</span></span>
+<span><span class="co">#&gt; [1] 0.4717492 0.7534989</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $ci_method</span></span>
+<span><span class="co">#&gt; [1] "clopper-pearson"</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $diagnostics</span></span>
 <span><span class="co">#&gt; $diagnostics$fail_rate</span></span>
@@ -523,6 +526,12 @@ p-values), preserving transparency.</p>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $diagnostics$singular_rate</span></span>
 <span><span class="co">#&gt; [1] 0.14</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $diagnostics$type_s</span></span>
+<span><span class="co">#&gt; [1] 0</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $diagnostics$type_m</span></span>
+<span><span class="co">#&gt; [1] 1.338776</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $nsim</span></span>
@@ -570,9 +579,9 @@ p-values), preserving transparency.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">sens_bin</span><span class="op">$</span><span class="va">results</span></span>
 <span><span class="co">#&gt;   fixed_effects.condition estimate       mcse   conf_low conf_high failure_rate</span></span>
-<span><span class="co">#&gt; 1                     0.2     0.16 0.05184593 0.05838385 0.2616161            0</span></span>
-<span><span class="co">#&gt; 2                     0.4     0.42 0.06979971 0.28319508 0.5568049            0</span></span>
-<span><span class="co">#&gt; 3                     0.6     0.84 0.05184593 0.73838385 0.9416161            0</span></span>
+<span><span class="co">#&gt; 1                     0.2     0.16 0.05184593 0.07170077 0.2911263            0</span></span>
+<span><span class="co">#&gt; 2                     0.4     0.42 0.06979971 0.28188224 0.5679396            0</span></span>
+<span><span class="co">#&gt; 3                     0.6     0.84 0.05184593 0.70887369 0.9282992            0</span></span>
 <span><span class="co">#&gt;   singular_rate n_effective nsim</span></span>
 <span><span class="co">#&gt; 1          0.12          50   50</span></span>
 <span><span class="co">#&gt; 2          0.10          50   50</span></span>
@@ -611,7 +620,10 @@ over-dispersion.</p>
 <span><span class="co">#&gt; [1] 0.02771281</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $ci</span></span>
-<span><span class="co">#&gt; [1] 0.9056839 1.0000000</span></span>
+<span><span class="co">#&gt; [1] 0.8628624 0.9951186</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $ci_method</span></span>
+<span><span class="co">#&gt; [1] "clopper-pearson"</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $diagnostics</span></span>
 <span><span class="co">#&gt; $diagnostics$fail_rate</span></span>
@@ -619,6 +631,12 @@ over-dispersion.</p>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $diagnostics$singular_rate</span></span>
 <span><span class="co">#&gt; [1] 0</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $diagnostics$type_s</span></span>
+<span><span class="co">#&gt; [1] 0</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $diagnostics$type_m</span></span>
+<span><span class="co">#&gt; [1] 1.008971</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $nsim</span></span>
@@ -655,7 +673,10 @@ over-dispersion.</p>
 <span><span class="co">#&gt; [1] 0.05184593</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $ci</span></span>
-<span><span class="co">#&gt; [1] 0.7383839 0.9416161</span></span>
+<span><span class="co">#&gt; [1] 0.7088737 0.9282992</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $ci_method</span></span>
+<span><span class="co">#&gt; [1] "clopper-pearson"</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $diagnostics</span></span>
 <span><span class="co">#&gt; $diagnostics$fail_rate</span></span>
@@ -663,6 +684,12 @@ over-dispersion.</p>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $diagnostics$singular_rate</span></span>
 <span><span class="co">#&gt; [1] 0.04</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $diagnostics$type_s</span></span>
+<span><span class="co">#&gt; [1] 0</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $diagnostics$type_m</span></span>
+<span><span class="co">#&gt; [1] 1.187583</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $nsim</span></span>
