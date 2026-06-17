@@ -192,10 +192,19 @@ mp_power <- function(scenario,
   }
 
   sim_tbl <- do.call(rbind, lapply(rows, as.data.frame))
-  sim_tbl$replicate <- seq_len(nsim)
+  .mp_aggregate_sims(
+    sim_tbl, scenario, alpha, seed, failure_policy, keep,
+    conf_level, ci_method, aggregate, nsim, true_effect, fits, datas
+  )
+}
 
-  # Determine detection
-  # p_value may be NA when fit/test fails
+# Aggregate a table of per-replicate rows into an `mp_power` object. Shared by
+# mp_power()'s full path and by mp_power_checkpoint() (which combines batches),
+# so the power estimate, interval, and diagnostics are computed identically.
+.mp_aggregate_sims <- function(sim_tbl, scenario, alpha, seed, failure_policy,
+                               keep, conf_level, ci_method, aggregate, nsim,
+                               true_effect, fits = NULL, datas = NULL) {
+  sim_tbl$replicate <- seq_len(nrow(sim_tbl))
   detected_raw <- !is.na(sim_tbl$p_value) & sim_tbl$p_value < alpha
 
   if (failure_policy == "count_as_nondetect") {
@@ -214,7 +223,6 @@ mp_power <- function(scenario,
   fail_rate <- mean(!sim_tbl$fit_ok)
   singular_rate <- mean(sim_tbl$singular %in% TRUE, na.rm = TRUE)
 
-  # Type S / Type M among significant replicates (Gelman & Carlin, 2014).
   sig_est <- if (!is.null(sim_tbl$estimate)) sim_tbl$estimate[detected_raw] else numeric()
   tsm <- .mp_type_sm(sig_est, true_effect)
 
