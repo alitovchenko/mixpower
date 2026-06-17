@@ -98,6 +98,6 @@ Entry points: \code{\link[=mp_design]{mp_design()}}, \code{\link[=mp_power]{mp_p
 Vignettes: \code{vignette(package = "mixpower")}.
 }
 \author{
-\strong{Maintainer}: Mixpower Alex Litovchenko \email{al4877@columbia.edu}
+\strong{Maintainer}: Alex Litovchenko \email{al4877@columbia.edu}
 
 }

@@ -1,6 +1,17 @@
 # mixpower
 
-mixpower provides simulation-based power analysis for Gaussian linear mixed-effects models.
+<!-- badges: start -->
+[![R-CMD-check](https://github.com/alitovchenko/mixpower/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/alitovchenko/mixpower/actions/workflows/R-CMD-check.yaml)
+[![Codecov test coverage](https://codecov.io/gh/alitovchenko/mixpower/branch/main/graph/badge.svg)](https://app.codecov.io/gh/alitovchenko/mixpower)
+[![Lifecycle: stable](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://lifecycle.r-lib.org/articles/stages.html#stable)
+<!-- badges: end -->
+
+mixpower provides simulation-based power and sample-size analysis for linear and
+generalized linear mixed-effects models (Gaussian, binomial, Poisson, and
+negative-binomial families) fitted with `lme4`. It pairs a backend-agnostic
+simulation engine with publication-ready diagnostics: exact (Clopper-Pearson)
+power intervals, Monte Carlo standard errors, Type S/M error rates, and
+convergence/singular-fit reporting.
 
 ## CI expectations
 

@@ -2,6 +2,9 @@
 .RData
 .Rproj.user
 .Rcheck/
+*.Rcheck/
+*.tar.gz
 inst/doc/
+docs/
 .cran_tmp/
 tests/testthat/Rplots.pdf

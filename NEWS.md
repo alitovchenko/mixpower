@@ -1,3 +1,14 @@
+# mixpower 1.0.0
+
+First stable release and initial CRAN submission. Consolidates the 0.x series
+into a documented, tested baseline: simulation-based power and sample-size
+analysis for Gaussian, binomial, Poisson, and negative-binomial mixed models via
+'lme4'; Wald / LRT / Satterthwaite / Kenward-Roger / parametric-bootstrap tests;
+multiple correlated random slopes; `mp_from_fit()`; sensitivity grids, power
+curves, and sample-size solvers; SESOI / safeguard helpers; exact power
+intervals and Type S/M diagnostics; parallel evaluation and reproducible result
+bundling.
+
 # mixpower 0.7.0
 
 ## Features
