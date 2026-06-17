@@ -1,3 +1,19 @@
+# mixpower 0.5.0
+
+## Features
+
+- Exact **Clopper-Pearson** confidence intervals for the power estimate are now
+  the default (`mp_power(ci_method = "clopper-pearson")`); `"wald"` remains
+  available. The previous Wald interval mis-behaved near power 0 or 1 (e.g.
+  returning `[0, 0]`).
+- **Type S (sign) and Type M (magnitude/exaggeration) error rates** (Gelman &
+  Carlin, 2014) are reported in `mp_power()` diagnostics and `mp_report_table()`,
+  computed among significant replicates when the tested term's true effect is
+  known and non-zero. Type M > 1 flags that statistically significant estimates
+  exaggerate the effect (acute under low power).
+- Backends now also return the fixed-effect estimate per replicate (used for
+  Type S/M); custom engines can supply `estimate` in their `test_fun` output.
+
 # mixpower 0.4.0
 
 ## Correctness

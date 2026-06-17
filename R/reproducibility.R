@@ -172,6 +172,8 @@ mp_report_table <- function(x, ...) {
       ci_high = x$ci[2],
       failure_rate = x$diagnostics$fail_rate,
       singular_rate = x$diagnostics$singular_rate,
+      type_s = `%||%`(x$diagnostics$type_s, NA_real_),
+      type_m = `%||%`(x$diagnostics$type_m, NA_real_),
       n_effective = n_effective,
       nsim = x$nsim,
       stringsAsFactors = FALSE,

@@ -147,6 +147,20 @@
   as.numeric(tab["PBtest", "p.value"])
 }
 
+# Point estimate of a fixed-effect term from a fitted model (NA if unavailable).
+# Used for Type S / Type M error reporting.
+.mp_fixef_estimate <- function(fit, term) {
+  cf <- tryCatch(stats::coef(summary(fit)), error = function(e) NULL)
+  if (is.list(cf) && !is.matrix(cf) && !is.null(cf$cond)) {
+    cf <- cf$cond
+  }
+  if (is.null(cf) || !is.matrix(cf) || !term %in% rownames(cf) ||
+      !"Estimate" %in% colnames(cf)) {
+    return(NA_real_)
+  }
+  as.numeric(cf[term, "Estimate"])
+}
+
 # Single inference entry point used by every backend's test_fun.
 .mp_p_value <- function(fit, term, method, null_formula = NULL, pb_nsim = 100L) {
   switch(method,
@@ -170,7 +184,10 @@
   term <- if (is_list) `%||%`(test$term, predictor) else predictor
   null_f <- if (is_list) `%||%`(test$null_formula, default_null) else default_null
   pb_nsim <- if (is_list) `%||%`(test$pb_nsim, default_pb_nsim) else default_pb_nsim
-  list(p_value = .mp_p_value(fit, term, method, null_f, pb_nsim))
+  list(
+    p_value = .mp_p_value(fit, term, method, null_f, pb_nsim),
+    estimate = .mp_fixef_estimate(fit, term)
+  )
 }
 
 # Shared constructor-time validation: match the method against the methods a

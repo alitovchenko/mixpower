@@ -12,6 +12,7 @@ mp_power(
   failure_policy = c("count_as_nondetect", "exclude"),
   keep = c("minimal", "fits", "data"),
   conf_level = 0.95,
+  ci_method = c("clopper-pearson", "wald"),
   aggregate = c("full", "streaming")
 )
 }
@@ -37,7 +38,10 @@ mp_power(
 \item \code{"data"}: also store simulated data (can be very large).
 }}
 
-\item{conf_level}{Confidence level for the Wald interval (default 0.95).}
+\item{conf_level}{Confidence level for the power interval (default 0.95).}
+
+\item{ci_method}{Power CI type: \code{"clopper-pearson"} (default, exact binomial)
+or \code{"wald"} (normal approximation).}
 
 \item{aggregate}{\code{"full"} (default) stores every replicate in \code{sims}. \code{"streaming"}
 accumulates counts only (lower memory); requires \code{keep = "minimal"} and returns
@@ -54,6 +58,10 @@ the scenario's test decision rule (typically p < alpha).
 In Phase 4 core, the scenario must provide engine functions:
 \code{simulate_fun}, \code{fit_fun}, and \code{test_fun}. Later phases will supply defaults
 based on specific backends (e.g., lme4).
+
+Diagnostics include Type S (wrong-sign) and Type M (exaggeration-ratio) errors
+among significant replicates (Gelman & Carlin, 2014), computed when the tested
+term's true effect is known and non-zero and the backend reports an estimate.
 }
 \examples{
 # A tiny toy engine (not mixed models) just to demonstrate the workflow:
