@@ -8,3 +8,8 @@
 ^\.gitkeep$
 ^HANDOFF\.md$
 ^\.cran_tmp$
+^paper$
+^_pkgdown\.yml$
+^\.cursor$
+^mixpower\.Rcheck$
+^mixpower_.*\.tar\.gz$

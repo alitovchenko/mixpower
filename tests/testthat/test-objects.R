@@ -4,7 +4,7 @@ testthat::test_that("mp_design validates inputs", {
 
   expect_error(mp_design(list(subject = -1), 1), "must be > 0")
   expect_error(mp_design(list(), 1), "named")
-  expect_error(mp_design(list(subject = 10), 0), "must be > 0")
+  expect_error(mp_design(list(subject = 10), 0), "positive integer")
 })
 
 testthat::test_that("mp_assumptions validates inputs", {

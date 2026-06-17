@@ -1,3 +1,46 @@
+# mixpower 1.1.0
+
+A large feature release focused on credibility and design realism.
+
+## Credibility
+
+- `mp_calibrate()` estimates the empirical Type I error rate under the null and
+  returns a verdict (well-calibrated / anti-conservative / conservative),
+  flagging analyses (e.g. an omitted random slope, or Wald with few clusters)
+  whose power would not be trustworthy.
+- `mp_recommend_method()` gives design-based inference-method guidance.
+
+## Designs and data
+
+- `mp_design()` gains continuous and between-subject predictors
+  (`predictors=`), three-level nested grouping factors (`nesting=`), and
+  unbalanced within-subject sample sizes (vector `trials_per_cell`).
+- `mp_missing()` adds missing-data / dropout mechanisms: MCAR, MAR (logit on an
+  observed column), and monotone longitudinal dropout (per-timepoint
+  proportions or a Weibull dropout time).
+
+## Sample size and effect sizes
+
+- `mp_extend()` and the `extend.<group>` sensitivity key scale a
+  `mp_from_fit()` scenario's sample size up or down (simr `extend()` analogue).
+- Effect-size converters (`mp_d_to_beta()`, `mp_r2_to_beta()`, `mp_icc_to_sd()`,
+  `mp_or_to_logodds()`, `mp_t_to_beta()`, `mp_f_to_beta()`, and inverses)
+  translate standardized/published effects into model coefficients.
+
+## Analysis flexibility
+
+- Omnibus joint-Wald tests of several coefficients (`test_term = c(...)`),
+  custom linear contrasts (`contrast=`), and `mp_compare_models()`, which fits
+  multiple analysis models to the same simulated data to expose Type I inflation
+  from misspecification.
+
+## Performance and reporting
+
+- `mp_power_checkpoint()` runs power simulations in resumable, persisted batches.
+- `mp_methods_text()` generates a methods-section paragraph; `plot()` on an
+  `mp_power` object shows the p-value distribution; `mp_report_table()` accepts
+  calibration results.
+
 # mixpower 1.0.0
 
 First stable release and initial CRAN submission. Consolidates the 0.x series

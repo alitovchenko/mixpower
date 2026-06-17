@@ -1,0 +1,77 @@
+url: https://alitovchenko.github.io/mixpower/
+
+template:
+  bootstrap: 5
+
+reference:
+  - title: Core workflow
+    desc: Specify a design, assumptions, and scenario, then estimate power.
+    contents:
+      - mp_design
+      - mp_assumptions
+      - mp_scenario
+      - mp_power
+      - mp_quick_power
+  - title: Model backends
+    desc: Family- and engine-specific scenario/backend constructors.
+    contents:
+      - starts_with("mp_scenario_")
+      - starts_with("mp_backend")
+      - validate_mp_backend
+  - title: From a fitted pilot model
+    contents:
+      - mp_from_fit
+      - mp_extend
+  - title: Credibility and validation
+    contents:
+      - mp_calibrate
+      - mp_recommend_method
+  - title: Effect sizes
+    desc: Smallest-effect-of-interest, safeguard, and standardized converters.
+    contents:
+      - mp_sesoi
+      - mp_safeguard_effect
+      - matches("_to_beta$")
+      - matches("_to_d$")
+      - matches("_to_r2$")
+      - matches("_to_sd$")
+      - matches("_to_icc$")
+      - mp_or_to_logodds
+      - mp_logodds_to_or
+  - title: Missing data and dropout
+    contents:
+      - mp_missing
+  - title: Planning and analysis flexibility
+    desc: Sensitivity, power curves, sample-size solvers, model comparison.
+    contents:
+      - mp_sensitivity
+      - mp_power_curve
+      - mp_solve_sample_size
+      - mp_grid_sample_size
+      - mp_compare_models
+      - mp_power_checkpoint
+      - matches("parallel")
+  - title: Reporting and reproducibility
+    contents:
+      - mp_report_table
+      - mp_methods_text
+      - mp_manifest
+      - mp_bundle_results
+      - mp_write_results
+  - title: Other
+    contents:
+      - everything()
+
+articles:
+  - title: Get started
+    contents:
+      - mixpower-intro
+      - mixpower-simulations
+      - mixpower-design
+  - title: Advanced
+    contents:
+      - mixpower-effect-sizes
+      - mixpower-validation
+      - mixpower-diagnostics
+      - mixpower-reproducibility
+      - mixpower-extending
