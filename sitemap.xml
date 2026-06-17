@@ -9,6 +9,7 @@
 <url><loc>/articles/index.html</loc></url>
 <url><loc>/articles/mixpower-design.html</loc></url>
 <url><loc>/articles/mixpower-diagnostics.html</loc></url>
+<url><loc>/articles/mixpower-effect-sizes.html</loc></url>
 <url><loc>/articles/mixpower-extending.html</loc></url>
 <url><loc>/articles/mixpower-intro.html</loc></url>
 <url><loc>/articles/mixpower-reproducibility.html</loc></url>
@@ -39,6 +40,7 @@
 <url><loc>/reference/mp_power_curve_parallel.html</loc></url>
 <url><loc>/reference/mp_quick_power.html</loc></url>
 <url><loc>/reference/mp_report_table.html</loc></url>
+<url><loc>/reference/mp_safeguard_effect.html</loc></url>
 <url><loc>/reference/mp_scenario.html</loc></url>
 <url><loc>/reference/mp_scenario_glmmtmb_lmm.html</loc></url>
 <url><loc>/reference/mp_scenario_lme4.html</loc></url>
@@ -48,6 +50,7 @@
 <url><loc>/reference/mp_sensitivity.html</loc></url>
 <url><loc>/reference/mp_sensitivity_cell_run.html</loc></url>
 <url><loc>/reference/mp_sensitivity_parallel.html</loc></url>
+<url><loc>/reference/mp_sesoi.html</loc></url>
 <url><loc>/reference/mp_solve_sample_size.html</loc></url>
 <url><loc>/reference/mp_write_results.html</loc></url>
 <url><loc>/reference/plot.mp_power_curve.html</loc></url>

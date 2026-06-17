@@ -19,7 +19,7 @@ predictor (the scale lme4 reports), via random_effects."><!-- mathjax --><script
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">mixpower</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.6.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.7.0</span>
       </span>
     </div>
 
@@ -38,6 +38,9 @@ predictor (the scale lme4 reports), via random_effects."><!-- mathjax --><script
     </li>
     <li>
       <a href="../articles/mixpower-diagnostics.html">Diagnostics and sensitivity</a>
+    </li>
+    <li>
+      <a href="../articles/mixpower-effect-sizes.html">Effect sizes: maximal models, fitted pilots, and safeguard power</a>
     </li>
     <li>
       <a href="../articles/mixpower-extending.html">Extending mixpower with custom backends</a>
@@ -103,11 +106,14 @@ predictor (the scale lme4 reports), via <code>random_effects</code>.</p>
 <dt id="arg-random-effects">random_effects<a class="anchor" aria-label="anchor" href="#arg-random-effects"></a></dt>
 <dd><p>Optional named list keyed by grouping factor. Each
 element is a named list with <code>intercept_sd</code> (the random-intercept SD on the
-linear-predictor scale) and, optionally, <code>slopes</code> (a one-element named list
-giving the random-slope SD for a predictor) and <code>cor</code> (the intercept-slope
-correlation in <code>[-1, 1]</code>). For example,
+linear-predictor scale) and, optionally, <code>slopes</code> (a named list of
+random-slope SDs, one per predictor) and <code>cor</code>. For example,
 <code>list(subject = list(intercept_sd = 0.5, slopes = list(condition = 0.3), cor = 0.2))</code>
-encodes a correlated random intercept and slope, i.e. <code>(1 + condition | subject)</code>.</p></dd>
+encodes a correlated random intercept and slope, i.e.
+<code>(1 + condition | subject)</code>. With several slopes, <code>cor</code> may be a single
+scalar (applied to every pair of terms) or a full correlation matrix over
+<code>c("(Intercept)", names(slopes))</code>; each fixed effect named in
+<code>fixed_effects</code> also becomes a balanced design predictor.</p></dd>
 
 
 <dt id="arg-icc">icc<a class="anchor" aria-label="anchor" href="#arg-icc"></a></dt>

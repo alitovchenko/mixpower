@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">mixpower</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.6.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.7.0</span>
       </span>
     </div>
 
@@ -36,6 +36,9 @@
     </li>
     <li>
       <a href="../articles/mixpower-diagnostics.html">Diagnostics and sensitivity</a>
+    </li>
+    <li>
+      <a href="../articles/mixpower-effect-sizes.html">Effect sizes: maximal models, fitted pilots, and safeguard power</a>
     </li>
     <li>
       <a href="../articles/mixpower-extending.html">Extending mixpower with custom backends</a>
@@ -72,6 +75,23 @@
       <small>Source: <a href="https://github.com/alitovchenko/mixpower/blob/main/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
     </div>
 
+    <div class="section level2">
+<h2 class="page-header" data-toc-text="0.7.0" id="mixpower-070">mixpower 0.7.0<a class="anchor" aria-label="anchor" href="#mixpower-070"></a></h2>
+<div class="section level3">
+<h3 id="features-0-7-0">Features<a class="anchor" aria-label="anchor" href="#features-0-7-0"></a></h3>
+<ul><li>
+<strong>Multiple correlated random slopes.</strong> <code>random_effects</code> now accepts several <code>slopes</code> per grouping factor, with a correlation <code>cor</code> given either as a scalar (applied to every pair of terms) or as a full correlation matrix over <code>c("(Intercept)", names(slopes))</code>. Each fixed effect named in <code>fixed_effects</code> becomes a balanced design predictor, so multi-factor maximal models such as <code>(1 + x1 + x2 | subject)</code> simulate correctly. The simulator draws the random-effect block from a single multivariate normal (Cholesky / eigen), with no new dependencies; single-slope behaviour is unchanged.</li>
+<li>
+<strong><code><a href="../reference/mp_sesoi.html">mp_sesoi()</a></code></strong> returns a scenario whose focal effect is replaced by a smallest effect size of interest — either an explicit value or a scaled version of the assumed effect (default <code>multiplier = 0.85</code>, a 15% reduction).</li>
+<li>
+<strong><code><a href="../reference/mp_safeguard_effect.html">mp_safeguard_effect()</a></code></strong> derives a conservative, uncertainty-aware effect from a fitted model: the confidence-interval bound nearest zero (Perugini, Gallucci &amp; Costantini, 2014). Pipe it into <code>mp_sesoi(effect = ...)</code> for a safeguard-power analysis.</li>
+<li>
+<code><a href="../reference/mp_from_fit.html">mp_from_fit()</a></code> now records the full random-effect structure (every slope and the complete correlation matrix) in the scenario assumptions.</li>
+<li>
+<code><a href="../reference/mp_sensitivity.html">mp_sensitivity()</a></code> / <code><a href="../reference/mp_power_curve.html">mp_power_curve()</a></code> can vary <code>random_effects.&lt;g&gt;.cor</code> and <code>random_effects.&lt;g&gt;.slopes.&lt;predictor&gt;</code> in addition to <code>intercept_sd</code>.</li>
+<li>New vignette, <em>Effect sizes: maximal models, fitted pilots, and safeguard power</em>, tying these features together with Type S / Type M interpretation.</li>
+</ul></div>
+</div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.6.0" id="mixpower-060">mixpower 0.6.0<a class="anchor" aria-label="anchor" href="#mixpower-060"></a></h2>
 <div class="section level3">
