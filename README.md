@@ -43,6 +43,11 @@ mp_power(scn, nsim = 200, seed = 1)            # data-based power
 # variance components.
 mp_sensitivity(scn, vary = list(`fixed_effects.Days` = c(2, 5, 10)),
                nsim = 200, seed = 1)
+
+# Scale the pilot's sample size up or down (simr-style extend) and curve power:
+mp_power(mp_extend(scn, Subject = 60), nsim = 200, seed = 1)
+mp_power_curve(scn, vary = list(`extend.Subject` = c(20, 40, 60, 80)),
+               nsim = 200, seed = 1)
 ```
 
 ## Smallest effect of interest & safeguard power

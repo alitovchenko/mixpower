@@ -9,7 +9,8 @@ mp_from_fit(
   test_term = NULL,
   test_method = NULL,
   null_formula = NULL,
-  pb_nsim = 100L
+  pb_nsim = 100L,
+  extend = NULL
 )
 }
 \arguments{
@@ -27,6 +28,12 @@ non-intercept fixed effect.}
 to the fitted formula with \code{test_term} removed.}
 
 \item{pb_nsim}{Bootstrap replicates for \code{test_method = "pb"} (default 100).}
+
+\item{extend}{Optional named list of target level counts per grouping factor
+(e.g. \code{list(Subject = 60)}) used to scale the pilot's sample size up or
+down. Levels are cloned from the pilot's structure with fresh ids and fresh
+random effects drawn from the fitted covariance. See \code{\link[=mp_extend]{mp_extend()}} and the
+\verb{extend.<group>} sensitivity key for power curves over N.}
 }
 \value{
 An object of class \code{mp_scenario}.
@@ -43,9 +50,9 @@ The fixed effects used to simulate are read from the scenario's assumptions,
 which start at the fitted coefficients. This means \code{mp_sensitivity()} /
 \code{mp_power_curve()} can vary an effect size (e.g.
 \code{fixed_effects.condition}) for data-based vs smallest-effect-of-interest
-comparisons. The number of observations is fixed at the model's data, so
-varying sample size is not supported through a \code{mp_from_fit()} scenario; use
-the synthetic \code{\link[=mp_scenario_lme4]{mp_scenario_lme4()}} path (or extend the data) for that.
+comparisons. Sample size can be scaled up or down from the pilot with
+\code{\link[=mp_extend]{mp_extend()}} (or the \verb{extend.<group>} sensitivity key), which clones the
+pilot's structure with fresh levels and fresh random effects.
 }
 \examples{
 \donttest{

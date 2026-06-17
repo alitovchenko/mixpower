@@ -11,13 +11,17 @@ mp_validate_variation_key <- function(key) {
 
   root <- path[[1]]
   allowed_roots <- c("fixed_effects", "random_effects", "residual_sd", "icc",
-                     "clusters", "trials_per_cell")
+                     "clusters", "trials_per_cell", "extend")
   if (!root %in% allowed_roots) {
     stop("Unsupported variation key: ", key, call. = FALSE)
   }
 
   if (root %in% c("fixed_effects", "icc", "clusters") && length(path) < 2L) {
     stop("`", root, "` keys must include a subfield, e.g. `", root, ".name`.", call. = FALSE)
+  }
+
+  if (root == "extend" && length(path) != 2L) {
+    stop("`extend` keys must be of the form `extend.<group>`.", call. = FALSE)
   }
 
   if (root == "random_effects") {
@@ -103,6 +107,13 @@ mp_apply_variation <- function(scenario, key, value) {
 
   if (root == "trials_per_cell") {
     scenario$design$trials_per_cell <- value
+    return(scenario)
+  }
+
+  if (root == "extend") {
+    group <- path[[2]]
+    if (is.null(scenario$extend)) scenario$extend <- list()
+    scenario$extend[[group]] <- as.integer(value)
     return(scenario)
   }
 

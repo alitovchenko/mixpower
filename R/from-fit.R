@@ -10,9 +10,9 @@
 #' which start at the fitted coefficients. This means `mp_sensitivity()` /
 #' `mp_power_curve()` can vary an effect size (e.g.
 #' `fixed_effects.condition`) for data-based vs smallest-effect-of-interest
-#' comparisons. The number of observations is fixed at the model's data, so
-#' varying sample size is not supported through a `mp_from_fit()` scenario; use
-#' the synthetic [mp_scenario_lme4()] path (or extend the data) for that.
+#' comparisons. Sample size can be scaled up or down from the pilot with
+#' [mp_extend()] (or the `extend.<group>` sensitivity key), which clones the
+#' pilot's structure with fresh levels and fresh random effects.
 #'
 #' @param fit A fitted model of class `lmerMod`/`lmerModLmerTest` (Gaussian LMM)
 #'   or `glmerMod` (binomial/Poisson/negative-binomial GLMM).
@@ -24,6 +24,11 @@
 #' @param null_formula Null-model formula required for `"lrt"`/`"pb"`. Defaults
 #'   to the fitted formula with `test_term` removed.
 #' @param pb_nsim Bootstrap replicates for `test_method = "pb"` (default 100).
+#' @param extend Optional named list of target level counts per grouping factor
+#'   (e.g. `list(Subject = 60)`) used to scale the pilot's sample size up or
+#'   down. Levels are cloned from the pilot's structure with fresh ids and fresh
+#'   random effects drawn from the fitted covariance. See [mp_extend()] and the
+#'   `extend.<group>` sensitivity key for power curves over N.
 #' @return An object of class `mp_scenario`.
 #' @export
 #' @examples
@@ -38,7 +43,8 @@ mp_from_fit <- function(fit,
                         test_term = NULL,
                         test_method = NULL,
                         null_formula = NULL,
-                        pb_nsim = 100L) {
+                        pb_nsim = 100L,
+                        extend = NULL) {
   if (!requireNamespace("lme4", quietly = TRUE)) {
     stop("Package `lme4` is required for `mp_from_fit()`.", call. = FALSE)
   }
@@ -54,6 +60,9 @@ mp_from_fit <- function(fit,
     stop(sprintf("`test_term` '%s' is not a fixed effect in the model.", term), call. = FALSE)
   }
 
+  grouping <- names(lme4::ngrps(fit))
+  extend <- .mp_validate_extend(extend, grouping)
+
   allowed <- if (is_gaussian) .mp_lme4_methods else .mp_glmm_methods
   method <- `%||%`(test_method, "wald")
   if (is.null(null_formula) && method %in% c("lrt", "pb")) {
@@ -67,8 +76,19 @@ mp_from_fit <- function(fit,
 
   simulate_fun <- function(scenario, seed = NULL) {
     beta <- .mp_assumptions_beta(scenario$assumptions, names(fixed), fixed)
-    ysim <- stats::simulate(fit, nsim = 1, newparams = list(beta = beta))[[1]]
+    ext <- scenario$extend
     dat <- stats::model.frame(fit)
+    if (!is.null(ext) && length(ext) > 0L) {
+      for (g in names(ext)) dat <- .mp_extend_frame(dat, g, as.integer(ext[[g]]))
+      # Pass the fitted variance components explicitly (alongside beta) so lme4
+      # does not warn about unspecified params on the new data.
+      np <- list(beta = beta, theta = lme4::getME(fit, "theta"))
+      if (is_gaussian) np$sigma <- stats::sigma(fit)
+      ysim <- stats::simulate(fit, nsim = 1, newparams = np,
+                              newdata = dat, allow.new.levels = TRUE)[[1]]
+    } else {
+      ysim <- stats::simulate(fit, nsim = 1, newparams = list(beta = beta))[[1]]
+    }
     dat[[resp]] <- ysim
     dat
   }
@@ -111,7 +131,7 @@ mp_from_fit <- function(fit,
   )
   design <- .mp_design_from_fit(fit)
 
-  mp_scenario(
+  scn <- mp_scenario(
     formula = ff,
     design = design,
     assumptions = assumptions,
@@ -121,6 +141,12 @@ mp_from_fit <- function(fit,
     fit_fun = backend$fit_fun,
     test_fun = backend$test_fun
   )
+  # Slots that power the extend()-style N-scaling (see mp_extend()). The slot is
+  # named `grouping_factors` (not `extendable_*`) so that `$extend` does not
+  # partial-match it under R's `$` prefix matching.
+  scn$grouping_factors <- grouping
+  scn$extend <- extend
+  scn
 }
 
 # First non-intercept fixed-effect name.
