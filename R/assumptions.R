@@ -8,11 +8,14 @@
 #'   `list("(Intercept)" = 0, condition = 0.4)`).
 #' @param random_effects Optional named list keyed by grouping factor. Each
 #'   element is a named list with `intercept_sd` (the random-intercept SD on the
-#'   linear-predictor scale) and, optionally, `slopes` (a one-element named list
-#'   giving the random-slope SD for a predictor) and `cor` (the intercept-slope
-#'   correlation in `[-1, 1]`). For example,
+#'   linear-predictor scale) and, optionally, `slopes` (a named list of
+#'   random-slope SDs, one per predictor) and `cor`. For example,
 #'   `list(subject = list(intercept_sd = 0.5, slopes = list(condition = 0.3), cor = 0.2))`
-#'   encodes a correlated random intercept and slope, i.e. `(1 + condition | subject)`.
+#'   encodes a correlated random intercept and slope, i.e.
+#'   `(1 + condition | subject)`. With several slopes, `cor` may be a single
+#'   scalar (applied to every pair of terms) or a full correlation matrix over
+#'   `c("(Intercept)", names(slopes))`; each fixed effect named in
+#'   `fixed_effects` also becomes a balanced design predictor.
 #' @param icc Deprecated. Previously documented as an intraclass correlation
 #'   but used as a random-intercept SD. If supplied it is interpreted as
 #'   `intercept_sd` and folded into `random_effects` with a warning. Use
@@ -93,11 +96,13 @@ print.mp_assumptions <- function(x, ...) {
       spec <- x$random_effects[[nm]]
       line <- sprintf("    - %s: intercept_sd = %g", nm, spec$intercept_sd)
       if (!is.null(spec$slopes) && length(spec$slopes) > 0) {
-        sl <- names(spec$slopes)[[1]]
-        line <- paste0(line, sprintf(", slope[%s]_sd = %g", sl, spec$slopes[[sl]]))
+        sl <- vapply(names(spec$slopes),
+                     function(s) sprintf("%s = %g", s, spec$slopes[[s]]),
+                     character(1))
+        line <- paste0(line, sprintf(", slope_sd(%s)", paste(sl, collapse = ", ")))
       }
       if (!is.null(spec$cor)) {
-        line <- paste0(line, sprintf(", cor = %g", spec$cor))
+        line <- paste0(line, if (is.matrix(spec$cor)) ", cor = <matrix>" else sprintf(", cor = %g", spec$cor))
       }
       cat(line, "\n")
     }

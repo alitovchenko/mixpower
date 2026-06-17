@@ -146,8 +146,10 @@ mp_from_fit <- function(fit,
   }, numeric(1))
 }
 
-# Random-effect SDs (intercept, first slope, intercept-slope correlation) per
-# grouping factor, for the scenario's assumptions metadata.
+# Random-effect SDs and correlations per grouping factor, for the scenario's
+# assumptions metadata. Captures the random intercept, every random slope, and
+# their correlation structure (a scalar for the single intercept-slope case,
+# otherwise the full correlation matrix over c("(Intercept)", slopes)).
 .mp_extract_varcorr <- function(fit) {
   vc <- lme4::VarCorr(fit)
   out <- list()
@@ -155,15 +157,20 @@ mp_from_fit <- function(fit,
     m <- vc[[g]]
     sds <- sqrt(diag(m))
     nm <- names(sds)
-    re <- list(intercept_sd = if ("(Intercept)" %in% nm) unname(sds[["(Intercept)"]]) else 0)
+    has_int <- "(Intercept)" %in% nm
+    re <- list(intercept_sd = if (has_int) unname(sds[["(Intercept)"]]) else 0)
     slope_terms <- setdiff(nm, "(Intercept)")
     if (length(slope_terms) >= 1L) {
-      st <- slope_terms[[1]]
-      re$slopes <- stats::setNames(list(unname(sds[[st]])), st)
-      if ("(Intercept)" %in% nm) {
-        cc <- suppressWarnings(stats::cov2cor(m)[["(Intercept)", st]])
-        if (is.finite(cc)) re$cor <- unname(cc)
-      }
+      re$slopes <- stats::setNames(as.list(unname(sds[slope_terms])), slope_terms)
+      decl <- c("(Intercept)", slope_terms)
+      cc <- suppressWarnings(stats::cov2cor(m))
+      R <- diag(1, length(decl))
+      dimnames(R) <- list(decl, decl)
+      common <- intersect(decl, rownames(cc))
+      R[common, common] <- cc[common, common]
+      R[!is.finite(R)] <- 0
+      diag(R) <- 1
+      re$cor <- if (has_int && length(slope_terms) == 1L) unname(R["(Intercept)", slope_terms]) else R
     }
     out[[g]] <- re
   }

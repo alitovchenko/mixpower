@@ -1,3 +1,29 @@
+# mixpower 0.7.0
+
+## Features
+
+- **Multiple correlated random slopes.** `random_effects` now accepts several
+  `slopes` per grouping factor, with a correlation `cor` given either as a
+  scalar (applied to every pair of terms) or as a full correlation matrix over
+  `c("(Intercept)", names(slopes))`. Each fixed effect named in `fixed_effects`
+  becomes a balanced design predictor, so multi-factor maximal models such as
+  `(1 + x1 + x2 | subject)` simulate correctly. The simulator draws the
+  random-effect block from a single multivariate normal (Cholesky / eigen),
+  with no new dependencies; single-slope behaviour is unchanged.
+- **`mp_sesoi()`** returns a scenario whose focal effect is replaced by a
+  smallest effect size of interest --- either an explicit value or a scaled
+  version of the assumed effect (default `multiplier = 0.85`, a 15% reduction).
+- **`mp_safeguard_effect()`** derives a conservative, uncertainty-aware effect
+  from a fitted model: the confidence-interval bound nearest zero (Perugini,
+  Gallucci & Costantini, 2014). Pipe it into `mp_sesoi(effect = ...)` for a
+  safeguard-power analysis.
+- `mp_from_fit()` now records the full random-effect structure (every slope and
+  the complete correlation matrix) in the scenario assumptions.
+- `mp_sensitivity()` / `mp_power_curve()` can vary `random_effects.<g>.cor` and
+  `random_effects.<g>.slopes.<predictor>` in addition to `intercept_sd`.
+- New vignette, *Effect sizes: maximal models, fitted pilots, and safeguard
+  power*, tying these features together with Type S / Type M interpretation.
+
 # mixpower 0.6.0
 
 ## Features

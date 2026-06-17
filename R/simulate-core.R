@@ -5,37 +5,65 @@
   if (is.null(x)) y else x
 }
 
-# Draw correlated random effects for one grouping factor.
+# Draw a block of correlated random effects for one grouping factor.
 #
-# Returns list(intercept = <numeric n_levels>, slope = <numeric n_levels> | NULL).
-# - intercept-only: one rnorm() draw (matches the historical behaviour).
-# - intercept + slope: bivariate normal via Cholesky (no MASS/mvtnorm dep).
-.mp_draw_group_re <- function(n_levels, intercept_sd, slope_sd = 0, cor = 0) {
-  has_int <- !is.null(intercept_sd) && intercept_sd > 0
-  has_slope <- !is.null(slope_sd) && slope_sd > 0
-
-  if (!has_slope) {
-    b0 <- if (has_int) stats::rnorm(n_levels, 0, intercept_sd) else rep(0, n_levels)
-    return(list(intercept = b0, slope = NULL))
+# `sds` is a named vector of standard deviations over the declared terms
+# (`(Intercept)`, then slope predictors); `R` is the matching correlation
+# matrix. Returns an `n_levels` x `n_active_terms` matrix (columns named by the
+# terms with positive SD), or NULL when no term has positive SD.
+#
+# A single active term reduces to one rnorm() draw (matching the historical
+# intercept-only behaviour); multiple terms use a multivariate normal via the
+# Cholesky factor (or an eigen square root for singular targets), so no
+# MASS/mvtnorm dependency is needed.
+.mp_draw_re_block <- function(n_levels, sds, R) {
+  active <- which(sds > 0)
+  if (length(active) == 0L) {
+    return(NULL)
   }
-  if (!has_int) {
-    return(list(intercept = rep(0, n_levels),
-                slope = stats::rnorm(n_levels, 0, slope_sd)))
+  sds_a <- sds[active]
+  terms_a <- names(sds_a)
+
+  if (length(active) == 1L) {
+    b <- stats::rnorm(n_levels, 0, sds_a[[1]])
+    return(matrix(b, ncol = 1L, dimnames = list(NULL, terms_a)))
   }
 
-  rho <- max(min(cor, 1), -1)
-  cov_is <- rho * intercept_sd * slope_sd
-  sigma <- matrix(c(intercept_sd^2, cov_is, cov_is, slope_sd^2), nrow = 2)
+  R_a <- R[active, active, drop = FALSE]
+  d <- diag(sds_a, nrow = length(sds_a))
+  sigma <- d %*% R_a %*% d
+  z <- matrix(stats::rnorm(length(active) * n_levels), nrow = n_levels, ncol = length(active))
   r <- tryCatch(chol(sigma), error = function(e) NULL)
-  if (is.null(r)) {
-    # Perfect (|rho| = 1) or numerically singular: draw as a linear combination.
-    z <- stats::rnorm(n_levels)
-    return(list(intercept = intercept_sd * z,
-                slope = sign(if (rho == 0) 1 else rho) * slope_sd * z))
+  b <- if (is.null(r)) {
+    # Singular target (e.g. |cor| = 1): symmetric square root via eigen.
+    e <- eigen(sigma, symmetric = TRUE)
+    z %*% (e$vectors %*% diag(sqrt(pmax(e$values, 0)), nrow = length(e$values)) %*% t(e$vectors))
+  } else {
+    z %*% r # cov(b) = r'r = sigma
   }
-  z <- matrix(stats::rnorm(2 * n_levels), nrow = n_levels, ncol = 2)
-  b <- z %*% r # cov(b) = r'r = sigma
-  list(intercept = b[, 1], slope = b[, 2])
+  colnames(b) <- terms_a
+  b
+}
+
+# Add a grouping factor's random-effect contribution to the linear predictor.
+.mp_add_group_re <- function(assumptions, group, id, X, n_levels,
+                             intercept_default, intercept_override) {
+  spec <- .mp_re_block_spec(
+    assumptions, group,
+    available = colnames(X),
+    intercept_default = intercept_default,
+    intercept_override = intercept_override
+  )
+  b <- .mp_draw_re_block(n_levels, spec$sds, spec$R)
+  if (is.null(b)) {
+    return(0)
+  }
+  contrib <- numeric(length(id))
+  for (tm in colnames(b)) {
+    draws <- b[id, tm]
+    contrib <- contrib + if (tm == "(Intercept)") draws else draws * X[, tm]
+  }
+  contrib
 }
 
 # Family-specific response given the linear predictor `eta`.
@@ -63,10 +91,13 @@
   )
 }
 
-# Single data-generating process shared by every backend. Builds a balanced
-# within-subject design, adds fixed effects, correlated random effects
-# (intercept + optional slope on `predictor`) per grouping factor, and the
-# family-specific response.
+# Single data-generating process shared by every backend. Each non-intercept
+# entry of `fixed_effects` becomes a balanced within-subject predictor column;
+# with several predictors they are crossed via a binary counter (a full
+# factorial when `trials_per_cell` is a multiple of 2^(#predictors)), which
+# keeps a single predictor at the historical 0,1,0,1,... pattern. Correlated
+# random effects (intercept + any declared slopes) are added per grouping
+# factor before the family-specific response is drawn.
 #
 # `intercept_default` is the random-intercept SD used when neither
 # `random_effects` nor `icc` specify one (1 for Gaussian so a `(1 | g)` term is
@@ -95,31 +126,41 @@
   }
   total_n <- n_subject * trials
 
-  beta <- asm$fixed_effects[[predictor]]
-  if (is.null(beta) || !is.numeric(beta) || length(beta) != 1L || is.na(beta)) {
+  fe <- asm$fixed_effects
+  predictors <- setdiff(names(fe), "(Intercept)")
+  if (!(predictor %in% predictors)) {
     .stop(sprintf("Assumptions must include a numeric scalar fixed_effects$%s.", predictor))
   }
-  beta0 <- `%||%`(asm$fixed_effects[["(Intercept)"]], 0)
+  for (p in predictors) {
+    v <- fe[[p]]
+    if (!is.numeric(v) || length(v) != 1L || is.na(v)) {
+      .stop(sprintf("`fixed_effects$%s` must be a numeric scalar.", p))
+    }
+  }
+  beta0 <- `%||%`(fe[["(Intercept)"]], 0)
 
-  # Balanced within-subject predictor so random slopes are estimable.
   subject_id <- rep(seq_len(n_subject), each = trials)
-  x <- rep(rep(c(0, 1), length.out = trials), times = n_subject)
+  pos <- rep(seq_len(trials) - 1L, times = n_subject) # 0-based within-subject index
+
+  # Balanced predictors via a binary counter over the within-subject index.
+  X <- matrix(0, nrow = total_n, ncol = length(predictors),
+              dimnames = list(NULL, predictors))
+  for (j in seq_along(predictors)) {
+    X[, j] <- as.numeric(bitwAnd(bitwShiftR(pos, j - 1L), 1L))
+  }
 
   dat <- data.frame(.id = subject_id, stringsAsFactors = FALSE)
   names(dat) <- subject
-  dat[[predictor]] <- x
+  for (p in predictors) dat[[p]] <- X[, p]
 
-  eta <- beta0 + beta * x
+  beta_vec <- vapply(predictors, function(p) as.numeric(fe[[p]]), numeric(1))
+  eta <- beta0 + as.vector(X %*% beta_vec)
 
-  re_sub <- .mp_draw_group_re(
-    n_subject,
-    intercept_sd = `%||%`(intercept_overrides[[subject]],
-                          .mp_re_intercept_sd(asm, subject, default = intercept_default)),
-    slope_sd = .mp_re_slope_sd(asm, subject, predictor),
-    cor = .mp_re_cor(asm, subject)
+  eta <- eta + .mp_add_group_re(
+    asm, subject, subject_id, X, n_subject,
+    intercept_default = intercept_default,
+    intercept_override = intercept_overrides[[subject]]
   )
-  eta <- eta + re_sub$intercept[subject_id]
-  if (!is.null(re_sub$slope)) eta <- eta + re_sub$slope[subject_id] * x
 
   if (!is.null(item)) {
     n_item <- des$clusters[[item]]
@@ -127,15 +168,11 @@
       .stop(sprintf("Design must include clusters$%s when item is specified.", item))
     }
     item_id <- rep(seq_len(n_item), length.out = total_n)
-    re_item <- .mp_draw_group_re(
-      n_item,
-      intercept_sd = `%||%`(intercept_overrides[[item]],
-                            .mp_re_intercept_sd(asm, item, default = intercept_default)),
-      slope_sd = .mp_re_slope_sd(asm, item, predictor),
-      cor = .mp_re_cor(asm, item)
+    eta <- eta + .mp_add_group_re(
+      asm, item, item_id, X, n_item,
+      intercept_default = intercept_default,
+      intercept_override = intercept_overrides[[item]]
     )
-    eta <- eta + re_item$intercept[item_id]
-    if (!is.null(re_item$slope)) eta <- eta + re_item$slope[item_id] * x
     dat[[item]] <- factor(item_id)
   }
 

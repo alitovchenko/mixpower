@@ -20,10 +20,14 @@ mp_validate_variation_key <- function(key) {
     stop("`", root, "` keys must include a subfield, e.g. `", root, ".name`.", call. = FALSE)
   }
 
-  if (root == "random_effects" &&
-      (length(path) != 3L || !identical(path[[3]], "intercept_sd"))) {
-    stop("`random_effects` keys must be of the form ",
-         "`random_effects.<group>.intercept_sd`.", call. = FALSE)
+  if (root == "random_effects") {
+    ok <- (length(path) == 3L && path[[3]] %in% c("intercept_sd", "cor")) ||
+      (length(path) == 4L && identical(path[[3]], "slopes"))
+    if (!ok) {
+      stop("`random_effects` keys must be `random_effects.<group>.intercept_sd`, ",
+           "`random_effects.<group>.cor`, or ",
+           "`random_effects.<group>.slopes.<predictor>`.", call. = FALSE)
+    }
   }
 
   if (root %in% c("residual_sd", "trials_per_cell") && length(path) != 1L) {

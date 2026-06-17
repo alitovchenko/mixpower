@@ -147,18 +147,33 @@
   as.numeric(tab["PBtest", "p.value"])
 }
 
-# Point estimate of a fixed-effect term from a fitted model (NA if unavailable).
-# Used for Type S / Type M error reporting.
-.mp_fixef_estimate <- function(fit, term) {
+# Coefficient table for a fitted model, normalised to a numeric matrix with
+# "Estimate"/"Std. Error" columns across the supported backends (NULL on error).
+.mp_coef_table <- function(fit) {
   cf <- tryCatch(stats::coef(summary(fit)), error = function(e) NULL)
   if (is.list(cf) && !is.matrix(cf) && !is.null(cf$cond)) {
     cf <- cf$cond
   }
-  if (is.null(cf) || !is.matrix(cf) || !term %in% rownames(cf) ||
-      !"Estimate" %in% colnames(cf)) {
+  if (is.null(cf) || !is.matrix(cf)) NULL else cf
+}
+
+# Point estimate of a fixed-effect term from a fitted model (NA if unavailable).
+# Used for Type S / Type M error reporting.
+.mp_fixef_estimate <- function(fit, term) {
+  cf <- .mp_coef_table(fit)
+  if (is.null(cf) || !term %in% rownames(cf) || !"Estimate" %in% colnames(cf)) {
     return(NA_real_)
   }
   as.numeric(cf[term, "Estimate"])
+}
+
+# Standard error of a fixed-effect term from a fitted model (NA if unavailable).
+.mp_fixef_se <- function(fit, term) {
+  cf <- .mp_coef_table(fit)
+  if (is.null(cf) || !term %in% rownames(cf) || !"Std. Error" %in% colnames(cf)) {
+    return(NA_real_)
+  }
+  as.numeric(cf[term, "Std. Error"])
 }
 
 # Single inference entry point used by every backend's test_fun.

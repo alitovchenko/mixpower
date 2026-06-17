@@ -5,15 +5,20 @@
 #   assumptions$random_effects = list(
 #     subject = list(
 #       intercept_sd = <non-negative numeric scalar>,
-#       slopes       = list(<predictor> = <non-negative numeric scalar>),  # optional
-#       cor          = <intercept-slope correlation in [-1, 1]>            # optional
+#       slopes       = list(<predictor> = <non-negative numeric scalar>, ...),  # optional, one or more
+#       cor          = <scalar in [-1, 1]>  OR  <correlation matrix>            # optional
 #     ),
 #     item = list(intercept_sd = ...)
 #   )
 #
-# SDs are on the linear-predictor scale (what lme4 reports). A single random
-# slope per grouping factor is supported (the canonical "maximal" case for one
-# within-unit factor); multiple correlated slopes are future work.
+# SDs are on the linear-predictor scale (what lme4 reports). One or more
+# correlated random slopes per grouping factor are supported. The correlation
+# `cor` may be:
+#   * a single scalar, applied to every pair of random-effect terms
+#     (compound symmetric), generalising the intercept-slope correlation of the
+#     single-slope case; or
+#   * a full correlation matrix over the declared terms, ordered
+#     `c("(Intercept)", names(slopes))`.
 #
 # The legacy `icc` field (a named list interpreted, incorrectly, as a
 # random-intercept SD) is still honoured as a fallback so that code written
@@ -41,14 +46,66 @@
   slopes[[predictor]]
 }
 
-# Intercept-slope correlation for `group` (0 if unspecified).
+# Correlation specification for `group` (scalar or matrix; 0 if unspecified).
 .mp_re_cor <- function(assumptions, group) {
   `%||%`(assumptions$random_effects[[group]]$cor, 0)
 }
 
+# Build a correlation matrix over `term_names` from a `cor` specification:
+#   * NULL   -> identity (independent terms)
+#   * scalar -> compound symmetric (unit diagonal, off-diagonal = cor)
+#   * matrix -> used as supplied (diagonal forced to 1)
+.mp_cor_matrix <- function(cor_spec, term_names) {
+  q <- length(term_names)
+  if (is.null(cor_spec)) {
+    R <- diag(1, q)
+  } else if (is.matrix(cor_spec)) {
+    R <- cor_spec
+    diag(R) <- 1
+  } else {
+    R <- matrix(cor_spec, q, q)
+    diag(R) <- 1
+  }
+  dimnames(R) <- list(term_names, term_names)
+  R
+}
+
+# Resolve the random-effect block for one grouping factor into a named SD
+# vector and correlation matrix over the declared terms
+# (`c("(Intercept)", names(slopes))`). `available` is the set of predictor
+# columns in the design; slopes must reference one of them.
+.mp_re_block_spec <- function(assumptions, group, available = NULL,
+                              intercept_default = 0, intercept_override = NULL) {
+  spec <- assumptions$random_effects[[group]]
+  intercept_sd <- `%||%`(
+    intercept_override,
+    .mp_re_intercept_sd(assumptions, group, default = intercept_default)
+  )
+  intercept_sd <- `%||%`(intercept_sd, 0)
+
+  slopes <- if (is.null(spec)) NULL else spec$slopes
+  term_names <- "(Intercept)"
+  sds <- intercept_sd
+  if (!is.null(slopes) && length(slopes) > 0L) {
+    for (p in names(slopes)) {
+      if (!is.null(available) && !(p %in% available)) {
+        .stop(sprintf(
+          "random_effects$%s slope '%s' is not among the design predictors (%s).",
+          group, p, paste(available, collapse = ", ")
+        ))
+      }
+      term_names <- c(term_names, p)
+      sds <- c(sds, slopes[[p]])
+    }
+  }
+  names(sds) <- term_names
+  cor_spec <- if (is.null(spec)) NULL else spec$cor
+  list(sds = sds, R = .mp_cor_matrix(cor_spec, term_names), terms = term_names)
+}
+
 # Validate a user-supplied `random_effects` list. Supports `intercept_sd`,
-# an optional single `slopes` entry (named by predictor), and an optional
-# intercept-slope correlation `cor`.
+# an optional named list of `slopes` (one or more, keyed by predictor), and an
+# optional intercept/slope correlation `cor` (scalar or full matrix).
 .mp_validate_random_effects <- function(random_effects) {
   if (is.null(random_effects)) {
     return(invisible(NULL))
@@ -71,23 +128,46 @@
     }
     .assert_is_nonneg_num(spec$intercept_sd, sprintf("random_effects$%s$intercept_sd", group))
 
+    slope_names <- character(0)
     if (!is.null(spec$slopes)) {
       .assert_named_list(spec$slopes, sprintf("random_effects$%s$slopes", group))
-      if (length(spec$slopes) > 1L) {
-        .stop(sprintf(
-          "`random_effects$%s$slopes` supports a single random slope; got %d. Multiple correlated slopes are not yet supported.",
-          group, length(spec$slopes)
-        ))
-      }
-      for (p in names(spec$slopes)) {
+      slope_names <- names(spec$slopes)
+      for (p in slope_names) {
         .assert_is_nonneg_num(spec$slopes[[p]], sprintf("random_effects$%s$slopes$%s", group, p))
       }
     }
 
     if (!is.null(spec$cor)) {
-      .assert_is_num(spec$cor, sprintf("random_effects$%s$cor", group))
-      if (spec$cor < -1 || spec$cor > 1) {
-        .stop(sprintf("`random_effects$%s$cor` must be in [-1, 1].", group))
+      term_names <- c("(Intercept)", slope_names)
+      q <- length(term_names)
+      if (is.matrix(spec$cor)) {
+        if (nrow(spec$cor) != q || ncol(spec$cor) != q) {
+          .stop(sprintf(
+            "`random_effects$%s$cor` matrix must be %d x %d (intercept + %d slope(s)).",
+            group, q, q, length(slope_names)
+          ))
+        }
+        if (!isSymmetric(unname(spec$cor), tol = 1e-8)) {
+          .stop(sprintf("`random_effects$%s$cor` matrix must be symmetric.", group))
+        }
+        if (any(abs(spec$cor) > 1 + 1e-8)) {
+          .stop(sprintf("`random_effects$%s$cor` entries must be in [-1, 1].", group))
+        }
+      } else {
+        .assert_is_num(spec$cor, sprintf("random_effects$%s$cor", group))
+        if (spec$cor < -1 || spec$cor > 1) {
+          .stop(sprintf("`random_effects$%s$cor` must be in [-1, 1].", group))
+        }
+      }
+      # The implied correlation matrix must be positive (semi-)definite.
+      R <- .mp_cor_matrix(spec$cor, term_names)
+      ev <- tryCatch(min(eigen(R, symmetric = TRUE, only.values = TRUE)$values),
+                     error = function(e) -Inf)
+      if (!is.finite(ev) || ev < -1e-8) {
+        .stop(sprintf(
+          "`random_effects$%s$cor` does not yield a positive-definite correlation matrix.",
+          group
+        ))
       }
     }
   }

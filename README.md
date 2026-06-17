@@ -34,6 +34,44 @@ mp_sensitivity(scn, vary = list(`fixed_effects.Days` = c(2, 5, 10)),
                nsim = 200, seed = 1)
 ```
 
+## Smallest effect of interest & safeguard power
+
+Plan power around a *smallest effect size of interest* instead of an optimistic
+pilot estimate. `mp_sesoi()` shrinks the focal effect (default 15%), and
+`mp_safeguard_effect()` derives a conservative, uncertainty-aware effect from a
+fit's confidence bound (Perugini et al., 2014).
+
+```r
+# 15% reduction (a conservative SESOI heuristic)
+mp_power(mp_sesoi(scn, multiplier = 0.85), nsim = 200, seed = 1)
+
+# Safeguard: use the CI bound nearest zero from the pilot fit
+sg <- mp_safeguard_effect(pilot, term = "Days", conf_level = 0.90)
+mp_power(mp_sesoi(scn, effect = sg), nsim = 200, seed = 1)
+```
+
+## Maximal models: correlated random slopes
+
+`random_effects` supports one or more random slopes per grouping factor with a
+scalar or full-matrix correlation. Each fixed effect you name becomes a balanced
+design predictor, so several factors are crossed automatically.
+
+```r
+a <- mp_assumptions(
+  fixed_effects = list(`(Intercept)` = 0, x1 = 0.5, x2 = 0.3),
+  random_effects = list(subject = list(
+    intercept_sd = 0.4,
+    slopes = list(x1 = 0.3, x2 = 0.3),
+    cor = 0.1
+  )),
+  residual_sd = 1
+)
+scn <- mp_scenario_lme4(y ~ x1 + x2 + (1 + x1 + x2 | subject),
+                        design = mp_design(list(subject = 30), trials_per_cell = 8),
+                        assumptions = a, predictor = "x1")
+mp_power(scn, nsim = 200, seed = 1)
+```
+
 ## Sensitivity analysis
 
 ```r
