@@ -91,13 +91,50 @@
   )
 }
 
+# Resolve a predictor's design spec (type in {binary, continuous}, level in
+# {within, between}) from `design$predictors`. Unspecified -> binary/within,
+# the historical default.
+.mp_resolve_predictor_spec <- function(name, design_predictors) {
+  s <- if (is.null(design_predictors)) NULL else design_predictors[[name]]
+  if (is.null(s)) {
+    return(list(type = "within_binary", continuous = FALSE, between = FALSE))
+  }
+  if (is.character(s)) s <- list(type = s)
+  type <- match.arg(`%||%`(s$type, "binary"), c("binary", "continuous"))
+  level <- match.arg(`%||%`(s$level, "within"), c("within", "between"))
+  list(continuous = identical(type, "continuous"), between = identical(level, "between"))
+}
+
+# Build one predictor column given its spec. Deterministic (no RNG), so the
+# design matrix is fixed across replicates and the default binary/within case is
+# byte-identical to the historical 0,1,0,1,... binary counter.
+#   * binary  / within  : bit `bit_index` of the within-subject position.
+#   * continuous / within: the within-subject position (time-like 0..t-1).
+#   * binary  / between : alternating 0/1 across subjects (balanced).
+#   * continuous / between: standard-normal quantiles across subjects (balanced).
+.mp_make_predictor_column <- function(spec, pos, subject_id, n_subject, bit_index) {
+  if (spec$between) {
+    base <- if (spec$continuous) {
+      stats::qnorm(stats::ppoints(n_subject))
+    } else {
+      rep(c(0, 1), length.out = n_subject)
+    }
+    return(base[subject_id])
+  }
+  if (spec$continuous) {
+    return(as.numeric(pos))
+  }
+  as.numeric(bitwAnd(bitwShiftR(pos, bit_index), 1L))
+}
+
 # Single data-generating process shared by every backend. Each non-intercept
-# entry of `fixed_effects` becomes a balanced within-subject predictor column;
-# with several predictors they are crossed via a binary counter (a full
-# factorial when `trials_per_cell` is a multiple of 2^(#predictors)), which
-# keeps a single predictor at the historical 0,1,0,1,... pattern. Correlated
-# random effects (intercept + any declared slopes) are added per grouping
-# factor before the family-specific response is drawn.
+# entry of `fixed_effects` becomes a design predictor (binary/continuous,
+# within/between per `design$predictors`); binary-within predictors are crossed
+# via a binary counter. Subjects may be nested in a higher grouping factor
+# (`design$nesting`) for three-level designs, and `trials_per_cell` may be a
+# vector for unbalanced within-subject sample sizes. Correlated random effects
+# (intercept + any declared slopes) are added per grouping factor before the
+# family-specific response is drawn.
 #
 # `intercept_default` is the random-intercept SD used when neither
 # `random_effects` nor `icc` specify one (1 for Gaussian so a `(1 | g)` term is
@@ -119,12 +156,36 @@
   des <- scenario$design
   asm <- scenario$assumptions
 
-  n_subject <- des$clusters[[subject]]
   trials <- des$trials_per_cell
-  if (is.null(n_subject) || is.null(trials)) {
+  if (is.null(des$clusters[[subject]]) || is.null(trials)) {
     .stop(sprintf("Design must include clusters$%s and trials_per_cell.", subject))
   }
-  total_n <- n_subject * trials
+
+  # Optional nesting: subject may sit inside a higher grouping factor. When it
+  # does, clusters[[subject]] is read as the number of subjects *per parent*.
+  parent <- if (!is.null(des$nesting) && subject %in% names(des$nesting)) {
+    unname(des$nesting[[subject]])
+  } else {
+    NULL
+  }
+  if (is.null(parent)) {
+    n_subject <- des$clusters[[subject]]
+    subj_parent <- NULL
+    n_parent <- NULL
+  } else {
+    n_parent <- des$clusters[[parent]]
+    if (is.null(n_parent)) {
+      .stop(sprintf("Design must include clusters$%s (nesting parent of %s).", parent, subject))
+    }
+    n_subject <- n_parent * des$clusters[[subject]]
+    subj_parent <- rep(seq_len(n_parent), each = des$clusters[[subject]])
+  }
+
+  # Per-subject trial counts (scalar or recycled vector -> unbalanced designs).
+  trials_vec <- if (length(trials) == 1L) rep(trials, n_subject) else rep_len(trials, n_subject)
+  total_n <- sum(trials_vec)
+  subject_id <- rep(seq_len(n_subject), times = trials_vec)
+  pos <- unlist(lapply(trials_vec, function(t) seq_len(t) - 1L), use.names = FALSE)
 
   fe <- asm$fixed_effects
   predictors <- setdiff(names(fe), "(Intercept)")
@@ -139,14 +200,13 @@
   }
   beta0 <- `%||%`(fe[["(Intercept)"]], 0)
 
-  subject_id <- rep(seq_len(n_subject), each = trials)
-  pos <- rep(seq_len(trials) - 1L, times = n_subject) # 0-based within-subject index
-
-  # Balanced predictors via a binary counter over the within-subject index.
   X <- matrix(0, nrow = total_n, ncol = length(predictors),
               dimnames = list(NULL, predictors))
-  for (j in seq_along(predictors)) {
-    X[, j] <- as.numeric(bitwAnd(bitwShiftR(pos, j - 1L), 1L))
+  bit_index <- 0L
+  for (p in predictors) {
+    spec <- .mp_resolve_predictor_spec(p, des$predictors)
+    X[, p] <- .mp_make_predictor_column(spec, pos, subject_id, n_subject, bit_index)
+    if (!spec$between && !spec$continuous) bit_index <- bit_index + 1L
   }
 
   dat <- data.frame(.id = subject_id, stringsAsFactors = FALSE)
@@ -161,6 +221,16 @@
     intercept_default = intercept_default,
     intercept_override = intercept_overrides[[subject]]
   )
+
+  if (!is.null(parent)) {
+    parent_obs <- subj_parent[subject_id]
+    eta <- eta + .mp_add_group_re(
+      asm, parent, parent_obs, X, n_parent,
+      intercept_default = intercept_default,
+      intercept_override = intercept_overrides[[parent]]
+    )
+    dat[[parent]] <- factor(parent_obs)
+  }
 
   if (!is.null(item)) {
     n_item <- des$clusters[[item]]

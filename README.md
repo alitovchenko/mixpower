@@ -88,6 +88,25 @@ scn <- mp_scenario_lme4(y ~ x1 + x2 + (1 + x1 + x2 | subject),
 mp_power(scn, nsim = 200, seed = 1)
 ```
 
+## Realistic designs: continuous covariates, nesting, imbalance
+
+`mp_design()` goes beyond a single balanced binary factor: declare continuous or
+between-subject predictors, nest subjects in a higher grouping factor (three
+levels), or set unbalanced within-subject sample sizes.
+
+```r
+# Continuous within-subject (time-like) predictor:
+mp_design(list(subject = 30), trials_per_cell = 6,
+          predictors = list(time = "continuous"))
+
+# Three-level: 8 sites, 5 subjects per site, 4 trials each:
+mp_design(list(site = 8, subject = 5), trials_per_cell = 4,
+          nesting = c(subject = "site"))
+
+# Unbalanced within-subject sizes (recycled across subjects):
+mp_design(list(subject = 20), trials_per_cell = c(3, 5, 8))
+```
+
 ## Sensitivity analysis
 
 ```r
