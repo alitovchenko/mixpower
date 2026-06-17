@@ -107,6 +107,21 @@ mp_design(list(site = 8, subject = 5), trials_per_cell = 4,
 mp_design(list(subject = 20), trials_per_cell = c(3, 5, 8))
 ```
 
+## Missing data and dropout
+
+Reflect realistic incomplete data with `mp_missing()`: missing-completely-at-random,
+missing-at-random (probability depends on an observed column), or monotone
+longitudinal dropout (per-timepoint proportions or a Weibull dropout time).
+
+```r
+# 20% MCAR deletion:
+mp_power(mp_missing(scn, "mcar", prob = 0.2), nsim = 200, seed = 1)
+
+# Monotone dropout along a time predictor:
+mp_power(mp_missing(scn, "dropout", time = "time",
+                    dropout = c(0, 0.1, 0.2, 0.35, 0.5, 0.6)), nsim = 200, seed = 1)
+```
+
 ## Sensitivity analysis
 
 ```r
