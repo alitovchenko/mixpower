@@ -1,3 +1,16 @@
+# mixpower 0.6.0
+
+## Features
+
+- `mp_from_fit()` builds a power scenario from an existing `lmer`/`glmer` fit
+  (pilot or published model), the workflow `simr` is known for. New responses
+  are simulated from the fitted model via `stats::simulate()` (preserving the
+  estimated random-effect structure and residual variance), refit, and tested.
+  The fixed effects come from the scenario assumptions (starting at the fitted
+  coefficients), so `mp_sensitivity()` / `mp_power_curve()` can vary an effect
+  size for data-based vs smallest-effect-of-interest comparisons. All of
+  mixpower's inference methods, exact CIs, and Type S/M diagnostics apply.
+
 # mixpower 0.5.0
 
 ## Features

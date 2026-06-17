@@ -15,6 +15,25 @@ mixpower provides simulation-based power analysis for Gaussian linear mixed-effe
 - Supports simulation-based power analysis for Gaussian linear mixed-effects models.
 - Includes diagnostics for convergence and simulation uncertainty.
 
+## Power from a fitted model (pilot data)
+
+If you already have a fitted `lmer`/`glmer` model, `mp_from_fit()` turns it into
+a scenario directly — like `simr`, but with mixpower's diagnostics (Type S/M,
+exact CIs), df-corrected tests, and effect-size sensitivity.
+
+```r
+library(lme4)
+pilot <- lmer(Reaction ~ Days + (Days | Subject), data = sleepstudy)
+
+scn <- mp_from_fit(pilot, test_term = "Days")
+mp_power(scn, nsim = 200, seed = 1)            # data-based power
+
+# Smallest-effect-of-interest: vary the effect while keeping the fitted
+# variance components.
+mp_sensitivity(scn, vary = list(`fixed_effects.Days` = c(2, 5, 10)),
+               nsim = 200, seed = 1)
+```
+
 ## Sensitivity analysis
 
 ```r
