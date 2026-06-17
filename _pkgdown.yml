@@ -1,5 +1,3 @@
-url: https://alitovchenko.github.io/mixpower/
-
 template:
   bootstrap: 5
 
@@ -51,16 +49,30 @@ reference:
       - mp_compare_models
       - mp_power_checkpoint
       - matches("parallel")
+      - plot.mp_power_curve
+      - plot.mp_sensitivity
+      - autoplot.mp_sensitivity
   - title: Reporting and reproducibility
     contents:
       - mp_report_table
       - mp_methods_text
+      - plot.mp_power
+      - as_tibble.mp_power
       - mp_manifest
       - mp_bundle_results
       - mp_write_results
-  - title: Other
+  - title: Lower-level and legacy helpers
     contents:
-      - everything()
+      - mixpower-package
+      - mp_sensitivity_cell_run
+      - simulate_power
+      - summarize_simulations
+      - fit_model
+      - test_effect
+      - simulate_glmm_binomial_data
+      - simulate_glmm_poisson_data
+      - simulate_glmm_nb_data
+      - plot_power
 
 articles:
   - title: Get started
