@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">mixpower</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.5.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.6.0</span>
       </span>
     </div>
 
@@ -72,6 +72,14 @@
       <small>Source: <a href="https://github.com/alitovchenko/mixpower/blob/main/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
     </div>
 
+    <div class="section level2">
+<h2 class="page-header" data-toc-text="0.6.0" id="mixpower-060">mixpower 0.6.0<a class="anchor" aria-label="anchor" href="#mixpower-060"></a></h2>
+<div class="section level3">
+<h3 id="features-0-6-0">Features<a class="anchor" aria-label="anchor" href="#features-0-6-0"></a></h3>
+<ul><li>
+<code><a href="../reference/mp_from_fit.html">mp_from_fit()</a></code> builds a power scenario from an existing <code>lmer</code>/<code>glmer</code> fit (pilot or published model), the workflow <code>simr</code> is known for. New responses are simulated from the fitted model via <code><a href="https://rdrr.io/r/stats/simulate.html" class="external-link">stats::simulate()</a></code> (preserving the estimated random-effect structure and residual variance), refit, and tested. The fixed effects come from the scenario assumptions (starting at the fitted coefficients), so <code><a href="../reference/mp_sensitivity.html">mp_sensitivity()</a></code> / <code><a href="../reference/mp_power_curve.html">mp_power_curve()</a></code> can vary an effect size for data-based vs smallest-effect-of-interest comparisons. All of mixpower’s inference methods, exact CIs, and Type S/M diagnostics apply.</li>
+</ul></div>
+</div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.5.0" id="mixpower-050">mixpower 0.5.0<a class="anchor" aria-label="anchor" href="#mixpower-050"></a></h2>
 <div class="section level3">

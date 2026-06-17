@@ -32,7 +32,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">mixpower</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.5.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.6.0</span>
       </span>
     </div>
 
@@ -481,7 +481,7 @@ for LRT reproducibility.</li>
 <code><a href="https://rdrr.io/pkg/lme4/man/glmer.html" class="external-link">lme4::glmer()</a></code> backend. This keeps design assumptions
 explicit and diagnostics visible.</p>
 <p>Extremely large effect sizes can lead to quasi-separation. In those
-cases, <code>glmer()</code> may warn or return unstable estimates.
+cases, <code><a href="https://rdrr.io/pkg/lme4/man/glmer.html" class="external-link">glmer()</a></code> may warn or return unstable estimates.
 MixPower records these as failed simulations (via <code>NA</code>
 p-values), preserving transparency.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
