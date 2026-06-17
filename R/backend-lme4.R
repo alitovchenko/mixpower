@@ -79,11 +79,18 @@ mp_backend_lme4 <- function(predictor = "condition",
 #' @param subject Subject ID column name.
 #' @param outcome Outcome column name.
 #' @param item Optional item ID column name.
-#' @param test_term Optional explicit term to test. Defaults to `predictor`.
+#' @param test_term Term to test. A single fixed effect (default `predictor`),
+#'   or a character vector of terms for an omnibus / multi-degree-of-freedom
+#'   test (joint Wald for `"wald"`; for `"lrt"`/`"pb"` the `null_formula`
+#'   defines the joint test).
 #' @param test_method Inference method: `"wald"` (default), `"satterthwaite"`,
 #'   `"kenward-roger"`, `"lrt"`, or `"pb"`. See [mp_backend_lme4()].
 #' @param null_formula Null-model formula required for `"lrt"` and `"pb"`.
 #' @param pb_nsim Bootstrap replicates for `test_method = "pb"` (default 100).
+#' @param contrast Optional named numeric vector of fixed-effect weights
+#'   defining a linear contrast `L'beta` to test (e.g. weights from `emmeans`).
+#'   When supplied it overrides `test_term`/`test_method` with a Wald test of
+#'   the contrast.
 #' @return An object of class `mp_scenario`.
 #' @export
 mp_scenario_lme4 <- function(formula,
@@ -97,8 +104,12 @@ mp_scenario_lme4 <- function(formula,
                              test_method = c("wald", "lrt", "satterthwaite",
                                              "kenward-roger", "pb"),
                              null_formula = NULL,
-                             pb_nsim = 100L) {
+                             pb_nsim = 100L,
+                             contrast = NULL) {
   test_method <- .mp_resolve_test_method(test_method, null_formula, .mp_lme4_methods)
+  if (!is.null(contrast) && (!is.numeric(contrast) || is.null(names(contrast)))) {
+    .stop("`contrast` must be a named numeric vector of coefficient weights.")
+  }
 
   backend <- mp_backend_lme4(
     predictor = predictor,
@@ -118,7 +129,8 @@ mp_scenario_lme4 <- function(formula,
       term = test_term,
       method = test_method,
       null_formula = null_formula,
-      pb_nsim = pb_nsim
+      pb_nsim = pb_nsim,
+      contrast = contrast
     ),
     simulate_fun = backend$simulate_fun,
     fit_fun = backend$fit_fun,

@@ -32,7 +32,10 @@ mp_scenario_glmmtmb_lmm(
 
 \item{item}{Optional item ID column name.}
 
-\item{test_term}{Optional explicit term to test. Defaults to \code{predictor}.}
+\item{test_term}{Term to test. A single fixed effect (default \code{predictor}),
+or a character vector of terms for an omnibus / multi-degree-of-freedom
+test (joint Wald for \code{"wald"}; for \code{"lrt"}/\code{"pb"} the \code{null_formula}
+defines the joint test).}
 
 \item{test_method}{Inference method: \code{"wald"} (default), \code{"satterthwaite"},
 \code{"kenward-roger"}, \code{"lrt"}, or \code{"pb"}. See \code{\link[=mp_backend_lme4]{mp_backend_lme4()}}.}

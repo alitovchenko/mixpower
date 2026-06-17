@@ -22,9 +22,12 @@
 }
 
 # True (data-generating) value of the tested fixed effect, or NA if unknown.
+# Type S/M are only defined for a single scalar term, so omnibus (vector) terms
+# and custom contrasts return NA.
 .mp_true_effect <- function(scenario) {
-  term <- if (is.list(scenario$test)) scenario$test$term else NULL
-  if (is.null(term)) return(NA_real_)
+  if (!is.list(scenario$test) || !is.null(scenario$test$contrast)) return(NA_real_)
+  term <- scenario$test$term
+  if (is.null(term) || length(term) != 1L) return(NA_real_)
   fe <- scenario$assumptions$fixed_effects[[term]]
   if (is.null(fe) || !is.numeric(fe) || length(fe) != 1L) return(NA_real_)
   as.numeric(fe)

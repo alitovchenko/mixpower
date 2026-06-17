@@ -122,6 +122,23 @@ mp_power(mp_missing(scn, "dropout", time = "time",
                     dropout = c(0, 0.1, 0.2, 0.35, 0.5, 0.6)), nsim = 200, seed = 1)
 ```
 
+## Flexible analysis: omnibus tests, contrasts, model comparison
+
+Test several coefficients jointly (omnibus), a custom linear contrast, or
+compare competing analysis models on the *same* simulated data to expose Type I
+inflation from misspecification.
+
+```r
+# Omnibus joint Wald test of two terms:
+mp_scenario_lme4(y ~ x1 + x2 + (1 | subject), d, a, test_term = c("x1", "x2"))
+
+# Custom linear contrast (e.g. emmeans-style weights):
+mp_scenario_lme4(y ~ condition + (1 | subject), d, a, contrast = c(condition = 1))
+
+# Same-data comparison of a maximal vs reduced model:
+mp_compare_models(list(maximal = scn_max, reduced = scn_int), nsim = 500, seed = 1)
+```
+
 ## Sensitivity analysis
 
 ```r

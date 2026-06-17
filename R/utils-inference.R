@@ -176,6 +176,47 @@
   as.numeric(cf[term, "Std. Error"])
 }
 
+# Joint (omnibus) Wald chi-square test that several fixed-effect coefficients
+# are simultaneously zero: W = b' V^{-1} b ~ chi^2(df). lme4 fits only; returns
+# NA when coefficients/covariance cannot be recovered.
+.mp_wald_joint_p <- function(fit, terms) {
+  b <- tryCatch(lme4::fixef(fit), error = function(e) NULL)
+  v <- tryCatch(as.matrix(stats::vcov(fit)), error = function(e) NULL)
+  if (is.null(b) || is.null(v) || !all(terms %in% names(b)) || !all(terms %in% rownames(v))) {
+    return(NA_real_)
+  }
+  bb <- b[terms]
+  vv <- v[terms, terms, drop = FALSE]
+  w <- tryCatch(as.numeric(crossprod(bb, solve(vv, bb))), error = function(e) NA_real_)
+  if (!is.finite(w) || w < 0) {
+    return(NA_real_)
+  }
+  stats::pchisq(w, df = length(terms), lower.tail = FALSE)
+}
+
+# Wald test of a user-specified linear contrast L'beta = 0, where `contrast` is
+# a named numeric vector of weights over fixed-effect coefficients (e.g. from
+# emmeans). Returns p_value and the estimated contrast value. lme4 fits only.
+.mp_contrast_test <- function(fit, contrast) {
+  if (is.null(contrast) || !is.numeric(contrast) || is.null(names(contrast))) {
+    .stop("`contrast` must be a named numeric vector of coefficient weights.")
+  }
+  b <- tryCatch(lme4::fixef(fit), error = function(e) NULL)
+  v <- tryCatch(as.matrix(stats::vcov(fit)), error = function(e) NULL)
+  if (is.null(b) || is.null(v) || !all(names(contrast) %in% names(b))) {
+    return(list(p_value = NA_real_, estimate = NA_real_))
+  }
+  l <- stats::setNames(numeric(length(b)), names(b))
+  l[names(contrast)] <- contrast
+  est <- sum(l * b)
+  var_l <- as.numeric(crossprod(l, v %*% l))
+  if (!is.finite(var_l) || var_l <= 0) {
+    return(list(p_value = NA_real_, estimate = est))
+  }
+  z <- est / sqrt(var_l)
+  list(p_value = 2 * stats::pnorm(abs(z), lower.tail = FALSE), estimate = est)
+}
+
 # Single inference entry point used by every backend's test_fun.
 .mp_p_value <- function(fit, term, method, null_formula = NULL, pb_nsim = 100L) {
   switch(method,
@@ -199,6 +240,21 @@
   term <- if (is_list) `%||%`(test$term, predictor) else predictor
   null_f <- if (is_list) `%||%`(test$null_formula, default_null) else default_null
   pb_nsim <- if (is_list) `%||%`(test$pb_nsim, default_pb_nsim) else default_pb_nsim
+  contrast <- if (is_list) test$contrast else NULL
+
+  # Custom linear contrast (e.g. emmeans-style weights).
+  if (!is.null(contrast)) {
+    return(.mp_contrast_test(fit, contrast))
+  }
+  # Omnibus / multi-degree-of-freedom test of several coefficients at once.
+  if (length(term) > 1L) {
+    p <- if (method %in% c("lrt", "pb")) {
+      .mp_p_value(fit, term[[1]], method, null_f, pb_nsim) # null_formula defines the joint test
+    } else {
+      .mp_wald_joint_p(fit, term)
+    }
+    return(list(p_value = p, estimate = NA_real_))
+  }
   list(
     p_value = .mp_p_value(fit, term, method, null_f, pb_nsim),
     estimate = .mp_fixef_estimate(fit, term)
