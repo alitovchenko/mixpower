@@ -20,7 +20,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">mixpower</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.1.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.1.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -81,7 +81,7 @@ full models.</li>
 avoids hidden model-reduction rules and keeps assumptions
 transparent.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">d</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/mp_design.html">mp_design</a></span><span class="op">(</span>clusters <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>subject <span class="op">=</span> <span class="fl">40</span><span class="op">)</span>, trials_per_cell <span class="op">=</span> <span class="fl">8</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">d</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/mp_design.html">mp_design</a></span><span class="op">(</span>clusters <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>subject <span class="op">=</span> <span class="fl">20</span><span class="op">)</span>, trials_per_cell <span class="op">=</span> <span class="fl">6</span><span class="op">)</span></span>
 <span><span class="va">a</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/mp_assumptions.html">mp_assumptions</a></span><span class="op">(</span></span>
 <span>  fixed_effects <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>`(Intercept)` <span class="op">=</span> <span class="fl">0</span>, condition <span class="op">=</span> <span class="fl">0.4</span><span class="op">)</span>,</span>
 <span>  residual_sd <span class="op">=</span> <span class="fl">1</span>,</span>
@@ -103,62 +103,14 @@ transparent.</p>
 <span>  null_formula <span class="op">=</span> <span class="va">y</span> <span class="op">~</span> <span class="fl">1</span> <span class="op">+</span> <span class="op">(</span><span class="fl">1</span> <span class="op">|</span> <span class="va">subject</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">vary_spec</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>`clusters.subject` <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">30</span>, <span class="fl">50</span>, <span class="fl">80</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">vary_spec</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>`clusters.subject` <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">20</span>, <span class="fl">40</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">sens_wald</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/mp_sensitivity.html">mp_sensitivity</a></span><span class="op">(</span></span>
 <span>  <span class="va">scn_wald</span>,</span>
 <span>  vary <span class="op">=</span> <span class="va">vary_spec</span>,</span>
-<span>  nsim <span class="op">=</span> <span class="fl">50</span>,</span>
+<span>  nsim <span class="op">=</span> <span class="fl">12</span>,</span>
 <span>  seed <span class="op">=</span> <span class="fl">123</span></span>
 <span><span class="op">)</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
 <span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
 <span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
 <span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
@@ -175,167 +127,9 @@ transparent.</p>
 <span><span class="va">sens_lrt</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/mp_sensitivity.html">mp_sensitivity</a></span><span class="op">(</span></span>
 <span>  <span class="va">scn_lrt</span>,</span>
 <span>  vary <span class="op">=</span> <span class="va">vary_spec</span>,</span>
-<span>  nsim <span class="op">=</span> <span class="fl">50</span>,</span>
+<span>  nsim <span class="op">=</span> <span class="fl">12</span>,</span>
 <span>  seed <span class="op">=</span> <span class="fl">123</span></span>
 <span><span class="op">)</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
 <span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
 <span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
 <span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
@@ -382,20 +176,16 @@ transparent.</p>
 <span>  <span class="st">"method"</span>, <span class="st">"clusters.subject"</span>, <span class="st">"estimate"</span>, <span class="st">"mcse"</span>,</span>
 <span>  <span class="st">"conf_low"</span>, <span class="st">"conf_high"</span>, <span class="st">"failure_rate"</span>, <span class="st">"singular_rate"</span></span>
 <span><span class="op">)</span><span class="op">]</span></span>
-<span><span class="co">#&gt;   method clusters.subject estimate       mcse  conf_low conf_high failure_rate</span></span>
-<span><span class="co">#&gt; 1   wald               30     0.78 0.05858327 0.6403881 0.8847342            0</span></span>
-<span><span class="co">#&gt; 2   wald               50     0.98 0.01979899 0.8935305 0.9994938            0</span></span>
-<span><span class="co">#&gt; 3   wald               80     1.00 0.00000000 0.9288783 1.0000000            0</span></span>
-<span><span class="co">#&gt; 4    lrt               30     0.78 0.05858327 0.6403881 0.8847342            0</span></span>
-<span><span class="co">#&gt; 5    lrt               50     0.98 0.01979899 0.8935305 0.9994938            0</span></span>
-<span><span class="co">#&gt; 6    lrt               80     1.00 0.00000000 0.9288783 1.0000000            0</span></span>
+<span><span class="co">#&gt;   method clusters.subject  estimate      mcse  conf_low conf_high failure_rate</span></span>
+<span><span class="co">#&gt; 1   wald               20 0.5000000 0.1443376 0.2109446 0.7890554            0</span></span>
+<span><span class="co">#&gt; 2   wald               40 0.5833333 0.1423188 0.2766697 0.8483478            0</span></span>
+<span><span class="co">#&gt; 3    lrt               20 0.5000000 0.1443376 0.2109446 0.7890554            0</span></span>
+<span><span class="co">#&gt; 4    lrt               40 0.5833333 0.1423188 0.2766697 0.8483478            0</span></span>
 <span><span class="co">#&gt;   singular_rate</span></span>
-<span><span class="co">#&gt; 1          0.38</span></span>
-<span><span class="co">#&gt; 2          0.48</span></span>
-<span><span class="co">#&gt; 3          0.34</span></span>
-<span><span class="co">#&gt; 4          0.38</span></span>
-<span><span class="co">#&gt; 5          0.48</span></span>
-<span><span class="co">#&gt; 6          0.34</span></span>
+<span><span class="co">#&gt; 1     0.5833333</span></span>
+<span><span class="co">#&gt; 2     0.4166667</span></span>
+<span><span class="co">#&gt; 3     0.5833333</span></span>
+<span><span class="co">#&gt; 4     0.4166667</span></span>
 <span></span>
 <span><span class="va">wald_dat</span> <span class="op">&lt;-</span> <span class="va">comparison</span><span class="op">[</span><span class="va">comparison</span><span class="op">$</span><span class="va">method</span> <span class="op">==</span> <span class="st">"wald"</span>, <span class="op">]</span></span>
 <span><span class="va">lrt_dat</span>  <span class="op">&lt;-</span> <span class="va">comparison</span><span class="op">[</span><span class="va">comparison</span><span class="op">$</span><span class="va">method</span> <span class="op">==</span> <span class="st">"lrt"</span>, <span class="op">]</span></span>
@@ -443,7 +233,7 @@ cases, <code><a href="https://rdrr.io/pkg/lme4/man/glmer.html" class="external-l
 MixPower records these as failed simulations (via <code>NA</code>
 p-values), preserving transparency.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">d</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/mp_design.html">mp_design</a></span><span class="op">(</span>clusters <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>subject <span class="op">=</span> <span class="fl">40</span><span class="op">)</span>, trials_per_cell <span class="op">=</span> <span class="fl">8</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">d</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/mp_design.html">mp_design</a></span><span class="op">(</span>clusters <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>subject <span class="op">=</span> <span class="fl">20</span><span class="op">)</span>, trials_per_cell <span class="op">=</span> <span class="fl">6</span><span class="op">)</span></span>
 <span><span class="va">a</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/mp_assumptions.html">mp_assumptions</a></span><span class="op">(</span></span>
 <span>  fixed_effects <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>`(Intercept)` <span class="op">=</span> <span class="fl">0</span>, condition <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span>,</span>
 <span>  residual_sd <span class="op">=</span> <span class="fl">1</span>,</span>
@@ -457,23 +247,19 @@ p-values), preserving transparency.</p>
 <span>  test_method <span class="op">=</span> <span class="st">"wald"</span></span>
 <span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">res_bin</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/mp_power.html">mp_power</a></span><span class="op">(</span><span class="va">scn_bin</span>, nsim <span class="op">=</span> <span class="fl">50</span>, seed <span class="op">=</span> <span class="fl">123</span><span class="op">)</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
+<span><span class="va">res_bin</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/mp_power.html">mp_power</a></span><span class="op">(</span><span class="va">scn_bin</span>, nsim <span class="op">=</span> <span class="fl">12</span>, seed <span class="op">=</span> <span class="fl">123</span><span class="op">)</span></span>
 <span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
 <span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
 <span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">res_bin</span><span class="op">)</span></span>
 <span><span class="co">#&gt; $power</span></span>
-<span><span class="co">#&gt; [1] 0.62</span></span>
+<span><span class="co">#&gt; [1] 0.08333333</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $mcse</span></span>
-<span><span class="co">#&gt; [1] 0.06864401</span></span>
+<span><span class="co">#&gt; [1] 0.07978559</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $ci</span></span>
-<span><span class="co">#&gt; [1] 0.4717492 0.7534989</span></span>
+<span><span class="co">#&gt; [1] 0.002107593 0.384796165</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $ci_method</span></span>
 <span><span class="co">#&gt; [1] "clopper-pearson"</span></span>
@@ -483,17 +269,17 @@ p-values), preserving transparency.</p>
 <span><span class="co">#&gt; [1] 0</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $diagnostics$singular_rate</span></span>
-<span><span class="co">#&gt; [1] 0.14</span></span>
+<span><span class="co">#&gt; [1] 0.25</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $diagnostics$type_s</span></span>
 <span><span class="co">#&gt; [1] 0</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $diagnostics$type_m</span></span>
-<span><span class="co">#&gt; [1] 1.338776</span></span>
+<span><span class="co">#&gt; [1] 2.663587</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $nsim</span></span>
-<span><span class="co">#&gt; [1] 50</span></span>
+<span><span class="co">#&gt; [1] 12</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $alpha</span></span>
 <span><span class="co">#&gt; [1] 0.05</span></span>
@@ -510,20 +296,10 @@ p-values), preserving transparency.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">sens_bin</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/mp_sensitivity.html">mp_sensitivity</a></span><span class="op">(</span></span>
 <span>  <span class="va">scn_bin</span>,</span>
-<span>  vary <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>`fixed_effects.condition` <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.2</span>, <span class="fl">0.4</span>, <span class="fl">0.6</span><span class="op">)</span><span class="op">)</span>,</span>
-<span>  nsim <span class="op">=</span> <span class="fl">50</span>,</span>
+<span>  vary <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>`fixed_effects.condition` <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.2</span>, <span class="fl">0.6</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>  nsim <span class="op">=</span> <span class="fl">12</span>,</span>
 <span>  seed <span class="op">=</span> <span class="fl">123</span></span>
 <span><span class="op">)</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
 <span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
 <span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
 <span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
@@ -536,14 +312,12 @@ p-values), preserving transparency.</p>
 <p><img src="mixpower-intro_files/figure-html/binomial-sensitivity-1.png" class="r-plt" alt="" width="700"></p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">sens_bin</span><span class="op">$</span><span class="va">results</span></span>
-<span><span class="co">#&gt;   fixed_effects.condition estimate       mcse   conf_low conf_high failure_rate</span></span>
-<span><span class="co">#&gt; 1                     0.2     0.16 0.05184593 0.07170077 0.2911263            0</span></span>
-<span><span class="co">#&gt; 2                     0.4     0.42 0.06979971 0.28188224 0.5679396            0</span></span>
-<span><span class="co">#&gt; 3                     0.6     0.84 0.05184593 0.70887369 0.9282992            0</span></span>
+<span><span class="co">#&gt;   fixed_effects.condition  estimate      mcse   conf_low conf_high failure_rate</span></span>
+<span><span class="co">#&gt; 1                     0.2 0.1666667 0.1075829 0.02086253 0.4841377            0</span></span>
+<span><span class="co">#&gt; 2                     0.6 0.2500000 0.1250000 0.05486064 0.5718585            0</span></span>
 <span><span class="co">#&gt;   singular_rate n_effective nsim</span></span>
-<span><span class="co">#&gt; 1          0.12          50   50</span></span>
-<span><span class="co">#&gt; 2          0.10          50   50</span></span>
-<span><span class="co">#&gt; 3          0.12          50   50</span></span>
+<span><span class="co">#&gt; 1     0.2500000          12   12</span></span>
+<span><span class="co">#&gt; 2     0.3333333          12   12</span></span>
 <span></span>
 <span><span class="co"># Inspect failure_rate and singular_rate alongside power.</span></span>
 <span><span class="co"># Increase nsim for final study reporting.</span></span></code></pre></div>
@@ -555,7 +329,7 @@ p-values), preserving transparency.</p>
 Binomial GLMMs. Poisson is appropriate when variance ≈ mean; NB handles
 over-dispersion.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">d</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/mp_design.html">mp_design</a></span><span class="op">(</span>clusters <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>subject <span class="op">=</span> <span class="fl">40</span><span class="op">)</span>, trials_per_cell <span class="op">=</span> <span class="fl">8</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">d</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/mp_design.html">mp_design</a></span><span class="op">(</span>clusters <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>subject <span class="op">=</span> <span class="fl">20</span><span class="op">)</span>, trials_per_cell <span class="op">=</span> <span class="fl">6</span><span class="op">)</span></span>
 <span><span class="va">a</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/mp_assumptions.html">mp_assumptions</a></span><span class="op">(</span></span>
 <span>  fixed_effects <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>`(Intercept)` <span class="op">=</span> <span class="fl">0</span>, condition <span class="op">=</span> <span class="fl">0.4</span><span class="op">)</span>,</span>
 <span>  residual_sd <span class="op">=</span> <span class="fl">1</span>,</span>
@@ -569,16 +343,17 @@ over-dispersion.</p>
 <span>  test_method <span class="op">=</span> <span class="st">"wald"</span></span>
 <span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">res_pois</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/mp_power.html">mp_power</a></span><span class="op">(</span><span class="va">scn_pois</span>, nsim <span class="op">=</span> <span class="fl">50</span>, seed <span class="op">=</span> <span class="fl">123</span><span class="op">)</span></span>
+<span><span class="va">res_pois</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/mp_power.html">mp_power</a></span><span class="op">(</span><span class="va">scn_pois</span>, nsim <span class="op">=</span> <span class="fl">12</span>, seed <span class="op">=</span> <span class="fl">123</span><span class="op">)</span></span>
+<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">res_pois</span><span class="op">)</span></span>
 <span><span class="co">#&gt; $power</span></span>
-<span><span class="co">#&gt; [1] 0.96</span></span>
+<span><span class="co">#&gt; [1] 0.8333333</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $mcse</span></span>
-<span><span class="co">#&gt; [1] 0.02771281</span></span>
+<span><span class="co">#&gt; [1] 0.1075829</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $ci</span></span>
-<span><span class="co">#&gt; [1] 0.8628624 0.9951186</span></span>
+<span><span class="co">#&gt; [1] 0.5158623 0.9791375</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $ci_method</span></span>
 <span><span class="co">#&gt; [1] "clopper-pearson"</span></span>
@@ -588,17 +363,17 @@ over-dispersion.</p>
 <span><span class="co">#&gt; [1] 0</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $diagnostics$singular_rate</span></span>
-<span><span class="co">#&gt; [1] 0</span></span>
+<span><span class="co">#&gt; [1] 0.08333333</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $diagnostics$type_s</span></span>
 <span><span class="co">#&gt; [1] 0</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $diagnostics$type_m</span></span>
-<span><span class="co">#&gt; [1] 1.008971</span></span>
+<span><span class="co">#&gt; [1] 1.18558</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $nsim</span></span>
-<span><span class="co">#&gt; [1] 50</span></span>
+<span><span class="co">#&gt; [1] 12</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $alpha</span></span>
 <span><span class="co">#&gt; [1] 0.05</span></span>
@@ -619,19 +394,22 @@ over-dispersion.</p>
 <span>  test_method <span class="op">=</span> <span class="st">"wald"</span></span>
 <span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">res_nb</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/mp_power.html">mp_power</a></span><span class="op">(</span><span class="va">scn_nb</span>, nsim <span class="op">=</span> <span class="fl">50</span>, seed <span class="op">=</span> <span class="fl">123</span><span class="op">)</span></span>
+<span><span class="va">res_nb</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/mp_power.html">mp_power</a></span><span class="op">(</span><span class="va">scn_nb</span>, nsim <span class="op">=</span> <span class="fl">12</span>, seed <span class="op">=</span> <span class="fl">123</span><span class="op">)</span></span>
+<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
+<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
+<span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">res_nb</span><span class="op">)</span></span>
 <span><span class="co">#&gt; $power</span></span>
-<span><span class="co">#&gt; [1] 0.84</span></span>
+<span><span class="co">#&gt; [1] 0.4166667</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $mcse</span></span>
-<span><span class="co">#&gt; [1] 0.05184593</span></span>
+<span><span class="co">#&gt; [1] 0.1423188</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $ci</span></span>
-<span><span class="co">#&gt; [1] 0.7088737 0.9282992</span></span>
+<span><span class="co">#&gt; [1] 0.1516522 0.7233303</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $ci_method</span></span>
 <span><span class="co">#&gt; [1] "clopper-pearson"</span></span>
@@ -641,17 +419,17 @@ over-dispersion.</p>
 <span><span class="co">#&gt; [1] 0</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $diagnostics$singular_rate</span></span>
-<span><span class="co">#&gt; [1] 0.04</span></span>
+<span><span class="co">#&gt; [1] 0.3333333</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $diagnostics$type_s</span></span>
 <span><span class="co">#&gt; [1] 0</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $diagnostics$type_m</span></span>
-<span><span class="co">#&gt; [1] 1.187583</span></span>
+<span><span class="co">#&gt; [1] 1.574641</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $nsim</span></span>
-<span><span class="co">#&gt; [1] 50</span></span>
+<span><span class="co">#&gt; [1] 12</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $alpha</span></span>
 <span><span class="co">#&gt; [1] 0.05</span></span>
@@ -668,17 +446,33 @@ over-dispersion.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">sens_pois</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/mp_sensitivity.html">mp_sensitivity</a></span><span class="op">(</span></span>
 <span>  <span class="va">scn_pois</span>,</span>
-<span>  vary <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>`fixed_effects.condition` <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.2</span>, <span class="fl">0.4</span>, <span class="fl">0.6</span><span class="op">)</span><span class="op">)</span>,</span>
-<span>  nsim <span class="op">=</span> <span class="fl">50</span>,</span>
+<span>  vary <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>`fixed_effects.condition` <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.2</span>, <span class="fl">0.6</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>  nsim <span class="op">=</span> <span class="fl">12</span>,</span>
 <span>  seed <span class="op">=</span> <span class="fl">123</span></span>
 <span><span class="op">)</span></span>
+<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
+<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
+<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
+<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
+<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
 <span></span>
 <span><span class="va">sens_nb</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/mp_sensitivity.html">mp_sensitivity</a></span><span class="op">(</span></span>
 <span>  <span class="va">scn_nb</span>,</span>
-<span>  vary <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>`fixed_effects.condition` <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.2</span>, <span class="fl">0.4</span>, <span class="fl">0.6</span><span class="op">)</span><span class="op">)</span>,</span>
-<span>  nsim <span class="op">=</span> <span class="fl">50</span>,</span>
+<span>  vary <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>`fixed_effects.condition` <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.2</span>, <span class="fl">0.6</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>  nsim <span class="op">=</span> <span class="fl">12</span>,</span>
 <span>  seed <span class="op">=</span> <span class="fl">123</span></span>
 <span><span class="op">)</span></span>
+<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
+<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
+<span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>

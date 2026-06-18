@@ -1,5 +1,13 @@
 # Changelog
 
+## mixpower 1.1.1
+
+- Reduce overall `R CMD check` time well under CRAN’s budget: vignettes
+  now use small toy designs and few iterations, and the heavy
+  simulation/correctness tests are marked `skip_on_cran()` (they still
+  run in continuous integration and the lme4 path is exercised by
+  examples). No user-facing changes.
+
 ## mixpower 1.1.0
 
 A large feature release focused on credibility and design realism.

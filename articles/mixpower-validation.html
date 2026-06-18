@@ -20,7 +20,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">mixpower</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.1.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.1.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -75,7 +75,7 @@ focal effect set to zero) and estimates the empirical Type I error rate,
 with an exact interval and a verdict. For a correctly specified model it
 should sit near <code>alpha</code>.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">d</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/mp_design.html">mp_design</a></span><span class="op">(</span>clusters <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>subject <span class="op">=</span> <span class="fl">35</span><span class="op">)</span>, trials_per_cell <span class="op">=</span> <span class="fl">8</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">d</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/mp_design.html">mp_design</a></span><span class="op">(</span>clusters <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>subject <span class="op">=</span> <span class="fl">24</span><span class="op">)</span>, trials_per_cell <span class="op">=</span> <span class="fl">6</span><span class="op">)</span></span>
 <span><span class="va">a</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/mp_assumptions.html">mp_assumptions</a></span><span class="op">(</span></span>
 <span>  fixed_effects <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>`(Intercept)` <span class="op">=</span> <span class="fl">0</span>, condition <span class="op">=</span> <span class="fl">0.4</span><span class="op">)</span>,</span>
 <span>  random_effects <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>subject <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>intercept_sd <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span><span class="op">)</span>,</span>
@@ -83,15 +83,12 @@ should sit near <code>alpha</code>.</p>
 <span><span class="op">)</span></span>
 <span><span class="va">scn</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/mp_scenario_lme4.html">mp_scenario_lme4</a></span><span class="op">(</span><span class="va">y</span> <span class="op">~</span> <span class="va">condition</span> <span class="op">+</span> <span class="op">(</span><span class="fl">1</span> <span class="op">|</span> <span class="va">subject</span><span class="op">)</span>, design <span class="op">=</span> <span class="va">d</span>, assumptions <span class="op">=</span> <span class="va">a</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu"><a href="../reference/mp_calibrate.html">mp_calibrate</a></span><span class="op">(</span><span class="va">scn</span>, nsim <span class="op">=</span> <span class="fl">200</span>, seed <span class="op">=</span> <span class="fl">11</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/mp_calibrate.html">mp_calibrate</a></span><span class="op">(</span><span class="va">scn</span>, nsim <span class="op">=</span> <span class="fl">60</span>, seed <span class="op">=</span> <span class="fl">11</span><span class="op">)</span></span>
 <span><span class="co">#&gt; &lt;mp_calibration&gt;</span></span>
 <span><span class="co">#&gt;   term:    condition (true effect set to 0)</span></span>
 <span><span class="co">#&gt;   nominal alpha: 0.05</span></span>
-<span><span class="co">#&gt;   empirical Type I: 0.0850  (95% CI 0.0503, 0.1326)</span></span>
-<span><span class="co">#&gt;   verdict: anti-conservative</span></span>
-<span><span class="co">#&gt;   -&gt; This test rejects too often under the null; its power is not</span></span>
-<span><span class="co">#&gt;      trustworthy. Try a df-corrected or bootstrap test, or a model</span></span>
-<span><span class="co">#&gt;      that matches the data-generating random-effects structure.</span></span></code></pre></div>
+<span><span class="co">#&gt;   empirical Type I: 0.0500  (95% CI 0.0104, 0.1392)</span></span>
+<span><span class="co">#&gt;   verdict: well-calibrated</span></span></code></pre></div>
 <div class="section level3">
 <h3 id="catching-a-misspecified-model">Catching a misspecified model<a class="anchor" aria-label="anchor" href="#catching-a-misspecified-model"></a>
 </h3>
@@ -109,11 +106,11 @@ analysis model omits it. This inflates Type I error (Barr et al., 2013).
 <span><span class="co"># Data have the slope; the fitted model (1 | subject) ignores it.</span></span>
 <span><span class="va">scn_mis</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/mp_scenario_lme4.html">mp_scenario_lme4</a></span><span class="op">(</span><span class="va">y</span> <span class="op">~</span> <span class="va">condition</span> <span class="op">+</span> <span class="op">(</span><span class="fl">1</span> <span class="op">|</span> <span class="va">subject</span><span class="op">)</span>, design <span class="op">=</span> <span class="va">d</span>, assumptions <span class="op">=</span> <span class="va">a_slope</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu"><a href="../reference/mp_calibrate.html">mp_calibrate</a></span><span class="op">(</span><span class="va">scn_mis</span>, nsim <span class="op">=</span> <span class="fl">200</span>, seed <span class="op">=</span> <span class="fl">7</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/mp_calibrate.html">mp_calibrate</a></span><span class="op">(</span><span class="va">scn_mis</span>, nsim <span class="op">=</span> <span class="fl">60</span>, seed <span class="op">=</span> <span class="fl">7</span><span class="op">)</span></span>
 <span><span class="co">#&gt; &lt;mp_calibration&gt;</span></span>
 <span><span class="co">#&gt;   term:    condition (true effect set to 0)</span></span>
 <span><span class="co">#&gt;   nominal alpha: 0.05</span></span>
-<span><span class="co">#&gt;   empirical Type I: 0.1700  (95% CI 0.1207, 0.2294)</span></span>
+<span><span class="co">#&gt;   empirical Type I: 0.1667  (95% CI 0.0829, 0.2852)</span></span>
 <span><span class="co">#&gt;   verdict: anti-conservative</span></span>
 <span><span class="co">#&gt;   -&gt; This test rejects too often under the null; its power is not</span></span>
 <span><span class="co">#&gt;      trustworthy. Try a df-corrected or bootstrap test, or a model</span></span>
@@ -154,17 +151,8 @@ bootstrap. You can then <em>measure</em> the improvement with
 <span>  design <span class="op">=</span> <span class="fu"><a href="../reference/mp_design.html">mp_design</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>subject <span class="op">=</span> <span class="fl">12</span><span class="op">)</span>, trials_per_cell <span class="op">=</span> <span class="fl">8</span><span class="op">)</span>,</span>
 <span>  assumptions <span class="op">=</span> <span class="va">a</span>, test_method <span class="op">=</span> <span class="st">"kenward-roger"</span></span>
 <span><span class="op">)</span></span>
-<span><span class="fu"><a href="../reference/mp_calibrate.html">mp_calibrate</a></span><span class="op">(</span><span class="va">scn_kr</span>, nsim <span class="op">=</span> <span class="fl">150</span>, seed <span class="op">=</span> <span class="fl">3</span><span class="op">)</span><span class="op">$</span><span class="va">type1</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; [1] 0.06666667</span></span></code></pre></div>
+<span><span class="fu"><a href="../reference/mp_calibrate.html">mp_calibrate</a></span><span class="op">(</span><span class="va">scn_kr</span>, nsim <span class="op">=</span> <span class="fl">40</span>, seed <span class="op">=</span> <span class="fl">3</span><span class="op">)</span><span class="op">$</span><span class="va">type1</span></span>
+<span><span class="co">#&gt; [1] 0.075</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="reporting">Reporting<a class="anchor" aria-label="anchor" href="#reporting"></a>
@@ -172,9 +160,9 @@ bootstrap. You can then <em>measure</em> the improvement with
 <p>Calibration results drop into the same reporting layer as power
 results:</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/mp_report_table.html">mp_report_table</a></span><span class="op">(</span><span class="fu"><a href="../reference/mp_calibrate.html">mp_calibrate</a></span><span class="op">(</span><span class="va">scn</span>, nsim <span class="op">=</span> <span class="fl">150</span>, seed <span class="op">=</span> <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">#&gt;        term alpha      type1     ci_low   ci_high         verdict nsim</span></span>
-<span><span class="co">#&gt; 1 condition  0.05 0.07333333 0.03717461 0.1274242 well-calibrated  150</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/mp_report_table.html">mp_report_table</a></span><span class="op">(</span><span class="fu"><a href="../reference/mp_calibrate.html">mp_calibrate</a></span><span class="op">(</span><span class="va">scn</span>, nsim <span class="op">=</span> <span class="fl">40</span>, seed <span class="op">=</span> <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt;        term alpha type1     ci_low   ci_high         verdict nsim</span></span>
+<span><span class="co">#&gt; 1 condition  0.05 0.075 0.01574218 0.2038647 well-calibrated   40</span></span></code></pre></div>
 <p>Run <code><a href="../reference/mp_calibrate.html">mp_calibrate()</a></code> whenever you change the design size
 or the analysis model. A trustworthy power analysis reports both the
 power and the calibration that backs it.</p>

@@ -20,7 +20,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">mixpower</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.1.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.1.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -97,7 +97,7 @@ scalar applied to every pair of terms, or a full correlation matrix).
 Each fixed effect you name also becomes a balanced design predictor, so
 several effects are crossed as a factorial.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">d</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/mp_design.html">mp_design</a></span><span class="op">(</span>clusters <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>subject <span class="op">=</span> <span class="fl">30</span><span class="op">)</span>, trials_per_cell <span class="op">=</span> <span class="fl">8</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">d</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/mp_design.html">mp_design</a></span><span class="op">(</span>clusters <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>subject <span class="op">=</span> <span class="fl">20</span><span class="op">)</span>, trials_per_cell <span class="op">=</span> <span class="fl">6</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">a</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/mp_assumptions.html">mp_assumptions</a></span><span class="op">(</span></span>
 <span>  fixed_effects <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>`(Intercept)` <span class="op">=</span> <span class="fl">0</span>, x1 <span class="op">=</span> <span class="fl">0.5</span>, x2 <span class="op">=</span> <span class="fl">0.3</span><span class="op">)</span>,</span>
@@ -125,7 +125,7 @@ several effects are crossed as a factorial.</p>
 <span>  predictor <span class="op">=</span> <span class="st">"x1"</span></span>
 <span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu"><a href="../reference/mp_power.html">mp_power</a></span><span class="op">(</span><span class="va">scn_max</span>, nsim <span class="op">=</span> <span class="fl">30</span>, seed <span class="op">=</span> <span class="fl">2024</span><span class="op">)</span><span class="op">$</span><span class="va">power</span></span>
+<span><span class="fu"><a href="../reference/mp_power.html">mp_power</a></span><span class="op">(</span><span class="va">scn_max</span>, nsim <span class="op">=</span> <span class="fl">15</span>, seed <span class="op">=</span> <span class="fl">2024</span><span class="op">)</span><span class="op">$</span><span class="va">power</span></span>
 <span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
 <span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
 <span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
@@ -137,18 +137,7 @@ several effects are crossed as a factorial.</p>
 <span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
 <span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
 <span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; boundary (singular) fit: see help('isSingular')</span></span>
-<span><span class="co">#&gt; [1] 0.8666667</span></span></code></pre></div>
+<span><span class="co">#&gt; [1] 0.7333333</span></span></code></pre></div>
 <p>For a single within-subject factor the same machinery reduces to the
 familiar <code>(1 + condition | subject)</code> form with one slope and
 an intercept-slope correlation.</p>
@@ -173,7 +162,7 @@ but can be varied for planning.</p>
 <span><span class="co">#&gt;     - Subject: intercept_sd = 24.7407, slope_sd(Days = 5.92214), cor = 0.0655512 </span></span>
 <span><span class="co">#&gt;   residual_sd: 25.5918</span></span></code></pre></div>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/mp_power.html">mp_power</a></span><span class="op">(</span><span class="va">scn_fit</span>, nsim <span class="op">=</span> <span class="fl">20</span>, seed <span class="op">=</span> <span class="fl">1</span><span class="op">)</span><span class="op">$</span><span class="va">power</span></span>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/mp_power.html">mp_power</a></span><span class="op">(</span><span class="va">scn_fit</span>, nsim <span class="op">=</span> <span class="fl">15</span>, seed <span class="op">=</span> <span class="fl">1</span><span class="op">)</span><span class="op">$</span><span class="va">power</span></span>
 <span><span class="co">#&gt; [1] 1</span></span></code></pre></div>
 </div>
 <div class="section level2">
@@ -200,14 +189,14 @@ than the (large) pilot estimate:</p>
 <code class="sourceCode R"><span><span class="va">mults</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">0.5</span>, <span class="fl">0.3</span>, <span class="fl">0.2</span><span class="op">)</span></span>
 <span><span class="va">powers</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">vapply</a></span><span class="op">(</span></span>
 <span>  <span class="va">mults</span>,</span>
-<span>  <span class="kw">function</span><span class="op">(</span><span class="va">mult</span><span class="op">)</span> <span class="fu"><a href="../reference/mp_power.html">mp_power</a></span><span class="op">(</span><span class="fu"><a href="../reference/mp_sesoi.html">mp_sesoi</a></span><span class="op">(</span><span class="va">scn_fit</span>, multiplier <span class="op">=</span> <span class="va">mult</span><span class="op">)</span>, nsim <span class="op">=</span> <span class="fl">30</span>, seed <span class="op">=</span> <span class="fl">1</span><span class="op">)</span><span class="op">$</span><span class="va">power</span>,</span>
+<span>  <span class="kw">function</span><span class="op">(</span><span class="va">mult</span><span class="op">)</span> <span class="fu"><a href="../reference/mp_power.html">mp_power</a></span><span class="op">(</span><span class="fu"><a href="../reference/mp_sesoi.html">mp_sesoi</a></span><span class="op">(</span><span class="va">scn_fit</span>, multiplier <span class="op">=</span> <span class="va">mult</span><span class="op">)</span>, nsim <span class="op">=</span> <span class="fl">15</span>, seed <span class="op">=</span> <span class="fl">1</span><span class="op">)</span><span class="op">$</span><span class="va">power</span>,</span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">numeric</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>multiplier <span class="op">=</span> <span class="va">mults</span>, effect <span class="op">=</span> <span class="va">mults</span> <span class="op">*</span> <span class="va">scn_fit</span><span class="op">$</span><span class="va">assumptions</span><span class="op">$</span><span class="va">fixed_effects</span><span class="op">$</span><span class="va">Days</span>, power <span class="op">=</span> <span class="va">powers</span><span class="op">)</span></span>
 <span><span class="co">#&gt;   multiplier    effect     power</span></span>
 <span><span class="co">#&gt; 1        1.0 10.467286 1.0000000</span></span>
-<span><span class="co">#&gt; 2        0.5  5.233643 0.9000000</span></span>
-<span><span class="co">#&gt; 3        0.3  3.140186 0.5666667</span></span>
+<span><span class="co">#&gt; 2        0.5  5.233643 0.8000000</span></span>
+<span><span class="co">#&gt; 3        0.3  3.140186 0.4666667</span></span>
 <span><span class="co">#&gt; 4        0.2  2.093457 0.3333333</span></span></code></pre></div>
 </div>
 <div class="section level2">
@@ -228,7 +217,7 @@ computes it; feed the result straight into <code><a href="../reference/mp_sesoi.
 <span><span class="co">#&gt;   safeguard:   7.92469</span></span></code></pre></div>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">scn_safe</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/mp_sesoi.html">mp_sesoi</a></span><span class="op">(</span><span class="va">scn_fit</span>, effect <span class="op">=</span> <span class="va">sg</span><span class="op">)</span></span>
-<span><span class="fu"><a href="../reference/mp_power.html">mp_power</a></span><span class="op">(</span><span class="va">scn_safe</span>, nsim <span class="op">=</span> <span class="fl">20</span>, seed <span class="op">=</span> <span class="fl">1</span><span class="op">)</span><span class="op">$</span><span class="va">power</span></span>
+<span><span class="fu"><a href="../reference/mp_power.html">mp_power</a></span><span class="op">(</span><span class="va">scn_safe</span>, nsim <span class="op">=</span> <span class="fl">15</span>, seed <span class="op">=</span> <span class="fl">1</span><span class="op">)</span><span class="op">$</span><span class="va">power</span></span>
 <span><span class="co">#&gt; [1] 1</span></span></code></pre></div>
 <p>The safeguard effect (the lower confidence bound) is smaller than the
 point estimate. Here the <code>sleepstudy</code> <code>Days</code>
@@ -254,16 +243,16 @@ the average ratio of the estimated to the true effect — the
 <p>At low power, significant estimates are systematically inflated (Type
 M well above 1); at high power they are well calibrated.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">under</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/mp_power.html">mp_power</a></span><span class="op">(</span><span class="fu"><a href="../reference/mp_sesoi.html">mp_sesoi</a></span><span class="op">(</span><span class="va">scn_fit</span>, multiplier <span class="op">=</span> <span class="fl">0.25</span><span class="op">)</span>, nsim <span class="op">=</span> <span class="fl">40</span>, seed <span class="op">=</span> <span class="fl">7</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">under</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/mp_power.html">mp_power</a></span><span class="op">(</span><span class="fu"><a href="../reference/mp_sesoi.html">mp_sesoi</a></span><span class="op">(</span><span class="va">scn_fit</span>, multiplier <span class="op">=</span> <span class="fl">0.25</span><span class="op">)</span>, nsim <span class="op">=</span> <span class="fl">25</span>, seed <span class="op">=</span> <span class="fl">7</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">under</span><span class="op">)</span></span>
 <span><span class="co">#&gt; $power</span></span>
-<span><span class="co">#&gt; [1] 0.45</span></span>
+<span><span class="co">#&gt; [1] 0.44</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $mcse</span></span>
-<span><span class="co">#&gt; [1] 0.07866066</span></span>
+<span><span class="co">#&gt; [1] 0.09927739</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $ci</span></span>
-<span><span class="co">#&gt; [1] 0.2925884 0.6150932</span></span>
+<span><span class="co">#&gt; [1] 0.2440237 0.6507184</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $ci_method</span></span>
 <span><span class="co">#&gt; [1] "clopper-pearson"</span></span>
@@ -279,11 +268,11 @@ M well above 1); at high power they are well calibrated.</p>
 <span><span class="co">#&gt; [1] 0</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $diagnostics$type_m</span></span>
-<span><span class="co">#&gt; [1] 1.509982</span></span>
+<span><span class="co">#&gt; [1] 1.595777</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $nsim</span></span>
-<span><span class="co">#&gt; [1] 40</span></span>
+<span><span class="co">#&gt; [1] 25</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $alpha</span></span>
 <span><span class="co">#&gt; [1] 0.05</span></span>
@@ -294,7 +283,7 @@ M well above 1); at high power they are well calibrated.</p>
 <span><span class="co">#&gt; $conf_level</span></span>
 <span><span class="co">#&gt; [1] 0.95</span></span>
 <span><span class="va">under</span><span class="op">$</span><span class="va">diagnostics</span><span class="op">$</span><span class="va">type_m</span></span>
-<span><span class="co">#&gt; [1] 1.509982</span></span></code></pre></div>
+<span><span class="co">#&gt; [1] 1.595777</span></span></code></pre></div>
 <p>A Type M near 1 means significant estimates are about right; a value
 like 1.5 means published “hits” from this design would overstate the
 effect by ~50%. This is why planning for a SESOI or safeguard effect —

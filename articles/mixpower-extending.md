@@ -66,14 +66,14 @@ scn <- mp_scenario(
   fit_fun = eng$fit_fun,
   test_fun = eng$test_fun
 )
-mp_power(scn, nsim = 30, seed = 1)
+mp_power(scn, nsim = 12, seed = 1)
 #> <mp_power>
-#>   nsim: 30
+#>   nsim: 12
 #>   alpha: 0.05
 #>   failure_policy: count_as_nondetect
 #>   power: 0.000
 #>   mcse: 0.000
-#>   95% CI (clopper-pearson): [0.000, 0.116]
+#>   95% CI (clopper-pearson): [0.000, 0.265]
 #>   diagnostics:
 #>     - fail_rate: 0.000
 #>     - singular_rate: 0.000

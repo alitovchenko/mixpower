@@ -18,7 +18,7 @@ I error rate, with an exact interval and a verdict. For a correctly
 specified model it should sit near `alpha`.
 
 ``` r
-d <- mp_design(clusters = list(subject = 35), trials_per_cell = 8)
+d <- mp_design(clusters = list(subject = 24), trials_per_cell = 6)
 a <- mp_assumptions(
   fixed_effects = list(`(Intercept)` = 0, condition = 0.4),
   random_effects = list(subject = list(intercept_sd = 0.5)),
@@ -26,15 +26,12 @@ a <- mp_assumptions(
 )
 scn <- mp_scenario_lme4(y ~ condition + (1 | subject), design = d, assumptions = a)
 
-mp_calibrate(scn, nsim = 200, seed = 11)
+mp_calibrate(scn, nsim = 60, seed = 11)
 #> <mp_calibration>
 #>   term:    condition (true effect set to 0)
 #>   nominal alpha: 0.05
-#>   empirical Type I: 0.0850  (95% CI 0.0503, 0.1326)
-#>   verdict: anti-conservative
-#>   -> This test rejects too often under the null; its power is not
-#>      trustworthy. Try a df-corrected or bootstrap test, or a model
-#>      that matches the data-generating random-effects structure.
+#>   empirical Type I: 0.0500  (95% CI 0.0104, 0.1392)
+#>   verdict: well-calibrated
 ```
 
 ### Catching a misspecified model
@@ -54,11 +51,11 @@ a_slope <- mp_assumptions(
 # Data have the slope; the fitted model (1 | subject) ignores it.
 scn_mis <- mp_scenario_lme4(y ~ condition + (1 | subject), design = d, assumptions = a_slope)
 
-mp_calibrate(scn_mis, nsim = 200, seed = 7)
+mp_calibrate(scn_mis, nsim = 60, seed = 7)
 #> <mp_calibration>
 #>   term:    condition (true effect set to 0)
 #>   nominal alpha: 0.05
-#>   empirical Type I: 0.1700  (95% CI 0.1207, 0.2294)
+#>   empirical Type I: 0.1667  (95% CI 0.0829, 0.2852)
 #>   verdict: anti-conservative
 #>   -> This test rejects too often under the null; its power is not
 #>      trustworthy. Try a df-corrected or bootstrap test, or a model
@@ -103,17 +100,8 @@ scn_kr <- mp_scenario_lme4(
   design = mp_design(list(subject = 12), trials_per_cell = 8),
   assumptions = a, test_method = "kenward-roger"
 )
-mp_calibrate(scn_kr, nsim = 150, seed = 3)$type1
-#> boundary (singular) fit: see help('isSingular')
-#> boundary (singular) fit: see help('isSingular')
-#> boundary (singular) fit: see help('isSingular')
-#> boundary (singular) fit: see help('isSingular')
-#> boundary (singular) fit: see help('isSingular')
-#> boundary (singular) fit: see help('isSingular')
-#> boundary (singular) fit: see help('isSingular')
-#> boundary (singular) fit: see help('isSingular')
-#> boundary (singular) fit: see help('isSingular')
-#> [1] 0.06666667
+mp_calibrate(scn_kr, nsim = 40, seed = 3)$type1
+#> [1] 0.075
 ```
 
 ## Reporting
@@ -121,9 +109,9 @@ mp_calibrate(scn_kr, nsim = 150, seed = 3)$type1
 Calibration results drop into the same reporting layer as power results:
 
 ``` r
-mp_report_table(mp_calibrate(scn, nsim = 150, seed = 1))
-#>        term alpha      type1     ci_low   ci_high         verdict nsim
-#> 1 condition  0.05 0.07333333 0.03717461 0.1274242 well-calibrated  150
+mp_report_table(mp_calibrate(scn, nsim = 40, seed = 1))
+#>        term alpha type1     ci_low   ci_high         verdict nsim
+#> 1 condition  0.05 0.075 0.01574218 0.2038647 well-calibrated   40
 ```
 
 Run [`mp_calibrate()`](../reference/mp_calibrate.md) whenever you change

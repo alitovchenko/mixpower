@@ -19,7 +19,7 @@ For LRT, you must provide `null_formula` explicitly. This avoids hidden
 model-reduction rules and keeps assumptions transparent.
 
 ``` r
-d <- mp_design(clusters = list(subject = 40), trials_per_cell = 8)
+d <- mp_design(clusters = list(subject = 20), trials_per_cell = 6)
 a <- mp_assumptions(
   fixed_effects = list(`(Intercept)` = 0, condition = 0.4),
   residual_sd = 1,
@@ -41,62 +41,14 @@ scn_lrt <- mp_scenario_lme4(
   null_formula = y ~ 1 + (1 | subject)
 )
 
-vary_spec <- list(`clusters.subject` = c(30, 50, 80))
+vary_spec <- list(`clusters.subject` = c(20, 40))
 
 sens_wald <- mp_sensitivity(
   scn_wald,
   vary = vary_spec,
-  nsim = 50,
+  nsim = 12,
   seed = 123
 )
-#> boundary (singular) fit: see help('isSingular')
-#> boundary (singular) fit: see help('isSingular')
-#> boundary (singular) fit: see help('isSingular')
-#> boundary (singular) fit: see help('isSingular')
-#> boundary (singular) fit: see help('isSingular')
-#> boundary (singular) fit: see help('isSingular')
-#> boundary (singular) fit: see help('isSingular')
-#> boundary (singular) fit: see help('isSingular')
-#> boundary (singular) fit: see help('isSingular')
-#> boundary (singular) fit: see help('isSingular')
-#> boundary (singular) fit: see help('isSingular')
-#> boundary (singular) fit: see help('isSingular')
-#> boundary (singular) fit: see help('isSingular')
-#> boundary (singular) fit: see help('isSingular')
-#> boundary (singular) fit: see help('isSingular')
-#> boundary (singular) fit: see help('isSingular')
-#> boundary (singular) fit: see help('isSingular')
-#> boundary (singular) fit: see help('isSingular')
-#> boundary (singular) fit: see help('isSingular')
-#> boundary (singular) fit: see help('isSingular')
-#> boundary (singular) fit: see help('isSingular')
-#> boundary (singular) fit: see help('isSingular')
-#> boundary (singular) fit: see help('isSingular')
-#> boundary (singular) fit: see help('isSingular')
-#> boundary (singular) fit: see help('isSingular')
-#> boundary (singular) fit: see help('isSingular')
-#> boundary (singular) fit: see help('isSingular')
-#> boundary (singular) fit: see help('isSingular')
-#> boundary (singular) fit: see help('isSingular')
-#> boundary (singular) fit: see help('isSingular')
-#> boundary (singular) fit: see help('isSingular')
-#> boundary (singular) fit: see help('isSingular')
-#> boundary (singular) fit: see help('isSingular')
-#> boundary (singular) fit: see help('isSingular')
-#> boundary (singular) fit: see help('isSingular')
-#> boundary (singular) fit: see help('isSingular')
-#> boundary (singular) fit: see help('isSingular')
-#> boundary (singular) fit: see help('isSingular')
-#> boundary (singular) fit: see help('isSingular')
-#> boundary (singular) fit: see help('isSingular')
-#> boundary (singular) fit: see help('isSingular')
-#> boundary (singular) fit: see help('isSingular')
-#> boundary (singular) fit: see help('isSingular')
-#> boundary (singular) fit: see help('isSingular')
-#> boundary (singular) fit: see help('isSingular')
-#> boundary (singular) fit: see help('isSingular')
-#> boundary (singular) fit: see help('isSingular')
-#> boundary (singular) fit: see help('isSingular')
 #> boundary (singular) fit: see help('isSingular')
 #> boundary (singular) fit: see help('isSingular')
 #> boundary (singular) fit: see help('isSingular')
@@ -113,167 +65,9 @@ sens_wald <- mp_sensitivity(
 sens_lrt <- mp_sensitivity(
   scn_lrt,
   vary = vary_spec,
-  nsim = 50,
+  nsim = 12,
   seed = 123
 )
-#> boundary (singular) fit: see help('isSingular')
-#> boundary (singular) fit: see help('isSingular')
-#> boundary (singular) fit: see help('isSingular')
-#> boundary (singular) fit: see help('isSingular')
-#> boundary (singular) fit: see help('isSingular')
-#> boundary (singular) fit: see help('isSingular')
-#> boundary (singular) fit: see help('isSingular')
-#> boundary (singular) fit: see help('isSingular')
-#> boundary (singular) fit: see help('isSingular')
-#> boundary (singular) fit: see help('isSingular')
-#> boundary (singular) fit: see help('isSingular')
-#> boundary (singular) fit: see help('isSingular')
-#> boundary (singular) fit: see help('isSingular')
-#> boundary (singular) fit: see help('isSingular')
-#> boundary (singular) fit: see help('isSingular')
-#> boundary (singular) fit: see help('isSingular')
-#> boundary (singular) fit: see help('isSingular')
-#> boundary (singular) fit: see help('isSingular')
-#> boundary (singular) fit: see help('isSingular')
-#> boundary (singular) fit: see help('isSingular')
-#> boundary (singular) fit: see help('isSingular')
-#> boundary (singular) fit: see help('isSingular')
-#> boundary (singular) fit: see help('isSingular')
-#> boundary (singular) fit: see help('isSingular')
-#> boundary (singular) fit: see help('isSingular')
-#> boundary (singular) fit: see help('isSingular')
-#> boundary (singular) fit: see help('isSingular')
-#> boundary (singular) fit: see help('isSingular')
-#> boundary (singular) fit: see help('isSingular')
-#> boundary (singular) fit: see help('isSingular')
-#> boundary (singular) fit: see help('isSingular')
-#> boundary (singular) fit: see help('isSingular')
-#> boundary (singular) fit: see help('isSingular')
-#> boundary (singular) fit: see help('isSingular')
-#> boundary (singular) fit: see help('isSingular')
-#> boundary (singular) fit: see help('isSingular')
-#> boundary (singular) fit: see help('isSingular')
-#> boundary (singular) fit: see help('isSingular')
-#> boundary (singular) fit: see help('isSingular')
-#> boundary (singular) fit: see help('isSingular')
-#> boundary (singular) fit: see help('isSingular')
-#> boundary (singular) fit: see help('isSingular')
-#> boundary (singular) fit: see help('isSingular')
-#> boundary (singular) fit: see help('isSingular')
-#> boundary (singular) fit: see help('isSingular')
-#> boundary (singular) fit: see help('isSingular')
-#> boundary (singular) fit: see help('isSingular')
-#> boundary (singular) fit: see help('isSingular')
-#> boundary (singular) fit: see help('isSingular')
-#> boundary (singular) fit: see help('isSingular')
-#> boundary (singular) fit: see help('isSingular')
-#> boundary (singular) fit: see help('isSingular')
-#> boundary (singular) fit: see help('isSingular')
-#> boundary (singular) fit: see help('isSingular')
-#> boundary (singular) fit: see help('isSingular')
-#> boundary (singular) fit: see help('isSingular')
-#> boundary (singular) fit: see help('isSingular')
-#> boundary (singular) fit: see help('isSingular')
-#> boundary (singular) fit: see help('isSingular')
-#> boundary (singular) fit: see help('isSingular')
-#> boundary (singular) fit: see help('isSingular')
-#> boundary (singular) fit: see help('isSingular')
-#> boundary (singular) fit: see help('isSingular')
-#> boundary (singular) fit: see help('isSingular')
-#> boundary (singular) fit: see help('isSingular')
-#> boundary (singular) fit: see help('isSingular')
-#> boundary (singular) fit: see help('isSingular')
-#> boundary (singular) fit: see help('isSingular')
-#> boundary (singular) fit: see help('isSingular')
-#> boundary (singular) fit: see help('isSingular')
-#> boundary (singular) fit: see help('isSingular')
-#> boundary (singular) fit: see help('isSingular')
-#> boundary (singular) fit: see help('isSingular')
-#> boundary (singular) fit: see help('isSingular')
-#> boundary (singular) fit: see help('isSingular')
-#> boundary (singular) fit: see help('isSingular')
-#> boundary (singular) fit: see help('isSingular')
-#> boundary (singular) fit: see help('isSingular')
-#> boundary (singular) fit: see help('isSingular')
-#> boundary (singular) fit: see help('isSingular')
-#> boundary (singular) fit: see help('isSingular')
-#> boundary (singular) fit: see help('isSingular')
-#> boundary (singular) fit: see help('isSingular')
-#> boundary (singular) fit: see help('isSingular')
-#> boundary (singular) fit: see help('isSingular')
-#> boundary (singular) fit: see help('isSingular')
-#> boundary (singular) fit: see help('isSingular')
-#> boundary (singular) fit: see help('isSingular')
-#> boundary (singular) fit: see help('isSingular')
-#> boundary (singular) fit: see help('isSingular')
-#> boundary (singular) fit: see help('isSingular')
-#> boundary (singular) fit: see help('isSingular')
-#> boundary (singular) fit: see help('isSingular')
-#> boundary (singular) fit: see help('isSingular')
-#> boundary (singular) fit: see help('isSingular')
-#> boundary (singular) fit: see help('isSingular')
-#> boundary (singular) fit: see help('isSingular')
-#> boundary (singular) fit: see help('isSingular')
-#> boundary (singular) fit: see help('isSingular')
-#> boundary (singular) fit: see help('isSingular')
-#> boundary (singular) fit: see help('isSingular')
-#> boundary (singular) fit: see help('isSingular')
-#> boundary (singular) fit: see help('isSingular')
-#> boundary (singular) fit: see help('isSingular')
-#> boundary (singular) fit: see help('isSingular')
-#> boundary (singular) fit: see help('isSingular')
-#> boundary (singular) fit: see help('isSingular')
-#> boundary (singular) fit: see help('isSingular')
-#> boundary (singular) fit: see help('isSingular')
-#> boundary (singular) fit: see help('isSingular')
-#> boundary (singular) fit: see help('isSingular')
-#> boundary (singular) fit: see help('isSingular')
-#> boundary (singular) fit: see help('isSingular')
-#> boundary (singular) fit: see help('isSingular')
-#> boundary (singular) fit: see help('isSingular')
-#> boundary (singular) fit: see help('isSingular')
-#> boundary (singular) fit: see help('isSingular')
-#> boundary (singular) fit: see help('isSingular')
-#> boundary (singular) fit: see help('isSingular')
-#> boundary (singular) fit: see help('isSingular')
-#> boundary (singular) fit: see help('isSingular')
-#> boundary (singular) fit: see help('isSingular')
-#> boundary (singular) fit: see help('isSingular')
-#> boundary (singular) fit: see help('isSingular')
-#> boundary (singular) fit: see help('isSingular')
-#> boundary (singular) fit: see help('isSingular')
-#> boundary (singular) fit: see help('isSingular')
-#> boundary (singular) fit: see help('isSingular')
-#> boundary (singular) fit: see help('isSingular')
-#> boundary (singular) fit: see help('isSingular')
-#> boundary (singular) fit: see help('isSingular')
-#> boundary (singular) fit: see help('isSingular')
-#> boundary (singular) fit: see help('isSingular')
-#> boundary (singular) fit: see help('isSingular')
-#> boundary (singular) fit: see help('isSingular')
-#> boundary (singular) fit: see help('isSingular')
-#> boundary (singular) fit: see help('isSingular')
-#> boundary (singular) fit: see help('isSingular')
-#> boundary (singular) fit: see help('isSingular')
-#> boundary (singular) fit: see help('isSingular')
-#> boundary (singular) fit: see help('isSingular')
-#> boundary (singular) fit: see help('isSingular')
-#> boundary (singular) fit: see help('isSingular')
-#> boundary (singular) fit: see help('isSingular')
-#> boundary (singular) fit: see help('isSingular')
-#> boundary (singular) fit: see help('isSingular')
-#> boundary (singular) fit: see help('isSingular')
-#> boundary (singular) fit: see help('isSingular')
-#> boundary (singular) fit: see help('isSingular')
-#> boundary (singular) fit: see help('isSingular')
-#> boundary (singular) fit: see help('isSingular')
-#> boundary (singular) fit: see help('isSingular')
-#> boundary (singular) fit: see help('isSingular')
-#> boundary (singular) fit: see help('isSingular')
-#> boundary (singular) fit: see help('isSingular')
-#> boundary (singular) fit: see help('isSingular')
-#> boundary (singular) fit: see help('isSingular')
-#> boundary (singular) fit: see help('isSingular')
 #> boundary (singular) fit: see help('isSingular')
 #> boundary (singular) fit: see help('isSingular')
 #> boundary (singular) fit: see help('isSingular')
@@ -320,20 +114,16 @@ comparison[, c(
   "method", "clusters.subject", "estimate", "mcse",
   "conf_low", "conf_high", "failure_rate", "singular_rate"
 )]
-#>   method clusters.subject estimate       mcse  conf_low conf_high failure_rate
-#> 1   wald               30     0.78 0.05858327 0.6403881 0.8847342            0
-#> 2   wald               50     0.98 0.01979899 0.8935305 0.9994938            0
-#> 3   wald               80     1.00 0.00000000 0.9288783 1.0000000            0
-#> 4    lrt               30     0.78 0.05858327 0.6403881 0.8847342            0
-#> 5    lrt               50     0.98 0.01979899 0.8935305 0.9994938            0
-#> 6    lrt               80     1.00 0.00000000 0.9288783 1.0000000            0
+#>   method clusters.subject  estimate      mcse  conf_low conf_high failure_rate
+#> 1   wald               20 0.5000000 0.1443376 0.2109446 0.7890554            0
+#> 2   wald               40 0.5833333 0.1423188 0.2766697 0.8483478            0
+#> 3    lrt               20 0.5000000 0.1443376 0.2109446 0.7890554            0
+#> 4    lrt               40 0.5833333 0.1423188 0.2766697 0.8483478            0
 #>   singular_rate
-#> 1          0.38
-#> 2          0.48
-#> 3          0.34
-#> 4          0.38
-#> 5          0.48
-#> 6          0.34
+#> 1     0.5833333
+#> 2     0.4166667
+#> 3     0.5833333
+#> 4     0.4166667
 
 wald_dat <- comparison[comparison$method == "wald", ]
 lrt_dat  <- comparison[comparison$method == "lrt", ]
@@ -384,7 +174,7 @@ return unstable estimates. MixPower records these as failed simulations
 (via `NA` p-values), preserving transparency.
 
 ``` r
-d <- mp_design(clusters = list(subject = 40), trials_per_cell = 8)
+d <- mp_design(clusters = list(subject = 20), trials_per_cell = 6)
 a <- mp_assumptions(
   fixed_effects = list(`(Intercept)` = 0, condition = 0.5),
   residual_sd = 1,
@@ -398,23 +188,19 @@ scn_bin <- mp_scenario_lme4_binomial(
   test_method = "wald"
 )
 
-res_bin <- mp_power(scn_bin, nsim = 50, seed = 123)
-#> boundary (singular) fit: see help('isSingular')
-#> boundary (singular) fit: see help('isSingular')
-#> boundary (singular) fit: see help('isSingular')
-#> boundary (singular) fit: see help('isSingular')
+res_bin <- mp_power(scn_bin, nsim = 12, seed = 123)
 #> boundary (singular) fit: see help('isSingular')
 #> boundary (singular) fit: see help('isSingular')
 #> boundary (singular) fit: see help('isSingular')
 summary(res_bin)
 #> $power
-#> [1] 0.62
+#> [1] 0.08333333
 #> 
 #> $mcse
-#> [1] 0.06864401
+#> [1] 0.07978559
 #> 
 #> $ci
-#> [1] 0.4717492 0.7534989
+#> [1] 0.002107593 0.384796165
 #> 
 #> $ci_method
 #> [1] "clopper-pearson"
@@ -424,17 +210,17 @@ summary(res_bin)
 #> [1] 0
 #> 
 #> $diagnostics$singular_rate
-#> [1] 0.14
+#> [1] 0.25
 #> 
 #> $diagnostics$type_s
 #> [1] 0
 #> 
 #> $diagnostics$type_m
-#> [1] 1.338776
+#> [1] 2.663587
 #> 
 #> 
 #> $nsim
-#> [1] 50
+#> [1] 12
 #> 
 #> $alpha
 #> [1] 0.05
@@ -451,20 +237,10 @@ summary(res_bin)
 ``` r
 sens_bin <- mp_sensitivity(
   scn_bin,
-  vary = list(`fixed_effects.condition` = c(0.2, 0.4, 0.6)),
-  nsim = 50,
+  vary = list(`fixed_effects.condition` = c(0.2, 0.6)),
+  nsim = 12,
   seed = 123
 )
-#> boundary (singular) fit: see help('isSingular')
-#> boundary (singular) fit: see help('isSingular')
-#> boundary (singular) fit: see help('isSingular')
-#> boundary (singular) fit: see help('isSingular')
-#> boundary (singular) fit: see help('isSingular')
-#> boundary (singular) fit: see help('isSingular')
-#> boundary (singular) fit: see help('isSingular')
-#> boundary (singular) fit: see help('isSingular')
-#> boundary (singular) fit: see help('isSingular')
-#> boundary (singular) fit: see help('isSingular')
 #> boundary (singular) fit: see help('isSingular')
 #> boundary (singular) fit: see help('isSingular')
 #> boundary (singular) fit: see help('isSingular')
@@ -480,14 +256,12 @@ plot(sens_bin)
 
 ``` r
 sens_bin$results
-#>   fixed_effects.condition estimate       mcse   conf_low conf_high failure_rate
-#> 1                     0.2     0.16 0.05184593 0.07170077 0.2911263            0
-#> 2                     0.4     0.42 0.06979971 0.28188224 0.5679396            0
-#> 3                     0.6     0.84 0.05184593 0.70887369 0.9282992            0
+#>   fixed_effects.condition  estimate      mcse   conf_low conf_high failure_rate
+#> 1                     0.2 0.1666667 0.1075829 0.02086253 0.4841377            0
+#> 2                     0.6 0.2500000 0.1250000 0.05486064 0.5718585            0
 #>   singular_rate n_effective nsim
-#> 1          0.12          50   50
-#> 2          0.10          50   50
-#> 3          0.12          50   50
+#> 1     0.2500000          12   12
+#> 2     0.3333333          12   12
 
 # Inspect failure_rate and singular_rate alongside power.
 # Increase nsim for final study reporting.
@@ -500,7 +274,7 @@ GLMMs. Poisson is appropriate when variance ≈ mean; NB handles
 over-dispersion.
 
 ``` r
-d <- mp_design(clusters = list(subject = 40), trials_per_cell = 8)
+d <- mp_design(clusters = list(subject = 20), trials_per_cell = 6)
 a <- mp_assumptions(
   fixed_effects = list(`(Intercept)` = 0, condition = 0.4),
   residual_sd = 1,
@@ -514,16 +288,17 @@ scn_pois <- mp_scenario_lme4_poisson(
   test_method = "wald"
 )
 
-res_pois <- mp_power(scn_pois, nsim = 50, seed = 123)
+res_pois <- mp_power(scn_pois, nsim = 12, seed = 123)
+#> boundary (singular) fit: see help('isSingular')
 summary(res_pois)
 #> $power
-#> [1] 0.96
+#> [1] 0.8333333
 #> 
 #> $mcse
-#> [1] 0.02771281
+#> [1] 0.1075829
 #> 
 #> $ci
-#> [1] 0.8628624 0.9951186
+#> [1] 0.5158623 0.9791375
 #> 
 #> $ci_method
 #> [1] "clopper-pearson"
@@ -533,17 +308,17 @@ summary(res_pois)
 #> [1] 0
 #> 
 #> $diagnostics$singular_rate
-#> [1] 0
+#> [1] 0.08333333
 #> 
 #> $diagnostics$type_s
 #> [1] 0
 #> 
 #> $diagnostics$type_m
-#> [1] 1.008971
+#> [1] 1.18558
 #> 
 #> 
 #> $nsim
-#> [1] 50
+#> [1] 12
 #> 
 #> $alpha
 #> [1] 0.05
@@ -564,19 +339,22 @@ scn_nb <- mp_scenario_lme4_nb(
   test_method = "wald"
 )
 
-res_nb <- mp_power(scn_nb, nsim = 50, seed = 123)
+res_nb <- mp_power(scn_nb, nsim = 12, seed = 123)
+#> boundary (singular) fit: see help('isSingular')
+#> boundary (singular) fit: see help('isSingular')
+#> 
 #> boundary (singular) fit: see help('isSingular')
 #> 
 #> boundary (singular) fit: see help('isSingular')
 summary(res_nb)
 #> $power
-#> [1] 0.84
+#> [1] 0.4166667
 #> 
 #> $mcse
-#> [1] 0.05184593
+#> [1] 0.1423188
 #> 
 #> $ci
-#> [1] 0.7088737 0.9282992
+#> [1] 0.1516522 0.7233303
 #> 
 #> $ci_method
 #> [1] "clopper-pearson"
@@ -586,17 +364,17 @@ summary(res_nb)
 #> [1] 0
 #> 
 #> $diagnostics$singular_rate
-#> [1] 0.04
+#> [1] 0.3333333
 #> 
 #> $diagnostics$type_s
 #> [1] 0
 #> 
 #> $diagnostics$type_m
-#> [1] 1.187583
+#> [1] 1.574641
 #> 
 #> 
 #> $nsim
-#> [1] 50
+#> [1] 12
 #> 
 #> $alpha
 #> [1] 0.05
@@ -613,17 +391,33 @@ summary(res_nb)
 ``` r
 sens_pois <- mp_sensitivity(
   scn_pois,
-  vary = list(`fixed_effects.condition` = c(0.2, 0.4, 0.6)),
-  nsim = 50,
+  vary = list(`fixed_effects.condition` = c(0.2, 0.6)),
+  nsim = 12,
   seed = 123
 )
+#> boundary (singular) fit: see help('isSingular')
+#> boundary (singular) fit: see help('isSingular')
+#> boundary (singular) fit: see help('isSingular')
+#> boundary (singular) fit: see help('isSingular')
+#> boundary (singular) fit: see help('isSingular')
 
 sens_nb <- mp_sensitivity(
   scn_nb,
-  vary = list(`fixed_effects.condition` = c(0.2, 0.4, 0.6)),
-  nsim = 50,
+  vary = list(`fixed_effects.condition` = c(0.2, 0.6)),
+  nsim = 12,
   seed = 123
 )
+#> boundary (singular) fit: see help('isSingular')
+#> boundary (singular) fit: see help('isSingular')
+#> 
+#> boundary (singular) fit: see help('isSingular')
+#> 
+#> boundary (singular) fit: see help('isSingular')
+#> 
+#> boundary (singular) fit: see help('isSingular')
+#> 
+#> boundary (singular) fit: see help('isSingular')
+#> 
 #> boundary (singular) fit: see help('isSingular')
 #> 
 #> boundary (singular) fit: see help('isSingular')

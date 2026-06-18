@@ -34,7 +34,7 @@ you name also becomes a balanced design predictor, so several effects
 are crossed as a factorial.
 
 ``` r
-d <- mp_design(clusters = list(subject = 30), trials_per_cell = 8)
+d <- mp_design(clusters = list(subject = 20), trials_per_cell = 6)
 
 a <- mp_assumptions(
   fixed_effects = list(`(Intercept)` = 0, x1 = 0.5, x2 = 0.3),
@@ -64,7 +64,7 @@ scn_max <- mp_scenario_lme4(
   predictor = "x1"
 )
 
-mp_power(scn_max, nsim = 30, seed = 2024)$power
+mp_power(scn_max, nsim = 15, seed = 2024)$power
 #> boundary (singular) fit: see help('isSingular')
 #> boundary (singular) fit: see help('isSingular')
 #> boundary (singular) fit: see help('isSingular')
@@ -76,18 +76,7 @@ mp_power(scn_max, nsim = 30, seed = 2024)$power
 #> boundary (singular) fit: see help('isSingular')
 #> boundary (singular) fit: see help('isSingular')
 #> boundary (singular) fit: see help('isSingular')
-#> boundary (singular) fit: see help('isSingular')
-#> boundary (singular) fit: see help('isSingular')
-#> boundary (singular) fit: see help('isSingular')
-#> boundary (singular) fit: see help('isSingular')
-#> boundary (singular) fit: see help('isSingular')
-#> boundary (singular) fit: see help('isSingular')
-#> boundary (singular) fit: see help('isSingular')
-#> boundary (singular) fit: see help('isSingular')
-#> boundary (singular) fit: see help('isSingular')
-#> boundary (singular) fit: see help('isSingular')
-#> boundary (singular) fit: see help('isSingular')
-#> [1] 0.8666667
+#> [1] 0.7333333
 ```
 
 For a single within-subject factor the same machinery reduces to the
@@ -116,7 +105,7 @@ scn_fit$assumptions
 ```
 
 ``` r
-mp_power(scn_fit, nsim = 20, seed = 1)$power
+mp_power(scn_fit, nsim = 15, seed = 1)$power
 #> [1] 1
 ```
 
@@ -147,14 +136,14 @@ the (large) pilot estimate:
 mults <- c(1, 0.5, 0.3, 0.2)
 powers <- vapply(
   mults,
-  function(mult) mp_power(mp_sesoi(scn_fit, multiplier = mult), nsim = 30, seed = 1)$power,
+  function(mult) mp_power(mp_sesoi(scn_fit, multiplier = mult), nsim = 15, seed = 1)$power,
   numeric(1)
 )
 data.frame(multiplier = mults, effect = mults * scn_fit$assumptions$fixed_effects$Days, power = powers)
 #>   multiplier    effect     power
 #> 1        1.0 10.467286 1.0000000
-#> 2        0.5  5.233643 0.9000000
-#> 3        0.3  3.140186 0.5666667
+#> 2        0.5  5.233643 0.8000000
+#> 3        0.3  3.140186 0.4666667
 #> 4        0.2  2.093457 0.3333333
 ```
 
@@ -180,7 +169,7 @@ sg
 
 ``` r
 scn_safe <- mp_sesoi(scn_fit, effect = sg)
-mp_power(scn_safe, nsim = 20, seed = 1)$power
+mp_power(scn_safe, nsim = 15, seed = 1)$power
 #> [1] 1
 ```
 
@@ -205,16 +194,16 @@ At low power, significant estimates are systematically inflated (Type M
 well above 1); at high power they are well calibrated.
 
 ``` r
-under <- mp_power(mp_sesoi(scn_fit, multiplier = 0.25), nsim = 40, seed = 7)
+under <- mp_power(mp_sesoi(scn_fit, multiplier = 0.25), nsim = 25, seed = 7)
 summary(under)
 #> $power
-#> [1] 0.45
+#> [1] 0.44
 #> 
 #> $mcse
-#> [1] 0.07866066
+#> [1] 0.09927739
 #> 
 #> $ci
-#> [1] 0.2925884 0.6150932
+#> [1] 0.2440237 0.6507184
 #> 
 #> $ci_method
 #> [1] "clopper-pearson"
@@ -230,11 +219,11 @@ summary(under)
 #> [1] 0
 #> 
 #> $diagnostics$type_m
-#> [1] 1.509982
+#> [1] 1.595777
 #> 
 #> 
 #> $nsim
-#> [1] 40
+#> [1] 25
 #> 
 #> $alpha
 #> [1] 0.05
@@ -245,7 +234,7 @@ summary(under)
 #> $conf_level
 #> [1] 0.95
 under$diagnostics$type_m
-#> [1] 1.509982
+#> [1] 1.595777
 ```
 
 A Type M near 1 means significant estimates are about right; a value
