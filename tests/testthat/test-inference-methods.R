@@ -1,5 +1,6 @@
 test_that("df-corrected tests are no more anti-conservative than Wald (same data)", {
   skip_if_not_installed("lme4")
+  skip_on_cran()
   skip_if_not_installed("lmerTest")
 
   # Small sample under the null: Wald-z is anti-conservative; df corrections
@@ -27,6 +28,7 @@ test_that("df-corrected tests are no more anti-conservative than Wald (same data
 
 test_that("Kenward-Roger runs and detects a strong effect", {
   skip_if_not_installed("lme4")
+  skip_on_cran()
   skip_if_not_installed("lmerTest")
   skip_if_not_installed("pbkrtest")
 
@@ -54,6 +56,7 @@ test_that("Satterthwaite/KR are rejected for non-LMM fits", {
 
 test_that("parametric bootstrap LRT runs end-to-end and needs a null formula", {
   skip_if_not_installed("lme4")
+  skip_on_cran()
   skip_if_not_installed("pbkrtest")
 
   d <- mp_design(clusters = list(subject = 12), trials_per_cell = 4)

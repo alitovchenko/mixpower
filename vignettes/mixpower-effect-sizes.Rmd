@@ -41,7 +41,7 @@ terms, or a full correlation matrix). Each fixed effect you name also becomes a
 balanced design predictor, so several effects are crossed as a factorial.
 
 ```{r}
-d <- mp_design(clusters = list(subject = 30), trials_per_cell = 8)
+d <- mp_design(clusters = list(subject = 20), trials_per_cell = 6)
 
 a <- mp_assumptions(
   fixed_effects = list(`(Intercept)` = 0, x1 = 0.5, x2 = 0.3),
@@ -63,7 +63,7 @@ scn_max <- mp_scenario_lme4(
   predictor = "x1"
 )
 
-mp_power(scn_max, nsim = 30, seed = 2024)$power
+mp_power(scn_max, nsim = 15, seed = 2024)$power
 ```
 
 For a single within-subject factor the same machinery reduces to the familiar
@@ -84,7 +84,7 @@ scn_fit$assumptions
 ```
 
 ```{r}
-mp_power(scn_fit, nsim = 20, seed = 1)$power
+mp_power(scn_fit, nsim = 15, seed = 1)$power
 ```
 
 ## Planning around a smallest effect size of interest
@@ -111,7 +111,7 @@ pilot estimate:
 mults <- c(1, 0.5, 0.3, 0.2)
 powers <- vapply(
   mults,
-  function(mult) mp_power(mp_sesoi(scn_fit, multiplier = mult), nsim = 30, seed = 1)$power,
+  function(mult) mp_power(mp_sesoi(scn_fit, multiplier = mult), nsim = 15, seed = 1)$power,
   numeric(1)
 )
 data.frame(multiplier = mults, effect = mults * scn_fit$assumptions$fixed_effects$Days, power = powers)
@@ -131,7 +131,7 @@ sg
 
 ```{r}
 scn_safe <- mp_sesoi(scn_fit, effect = sg)
-mp_power(scn_safe, nsim = 20, seed = 1)$power
+mp_power(scn_safe, nsim = 15, seed = 1)$power
 ```
 
 The safeguard effect (the lower confidence bound) is smaller than the point
@@ -154,7 +154,7 @@ At low power, significant estimates are systematically inflated (Type M well
 above 1); at high power they are well calibrated.
 
 ```{r}
-under <- mp_power(mp_sesoi(scn_fit, multiplier = 0.25), nsim = 40, seed = 7)
+under <- mp_power(mp_sesoi(scn_fit, multiplier = 0.25), nsim = 25, seed = 7)
 summary(under)
 under$diagnostics$type_m
 ```

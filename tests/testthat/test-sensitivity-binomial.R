@@ -1,5 +1,6 @@
 test_that("mp_sensitivity runs for binomial scenarios", {
   skip_if_not_installed("lme4")
+  skip_on_cran()
 
   d <- mp_design(clusters = list(subject = 20), trials_per_cell = 4)
   a <- mp_assumptions(

@@ -1,4 +1,5 @@
 test_that("as_tibble.mp_power works with tibble installed", {
+  skip_on_cran()
   skip_if_not_installed("tibble")
 
   d <- mp_design(clusters = list(subject = 10), trials_per_cell = 2)
@@ -11,6 +12,7 @@ test_that("as_tibble.mp_power works with tibble installed", {
 })
 
 test_that("autoplot.mp_power_curve requires ggplot2", {
+  skip_on_cran()
   skip_if_not_installed("ggplot2")
 
   d <- mp_design(clusters = list(subject = 14), trials_per_cell = 2)

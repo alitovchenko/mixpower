@@ -22,6 +22,7 @@ test_that("converters validate inputs", {
 
 test_that("mp_d_to_beta reproduces the target d in a large-sample simulation", {
   skip_if_not_installed("lme4")
+  skip_on_cran()
   sd_total <- sqrt(0.5^2 + 1^2)
   beta <- mp_d_to_beta(0.5, sd = sd_total)
 

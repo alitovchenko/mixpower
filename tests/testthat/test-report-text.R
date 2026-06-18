@@ -11,6 +11,7 @@ make_res <- function() {
 
 test_that("mp_methods_text produces a usable paragraph", {
   skip_if_not_installed("lme4")
+  skip_on_cran()
   res <- make_res()
   txt <- mp_methods_text(res)
   expect_s3_class(txt, "mp_methods_text")
@@ -31,6 +32,7 @@ test_that("mp_methods_text validates input", {
 
 test_that("plot.mp_power draws the p-value distribution", {
   skip_if_not_installed("lme4")
+  skip_on_cran()
   res <- make_res()
   grDevices::pdf(tempfile(fileext = ".pdf"))
   on.exit(grDevices::dev.off(), add = TRUE)
@@ -41,6 +43,7 @@ test_that("plot.mp_power draws the p-value distribution", {
 
 test_that("plot.mp_power errors when no per-replicate p-values are stored", {
   skip_if_not_installed("lme4")
+  skip_on_cran()
   d <- mp_design(list(subject = 25), trials_per_cell = 6)
   a <- mp_assumptions(list("(Intercept)" = 0, condition = 0.4),
                       random_effects = list(subject = list(intercept_sd = 0.5)),

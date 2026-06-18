@@ -1,5 +1,6 @@
 test_that("omnibus joint-Wald test of multiple terms works", {
   skip_if_not_installed("lme4")
+  skip_on_cran()
   d <- mp_design(list(subject = 30), trials_per_cell = 8)
   a <- mp_assumptions(
     fixed_effects = list("(Intercept)" = 0, x1 = 0.6, x2 = 0.5),
@@ -27,6 +28,7 @@ test_that("omnibus joint-Wald test of multiple terms works", {
 
 test_that("a linear contrast reduces to the single-coefficient Wald test", {
   skip_if_not_installed("lme4")
+  skip_on_cran()
   d <- mp_design(list(subject = 30), trials_per_cell = 6)
   a <- mp_assumptions(
     fixed_effects = list("(Intercept)" = 0, condition = 0.5),
@@ -46,6 +48,7 @@ test_that("a linear contrast reduces to the single-coefficient Wald test", {
 
 test_that("mp_compare_models exposes Type I inflation from a misspecified model", {
   skip_if_not_installed("lme4")
+  skip_on_cran()
   d <- mp_design(list(subject = 30), trials_per_cell = 8)
   # Null fixed effect, but a real by-subject random slope on condition.
   a <- mp_assumptions(

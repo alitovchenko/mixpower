@@ -1,5 +1,6 @@
 test_that("binomial backend handles extreme effects without crashing", {
   skip_if_not_installed("lme4")
+  skip_on_cran()
 
   d <- mp_design(clusters = list(subject = 15), trials_per_cell = 6)
   a <- mp_assumptions(
@@ -22,6 +23,7 @@ test_that("binomial backend handles extreme effects without crashing", {
 
 test_that("binomial LRT returns NA rather than crashing on irregular LRT output", {
   skip_if_not_installed("lme4")
+  skip_on_cran()
 
   d <- mp_design(clusters = list(subject = 10), trials_per_cell = 3)
   a <- mp_assumptions(

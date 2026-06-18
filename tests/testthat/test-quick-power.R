@@ -1,4 +1,5 @@
 test_that("mp_quick_power returns mp_power and matches full pipeline", {
+  skip_on_cran()
   formula <- y ~ condition + (1 | subject)
   clusters <- list(subject = 30)
   trials_per_cell <- 4
@@ -29,6 +30,7 @@ test_that("mp_quick_power returns mp_power and matches full pipeline", {
 })
 
 test_that("mp_quick_power passes ... to mp_power", {
+  skip_on_cran()
   res <- mp_quick_power(
     y ~ condition + (1 | subject),
     clusters = list(subject = 25),

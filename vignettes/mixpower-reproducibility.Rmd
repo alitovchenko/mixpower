@@ -36,7 +36,7 @@ scn <- mp_scenario_lme4(
 )
 
 seed <- 123
-res <- mp_power(scn, nsim = 20, seed = seed)
+res <- mp_power(scn, nsim = 12, seed = seed)
 manifest <- mp_manifest(scn, seed = seed, session = FALSE)
 manifest
 ```
@@ -79,7 +79,7 @@ To reproduce the same run later:
 Example: re-run with the stored seed and confirm the power estimate matches.
 
 ```{r}
-res2 <- mp_power(scn, nsim = 20, seed = manifest$seed)
+res2 <- mp_power(scn, nsim = 12, seed = manifest$seed)
 all.equal(res$power, res2$power)
 ```
 

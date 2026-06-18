@@ -1,6 +1,6 @@
 Package: mixpower
 Title: Simulation-Based Power Analysis for Mixed-Effects Models
-Version: 1.1.0
+Version: 1.1.1
 Authors@R: person("Alex", "Litovchenko", role = c("aut", "cre"), email = "al4877@columbia.edu")
 Description: A comprehensive, simulation-based toolkit for power and sample-size
     analysis for linear and generalized linear mixed-effects models (LMMs and

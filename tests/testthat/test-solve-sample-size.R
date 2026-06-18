@@ -1,4 +1,5 @@
 test_that("mp_solve_sample_size returns a solution when power achieved", {
+  skip_on_cran()
   d <- mp_design(clusters = list(subject = 10), trials_per_cell = 2)
   a <- mp_assumptions(fixed_effects = list(condition = 0.5), residual_sd = 1)
 
@@ -35,6 +36,7 @@ test_that("mp_solve_sample_size returns a solution when power achieved", {
 })
 
 test_that("mp_solve_sample_size returns NA when target never achieved", {
+  skip_on_cran()
   d <- mp_design(clusters = list(subject = 10), trials_per_cell = 2)
   a <- mp_assumptions(fixed_effects = list(condition = 0.001), residual_sd = 10)
 

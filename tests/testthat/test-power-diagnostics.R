@@ -30,6 +30,7 @@ test_that("mp_power uses Clopper-Pearson by default and brackets the estimate", 
 
 test_that("Type M shows exaggeration at low power and ~1 at high power", {
   skip_if_not_installed("lme4")
+  skip_on_cran()
   f <- y ~ condition + (1 | subject)
 
   # Low power: significant estimates are inflated (Gelman & Carlin 2014).
@@ -58,6 +59,7 @@ test_that("Type M shows exaggeration at low power and ~1 at high power", {
 
 test_that("Type S/M are NA when the true effect is zero or unknown", {
   skip_if_not_installed("lme4")
+  skip_on_cran()
   d <- mp_design(clusters = list(subject = 20), trials_per_cell = 4)
   a_null <- mp_assumptions(
     fixed_effects = list("(Intercept)" = 0, condition = 0),
@@ -71,6 +73,7 @@ test_that("Type S/M are NA when the true effect is zero or unknown", {
 
 test_that("streaming and full agree on Type S/M and CI", {
   skip_if_not_installed("lme4")
+  skip_on_cran()
   d <- mp_design(clusters = list(subject = 20), trials_per_cell = 4)
   a <- mp_assumptions(
     fixed_effects = list("(Intercept)" = 0, condition = 0.3),

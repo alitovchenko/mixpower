@@ -1,4 +1,5 @@
 test_that("mp_scenario_glmmtmb_lmm runs mp_power without error", {
+  skip_on_cran()
   skip_if_not_installed("glmmTMB")
 
   d <- mp_design(clusters = list(subject = 20), trials_per_cell = 3)
@@ -17,6 +18,7 @@ test_that("mp_scenario_glmmtmb_lmm runs mp_power without error", {
 })
 
 test_that("glmmTMB and lme4 Gaussian agree at a well-powered design", {
+  skip_on_cran()
   skip_if_not_installed("glmmTMB")
   skip_if_not(glmmtmb_tmb_ok(), "glmmTMB built against a different TMB ABI; fits unreliable")
 

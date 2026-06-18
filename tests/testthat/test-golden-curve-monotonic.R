@@ -1,4 +1,5 @@
 test_that("power curve estimate increases with effect size (monotonic trend)", {
+  skip_on_cran()
   d <- mp_design(clusters = list(subject = 30), trials_per_cell = 4)
   a_small <- mp_assumptions(
     fixed_effects = list(`(Intercept)` = 0, condition = 0.05),

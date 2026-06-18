@@ -1,5 +1,6 @@
 test_that("mp_sensitivity works for Poisson scenarios", {
   skip_if_not_installed("lme4")
+  skip_on_cran()
 
   d <- mp_design(clusters = list(subject = 20), trials_per_cell = 4)
   a <- mp_assumptions(
@@ -28,6 +29,7 @@ test_that("mp_sensitivity works for Poisson scenarios", {
 
 test_that("mp_sensitivity works for NB scenarios", {
   skip_if_not_installed("lme4")
+  skip_on_cran()
 
   d <- mp_design(clusters = list(subject = 20), trials_per_cell = 4)
   a <- mp_assumptions(

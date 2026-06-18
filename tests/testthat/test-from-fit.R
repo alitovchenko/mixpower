@@ -1,5 +1,6 @@
 test_that("mp_from_fit builds a scenario reflecting the fitted model", {
   skip_if_not_installed("lme4")
+  skip_on_cran()
   m <- lme4::lmer(Reaction ~ Days + (Days | Subject), data = lme4::sleepstudy)
   scn <- mp_from_fit(m, test_term = "Days")
 
@@ -14,6 +15,7 @@ test_that("mp_from_fit builds a scenario reflecting the fitted model", {
 
 test_that("mp_from_fit data-based power is high for a strong pilot effect", {
   skip_if_not_installed("lme4")
+  skip_on_cran()
   m <- lme4::lmer(Reaction ~ Days + (Days | Subject), data = lme4::sleepstudy)
   scn <- mp_from_fit(m, test_term = "Days")
   res <- mp_power(scn, nsim = 20, seed = 1)
@@ -22,6 +24,7 @@ test_that("mp_from_fit data-based power is high for a strong pilot effect", {
 
 test_that("mp_from_fit supports effect-size sensitivity (data-based vs SESOI)", {
   skip_if_not_installed("lme4")
+  skip_on_cran()
   m <- lme4::lmer(Reaction ~ Days + (Days | Subject), data = lme4::sleepstudy)
   scn <- mp_from_fit(m, test_term = "Days")
   out <- mp_sensitivity(scn, vary = list(`fixed_effects.Days` = c(1, 10)),
@@ -32,6 +35,7 @@ test_that("mp_from_fit supports effect-size sensitivity (data-based vs SESOI)", 
 
 test_that("mp_from_fit default test_term is the first non-intercept effect", {
   skip_if_not_installed("lme4")
+  skip_on_cran()
   m <- lme4::lmer(Reaction ~ Days + (Days | Subject), data = lme4::sleepstudy)
   expect_equal(mp_from_fit(m)$test$term, "Days")
 })
@@ -39,12 +43,14 @@ test_that("mp_from_fit default test_term is the first non-intercept effect", {
 test_that("mp_from_fit rejects unsupported objects and bad terms", {
   expect_error(mp_from_fit(stats::lm(mpg ~ wt, data = mtcars)), "lme4")
   skip_if_not_installed("lme4")
+  skip_on_cran()
   m <- lme4::lmer(Reaction ~ Days + (Days | Subject), data = lme4::sleepstudy)
   expect_error(mp_from_fit(m, test_term = "nope"), "not a fixed effect")
 })
 
 test_that("mp_from_fit works for a glmer (binomial) fit and gates LMM-only methods", {
   skip_if_not_installed("lme4")
+  skip_on_cran()
   set.seed(1)
   ns <- 20L
   nt <- 8L

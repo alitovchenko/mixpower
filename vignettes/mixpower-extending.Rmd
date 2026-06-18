@@ -65,7 +65,7 @@ scn <- mp_scenario(
   fit_fun = eng$fit_fun,
   test_fun = eng$test_fun
 )
-mp_power(scn, nsim = 30, seed = 1)
+mp_power(scn, nsim = 12, seed = 1)
 ```
 
 ## Built-in backends

@@ -1,5 +1,6 @@
 test_that(".mp_extend_frame clones grouping levels with fresh ids", {
   skip_if_not_installed("lme4")
+  skip_on_cran()
   mf <- lme4::sleepstudy # 18 subjects x 10 rows
   ext <- .mp_extend_frame(mf, "Subject", 40L)
   expect_equal(length(unique(ext$Subject)), 40L)
@@ -14,6 +15,7 @@ test_that(".mp_extend_frame clones grouping levels with fresh ids", {
 
 test_that("mp_extend validates the scenario and group names", {
   skip_if_not_installed("lme4")
+  skip_on_cran()
   m <- lme4::lmer(Reaction ~ Days + (Days | Subject), data = lme4::sleepstudy)
   scn <- mp_from_fit(m, test_term = "Days")
 
@@ -32,6 +34,7 @@ test_that("mp_extend validates the scenario and group names", {
 
 test_that("extending a pilot scales N and is reproducible", {
   skip_if_not_installed("lme4")
+  skip_on_cran()
   m <- lme4::lmer(Reaction ~ Days + (Days | Subject), data = lme4::sleepstudy)
   scn <- mp_from_fit(m, test_term = "Days")
 
@@ -46,6 +49,7 @@ test_that("extending a pilot scales N and is reproducible", {
 
 test_that("power increases with extended sample size from a pilot", {
   skip_if_not_installed("lme4")
+  skip_on_cran()
   m <- lme4::lmer(Reaction ~ Days + (Days | Subject), data = lme4::sleepstudy)
   scn <- mp_from_fit(m, test_term = "Days")
   # Shrink the (large) Days effect so power is in the informative range.
@@ -58,6 +62,7 @@ test_that("power increases with extended sample size from a pilot", {
 
 test_that("extend.<group> drives a power curve over N", {
   skip_if_not_installed("lme4")
+  skip_on_cran()
   m <- lme4::lmer(Reaction ~ Days + (Days | Subject), data = lme4::sleepstudy)
   scn <- mp_sesoi(mp_from_fit(m, test_term = "Days"), effect = 1.5)
 

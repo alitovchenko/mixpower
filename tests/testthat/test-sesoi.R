@@ -45,6 +45,7 @@ test_that("mp_sesoi resolves the term and validates it", {
 
 test_that("mp_sesoi lowers power relative to the full effect", {
   skip_if_not_installed("lme4")
+  skip_on_cran()
   scn <- make_scn(0.9)
   full <- mp_power(scn, nsim = 60, seed = 11)$power
   small <- mp_power(mp_sesoi(scn, multiplier = 0.3), nsim = 60, seed = 11)$power
@@ -53,6 +54,7 @@ test_that("mp_sesoi lowers power relative to the full effect", {
 
 test_that("mp_safeguard_effect returns the CI bound nearest zero", {
   skip_if_not_installed("lme4")
+  skip_on_cran()
   m <- lme4::lmer(Reaction ~ Days + (Days | Subject), data = lme4::sleepstudy)
   sg <- mp_safeguard_effect(m, term = "Days", conf_level = 0.90)
 
@@ -71,6 +73,7 @@ test_that("mp_safeguard_effect returns the CI bound nearest zero", {
 
 test_that("mp_safeguard_effect feeds mp_sesoi", {
   skip_if_not_installed("lme4")
+  skip_on_cran()
   m <- lme4::lmer(Reaction ~ Days + (Days | Subject), data = lme4::sleepstudy)
   sg <- mp_safeguard_effect(m, term = "Days", conf_level = 0.90)
 
@@ -81,6 +84,7 @@ test_that("mp_safeguard_effect feeds mp_sesoi", {
 
 test_that("mp_safeguard_effect validates its inputs", {
   skip_if_not_installed("lme4")
+  skip_on_cran()
   m <- lme4::lmer(Reaction ~ Days + (Days | Subject), data = lme4::sleepstudy)
   expect_error(mp_safeguard_effect(m, conf_level = 1.5), "in \\(0, 1\\)")
   expect_error(mp_safeguard_effect(m, term = "nope"), "not a fixed effect")

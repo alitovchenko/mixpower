@@ -28,7 +28,7 @@ and estimates the empirical Type I error rate, with an exact interval and a
 verdict. For a correctly specified model it should sit near `alpha`.
 
 ```{r}
-d <- mp_design(clusters = list(subject = 35), trials_per_cell = 8)
+d <- mp_design(clusters = list(subject = 24), trials_per_cell = 6)
 a <- mp_assumptions(
   fixed_effects = list(`(Intercept)` = 0, condition = 0.4),
   random_effects = list(subject = list(intercept_sd = 0.5)),
@@ -36,7 +36,7 @@ a <- mp_assumptions(
 )
 scn <- mp_scenario_lme4(y ~ condition + (1 | subject), design = d, assumptions = a)
 
-mp_calibrate(scn, nsim = 200, seed = 11)
+mp_calibrate(scn, nsim = 60, seed = 11)
 ```
 
 ### Catching a misspecified model
@@ -56,7 +56,7 @@ a_slope <- mp_assumptions(
 # Data have the slope; the fitted model (1 | subject) ignores it.
 scn_mis <- mp_scenario_lme4(y ~ condition + (1 | subject), design = d, assumptions = a_slope)
 
-mp_calibrate(scn_mis, nsim = 200, seed = 7)
+mp_calibrate(scn_mis, nsim = 60, seed = 7)
 ```
 
 The verdict turns to `anti-conservative`: any power computed from this model
@@ -88,7 +88,7 @@ scn_kr <- mp_scenario_lme4(
   design = mp_design(list(subject = 12), trials_per_cell = 8),
   assumptions = a, test_method = "kenward-roger"
 )
-mp_calibrate(scn_kr, nsim = 150, seed = 3)$type1
+mp_calibrate(scn_kr, nsim = 40, seed = 3)$type1
 ```
 
 ## Reporting
@@ -96,7 +96,7 @@ mp_calibrate(scn_kr, nsim = 150, seed = 3)$type1
 Calibration results drop into the same reporting layer as power results:
 
 ```{r}
-mp_report_table(mp_calibrate(scn, nsim = 150, seed = 1))
+mp_report_table(mp_calibrate(scn, nsim = 40, seed = 1))
 ```
 
 Run `mp_calibrate()` whenever you change the design size or the analysis model.

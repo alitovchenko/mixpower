@@ -1,11 +1,16 @@
 ## Submission
 
-This is a new package submission (version 1.0.0).
+This is a new package submission (version 1.1.1).
 
 mixpower provides simulation-based power and sample-size analysis for linear and
 generalized linear mixed-effects models (Gaussian, binomial, Poisson, and
 negative-binomial families) fitted with 'lme4'. There are no reverse
 dependencies.
+
+This version reduces the overall check time (the previous submission was flagged
+for exceeding 10 minutes): vignettes use small toy designs and few iterations,
+and the lengthy simulation/correctness tests are guarded with `skip_on_cran()`.
+The package's repository is now public, so the previously flagged URLs resolve.
 
 ## Test environments
 

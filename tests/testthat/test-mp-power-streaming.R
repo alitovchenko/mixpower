@@ -1,4 +1,5 @@
 test_that("streaming aggregate matches full for power estimate", {
+  skip_on_cran()
   d <- mp_design(clusters = list(subject = 15), trials_per_cell = 2)
   a <- mp_assumptions(
     fixed_effects = list(`(Intercept)` = 0, condition = 0.35),

@@ -1,5 +1,6 @@
 test_that("checkpointed power equals a single mp_power run", {
   skip_if_not_installed("lme4")
+  skip_on_cran()
   d <- mp_design(list(subject = 25), trials_per_cell = 6)
   a <- mp_assumptions(
     fixed_effects = list("(Intercept)" = 0, condition = 0.4),
@@ -23,6 +24,7 @@ test_that("checkpointed power equals a single mp_power run", {
 
 test_that("checkpoint resumes and can grow nsim", {
   skip_if_not_installed("lme4")
+  skip_on_cran()
   d <- mp_design(list(subject = 25), trials_per_cell = 6)
   a <- mp_assumptions(
     fixed_effects = list("(Intercept)" = 0, condition = 0.4),

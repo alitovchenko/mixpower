@@ -14,6 +14,7 @@ test_that("default binary/within predictor is unchanged", {
 
 test_that("continuous within predictor is a time-like 0..t-1 sequence", {
   skip_if_not_installed("lme4")
+  skip_on_cran()
   d <- mp_design(list(subject = 20), trials_per_cell = 6,
                  predictors = list(time = "continuous"))
   a <- mp_assumptions(list("(Intercept)" = 0, time = 0.5),
@@ -55,6 +56,7 @@ test_that("between predictors are constant within subject and balanced", {
 
 test_that("three-level nested design simulates and controls Type I", {
   skip_if_not_installed("lme4")
+  skip_on_cran()
   d <- mp_design(list(site = 6, subject = 5), trials_per_cell = 4,
                  nesting = c(subject = "site"))
   a <- mp_assumptions(

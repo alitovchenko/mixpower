@@ -4,6 +4,7 @@
 
 test_that("mp_calibrate recovers ~alpha for a correctly specified model", {
   skip_if_not_installed("lme4")
+  skip_on_cran()
   d <- mp_design(clusters = list(subject = 35), trials_per_cell = 8)
   a <- mp_assumptions(
     fixed_effects = list("(Intercept)" = 0, condition = 0.4),
@@ -24,6 +25,7 @@ test_that("mp_calibrate recovers ~alpha for a correctly specified model", {
 
 test_that("mp_calibrate flags an omitted random slope as anti-conservative", {
   skip_if_not_installed("lme4")
+  skip_on_cran()
   d <- mp_design(clusters = list(subject = 35), trials_per_cell = 8)
 
   # DGP has a strong by-subject slope on condition...
@@ -53,6 +55,7 @@ test_that("mp_calibrate flags an omitted random slope as anti-conservative", {
 
 test_that("power increases with sample size and reaches high power (asymptotics)", {
   skip_if_not_installed("lme4")
+  skip_on_cran()
   a <- mp_assumptions(
     fixed_effects = list("(Intercept)" = 0, condition = 0.8),
     random_effects = list(subject = list(intercept_sd = 0.5)),
@@ -71,6 +74,7 @@ test_that("power increases with sample size and reaches high power (asymptotics)
 
 test_that("Wald p-value plumbing matches a direct lmerTest computation", {
   skip_if_not_installed("lme4")
+  skip_on_cran()
   d <- mp_design(clusters = list(subject = 30), trials_per_cell = 6)
   a <- mp_assumptions(
     fixed_effects = list("(Intercept)" = 0, condition = 0.5),

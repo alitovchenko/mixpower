@@ -1,5 +1,6 @@
 test_that("lme4 backend supports Wald and LRT methods", {
   skip_if_not_installed("lme4")
+  skip_on_cran()
 
   d <- mp_design(clusters = list(subject = 20), trials_per_cell = 4)
   a <- mp_assumptions(
@@ -40,6 +41,7 @@ test_that("lme4 backend supports Wald and LRT methods", {
 
 test_that("LRT requires explicit null_formula", {
   skip_if_not_installed("lme4")
+  skip_on_cran()
 
   d <- mp_design(clusters = list(subject = 10), trials_per_cell = 3)
   a <- mp_assumptions(

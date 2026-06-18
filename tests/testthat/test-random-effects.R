@@ -54,6 +54,7 @@ test_that("explicit random_effects takes precedence over legacy icc", {
 
 test_that("sensitivity can vary random_effects.<group>.intercept_sd", {
   skip_if_not_installed("lme4")
+  skip_on_cran()
 
   d <- mp_design(clusters = list(subject = 25), trials_per_cell = 4)
   a <- mp_assumptions(

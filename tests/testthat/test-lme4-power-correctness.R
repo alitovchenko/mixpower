@@ -5,6 +5,7 @@
 
 test_that("lme4 Gaussian power is near 1 at a strongly-powered design", {
   skip_if_not_installed("lme4")
+  skip_on_cran()
 
   d <- mp_design(clusters = list(subject = 40), trials_per_cell = 8)
   a <- mp_assumptions(
@@ -20,6 +21,7 @@ test_that("lme4 Gaussian power is near 1 at a strongly-powered design", {
 
 test_that("lme4 Gaussian Type I error is near alpha under the null", {
   skip_if_not_installed("lme4")
+  skip_on_cran()
 
   d <- mp_design(clusters = list(subject = 40), trials_per_cell = 8)
   a <- mp_assumptions(
@@ -35,6 +37,7 @@ test_that("lme4 Gaussian Type I error is near alpha under the null", {
 
 test_that("lme4 binomial power is high at a strong effect", {
   skip_if_not_installed("lme4")
+  skip_on_cran()
 
   d <- mp_design(clusters = list(subject = 40), trials_per_cell = 8)
   a <- mp_assumptions(

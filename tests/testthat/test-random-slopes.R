@@ -94,6 +94,7 @@ test_that(".mp_draw_re_block reproduces the requested covariance structure", {
 
 test_that("multiple fixed effects generate balanced, orthogonal predictors", {
   skip_if_not_installed("lme4")
+  skip_on_cran()
   d <- mp_design(clusters = list(subject = 10), trials_per_cell = 8)
   a <- mp_assumptions(
     fixed_effects = list("(Intercept)" = 0, x1 = 0.4, x2 = 0.3),
@@ -113,6 +114,7 @@ test_that("multiple fixed effects generate balanced, orthogonal predictors", {
 
 test_that("simulation with random slopes is reproducible", {
   skip_if_not_installed("lme4")
+  skip_on_cran()
   d <- mp_design(clusters = list(subject = 25), trials_per_cell = 6)
   a <- mp_assumptions(
     fixed_effects = list("(Intercept)" = 0, condition = 0.3),
@@ -129,6 +131,7 @@ test_that("simulation with random slopes is reproducible", {
 
 test_that("two correlated random slopes run end-to-end and detect the focal effect", {
   skip_if_not_installed("lme4")
+  skip_on_cran()
   d <- mp_design(clusters = list(subject = 24), trials_per_cell = 8)
   a <- mp_assumptions(
     fixed_effects = list("(Intercept)" = 0, x1 = 0.9, x2 = 0.3),
@@ -151,6 +154,7 @@ test_that("two correlated random slopes run end-to-end and detect the focal effe
 
 test_that("omitting a present random slope inflates Type I error", {
   skip_if_not_installed("lme4")
+  skip_on_cran()
 
   # Null fixed effect, but a large between-subject random slope on condition.
   d <- mp_design(clusters = list(subject = 30), trials_per_cell = 6)
