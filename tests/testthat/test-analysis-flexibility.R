@@ -61,7 +61,7 @@ test_that("mp_compare_models exposes Type I inflation from a misspecified model"
   reduced <- mp_scenario_lme4(y ~ condition + (1 | subject), d, a)
 
   cmp <- suppressWarnings(mp_compare_models(
-    list(maximal = maximal, reduced = reduced), nsim = 80, seed = 3
+    list(maximal = maximal, reduced = reduced), nsim = 80, seed = 3, calibrate = FALSE
   ))
   expect_s3_class(cmp, "mp_model_comparison")
   res <- cmp$results
@@ -70,6 +70,36 @@ test_that("mp_compare_models exposes Type I inflation from a misspecified model"
   expect_gt(res["reduced", "power"], res["maximal", "power"])
   expect_lt(res["maximal", "power"], 0.15)
   expect_output(print(cmp), "model_comparison")
+})
+
+test_that("mp_compare_models reports power AND Type I, recommending a valid plan", {
+  skip_if_not_installed("lme4")
+  skip_on_cran()
+  d <- mp_design(list(subject = 30), trials_per_cell = 8)
+  # Real effect AND a real by-subject random slope in the data-generating process.
+  a <- mp_assumptions(
+    fixed_effects = list("(Intercept)" = 0, condition = 0.5),
+    random_effects = list(subject = list(intercept_sd = 0.5,
+                                          slopes = list(condition = 0.8))),
+    residual_sd = 1
+  )
+  maximal <- mp_scenario_lme4(y ~ condition + (1 + condition | subject), d, a)
+  reduced <- mp_scenario_lme4(y ~ condition + (1 | subject), d, a)
+
+  cmp <- suppressWarnings(mp_compare_models(
+    list(maximal = maximal, reduced = reduced), nsim = 100, seed = 7
+  ))
+  res <- cmp$results
+  rownames(res) <- res$model
+  expect_true(all(c("power", "type1", "calibration", "valid") %in% names(res)))
+
+  # The reduced model omits the present slope -> inflated Type I -> invalid.
+  expect_equal(res["reduced", "calibration"], "anti-conservative")
+  expect_false(res["reduced", "valid"])
+  # The maximal (correct) model controls Type I -> valid -> recommended.
+  expect_true(res["maximal", "valid"])
+  expect_equal(cmp$recommended, "maximal")
+  expect_output(print(cmp), "recommended plan")
 })
 
 test_that("mp_compare_models validates inputs", {

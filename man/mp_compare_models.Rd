@@ -2,7 +2,7 @@
 % Please edit documentation in R/compare-models.R
 \name{mp_compare_models}
 \alias{mp_compare_models}
-\title{Compare analysis models on the same simulated data}
+\title{Compare analysis models on the same data: power \emph{and} Type I error}
 \usage{
 mp_compare_models(
   scenarios,
@@ -10,37 +10,48 @@ mp_compare_models(
   alpha = 0.05,
   seed = NULL,
   conf_level = 0.95,
-  failure_policy = c("count_as_nondetect", "exclude")
+  failure_policy = c("count_as_nondetect", "exclude"),
+  calibrate = TRUE
 )
 }
 \arguments{
 \item{scenarios}{A named list of \code{mp_scenario} objects.}
 
-\item{nsim}{Positive integer number of simulations.}
+\item{nsim}{Positive integer number of simulations (per pass).}
 
 \item{alpha}{Significance threshold (default 0.05).}
 
 \item{seed}{Optional seed for reproducibility.}
 
-\item{conf_level}{Confidence level for the per-model power intervals.}
+\item{conf_level}{Confidence level for the per-model intervals.}
 
 \item{failure_policy}{How to treat failed fits (see \code{\link[=mp_power]{mp_power()}}).}
+
+\item{calibrate}{Also estimate each model's Type I error under the null
+(default \code{TRUE}); doubles the simulation cost.}
 }
 \value{
 An object of class \code{mp_model_comparison} with a \code{results} data frame
-(one row per model: \code{power}, \code{conf_low}, \code{conf_high}, \code{failure_rate},
-\code{n_effective}, \code{nsim}).
+(one row per model: \code{power}, \code{conf_low}, \code{conf_high}; and, when
+\code{calibrate}, \code{type1}, \code{type1_low}, \code{type1_high}, \code{calibration}, \code{valid};
+plus \code{failure_rate}, \code{n_effective}, \code{nsim}) and \verb{$recommended}, the
+best-powered Type-I-valid model.
 }
 \description{
 Simulates data once per replicate from the first scenario, then fits and
-tests \emph{every} supplied scenario on that same dataset. This is the analogue of
-powerlmm's \code{sim_formula}: because the models see identical data, differences
-in their rejection rates isolate the effect of the analysis choice. Use it to
-study power across competing specifications, or to expose Type I inflation
-from a misspecified model (e.g. dropping a random slope that is present in the
-data-generating process).
+tests \emph{every} supplied scenario on that same dataset. Because the models see
+identical data, differences in their rejection rates isolate the effect of
+the analysis choice. This is the analogue of powerlmm's \code{sim_formula}, raised
+to a planning question: \strong{which analysis plan controls Type I error AND has
+acceptable power under your plausible data-generating process?}
 }
 \details{
+With \code{calibrate = TRUE} (default), each candidate model is evaluated twice on
+shared data: once under the scenario's alternative (giving \strong{power}) and once
+under the null --- the focal effect set to zero in the data-generating
+scenario --- giving its \strong{Type I error rate} and a calibration verdict. The
+recommended plan is the best-powered model that still controls Type I error.
+
 All scenarios must share the same data-generating process (design and
 assumptions); they should differ only in their analysis model (formula /
 random-effects structure / test). The first scenario's \code{simulate_fun} drives
@@ -51,7 +62,7 @@ data generation.
 if (requireNamespace("lme4", quietly = TRUE)) {
   d <- mp_design(list(subject = 30), trials_per_cell = 8)
   a <- mp_assumptions(
-    fixed_effects = list("(Intercept)" = 0, condition = 0),
+    fixed_effects = list("(Intercept)" = 0, condition = 0.5),
     random_effects = list(subject = list(intercept_sd = 0.5,
                                           slopes = list(condition = 0.8))),
     residual_sd = 1
@@ -59,7 +70,7 @@ if (requireNamespace("lme4", quietly = TRUE)) {
   maximal <- mp_scenario_lme4(y ~ condition + (1 + condition | subject), d, a)
   reduced <- mp_scenario_lme4(y ~ condition + (1 | subject), d, a)
   mp_compare_models(list(maximal = maximal, reduced = reduced),
-                    nsim = 50, seed = 1)
+                    nsim = 100, seed = 1)
 }
 }
 }
