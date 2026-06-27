@@ -24,10 +24,14 @@ subjects for an unbalanced design.}
 
 \item{predictors}{Optional named list giving the design type of each
 predictor (each non-intercept fixed effect). Each entry is either a string
-(\code{"binary"} or \code{"continuous"}) or a list with \code{type} and \code{level}
-(\code{"within"} or \code{"between"}). Unspecified predictors default to a balanced
-within-subject binary factor. Example:
-\code{list(time = list(type = "continuous", level = "within"), group = "binary")}.}
+(\code{"binary"} or \code{"continuous"}) or a list with \code{type}, \code{level}, and an
+optional \code{allocation}. \code{level} is \code{"within"} (varies within subject),
+\code{"between"} (constant within subject, varies across subjects), or
+\code{"cluster"} (assigned at the nesting parent, i.e. cluster-randomized;
+requires \code{nesting}). \code{allocation} (a proportion in \verb{(0, 1)}) sets an unequal
+split for a binary between/cluster predictor (default balanced). Unspecified
+predictors default to a balanced within-subject binary factor. Example:
+\code{list(time = list(type = "continuous", level = "within"), arm = list(level = "cluster", allocation = 0.5))}.}
 
 \item{nesting}{Optional named character vector mapping a child grouping
 factor to its parent, e.g. \code{c(subject = "site")} for subjects nested in

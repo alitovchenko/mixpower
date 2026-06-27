@@ -12,10 +12,14 @@
 #'   subjects for an unbalanced design.
 #' @param predictors Optional named list giving the design type of each
 #'   predictor (each non-intercept fixed effect). Each entry is either a string
-#'   (`"binary"` or `"continuous"`) or a list with `type` and `level`
-#'   (`"within"` or `"between"`). Unspecified predictors default to a balanced
-#'   within-subject binary factor. Example:
-#'   `list(time = list(type = "continuous", level = "within"), group = "binary")`.
+#'   (`"binary"` or `"continuous"`) or a list with `type`, `level`, and an
+#'   optional `allocation`. `level` is `"within"` (varies within subject),
+#'   `"between"` (constant within subject, varies across subjects), or
+#'   `"cluster"` (assigned at the nesting parent, i.e. cluster-randomized;
+#'   requires `nesting`). `allocation` (a proportion in `(0, 1)`) sets an unequal
+#'   split for a binary between/cluster predictor (default balanced). Unspecified
+#'   predictors default to a balanced within-subject binary factor. Example:
+#'   `list(time = list(type = "continuous", level = "within"), arm = list(level = "cluster", allocation = 0.5))`.
 #' @param nesting Optional named character vector mapping a child grouping
 #'   factor to its parent, e.g. `c(subject = "site")` for subjects nested in
 #'   sites. The parent must also appear in `clusters`.
@@ -83,11 +87,17 @@ mp_design <- function(clusters, trials_per_cell = 1, predictors = NULL,
       if (!type %in% c("binary", "continuous")) {
         .stop(sprintf("`predictors$%s$type` must be 'binary' or 'continuous'.", nm))
       }
-      if (!level %in% c("within", "between")) {
-        .stop(sprintf("`predictors$%s$level` must be 'within' or 'between'.", nm))
+      if (!level %in% c("within", "between", "cluster")) {
+        .stop(sprintf("`predictors$%s$level` must be 'within', 'between', or 'cluster'.", nm))
+      }
+      if (!is.null(s$allocation)) {
+        if (!is.numeric(s$allocation) || length(s$allocation) != 1L || is.na(s$allocation) ||
+            s$allocation <= 0 || s$allocation >= 1) {
+          .stop(sprintf("`predictors$%s$allocation` must be a single number in (0, 1).", nm))
+        }
       }
     } else {
-      .stop(sprintf("`predictors$%s` must be a string or a list(type=, level=).", nm))
+      .stop(sprintf("`predictors$%s` must be a string or a list(type=, level=, allocation=).", nm))
     }
   }
   invisible(NULL)
@@ -132,7 +142,14 @@ print.mp_design <- function(x, ...) {
     cat(sprintf("  trials_per_cell: [%s] (unbalanced)\n", paste(tpc, collapse = ", ")))
   }
   if (!is.null(x$predictors)) {
-    cat("  predictors:", paste(names(x$predictors), collapse = ", "), "\n")
+    cat("  predictors:\n")
+    for (nm in names(x$predictors)) {
+      s <- x$predictors[[nm]]
+      if (is.character(s)) s <- list(type = s)
+      desc <- sprintf("%s/%s", `%||%`(s$type, "binary"), `%||%`(s$level, "within"))
+      if (!is.null(s$allocation)) desc <- paste0(desc, sprintf(", allocation = %g", s$allocation))
+      cat(sprintf("    - %s: %s\n", nm, desc))
+    }
   }
   if (!is.null(x$notes)) cat(sprintf("  notes: %s\n", x$notes))
   invisible(x)

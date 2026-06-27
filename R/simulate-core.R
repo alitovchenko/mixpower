@@ -92,17 +92,28 @@
 }
 
 # Resolve a predictor's design spec (type in {binary, continuous}, level in
-# {within, between}) from `design$predictors`. Unspecified -> binary/within,
-# the historical default.
+# {within, between, cluster}, optional allocation) from `design$predictors`.
+# Unspecified -> binary/within, the historical default.
 .mp_resolve_predictor_spec <- function(name, design_predictors) {
   s <- if (is.null(design_predictors)) NULL else design_predictors[[name]]
   if (is.null(s)) {
-    return(list(type = "within_binary", continuous = FALSE, between = FALSE))
+    return(list(continuous = FALSE, level = "within", allocation = NULL))
   }
   if (is.character(s)) s <- list(type = s)
   type <- match.arg(`%||%`(s$type, "binary"), c("binary", "continuous"))
-  level <- match.arg(`%||%`(s$level, "within"), c("within", "between"))
-  list(continuous = identical(type, "continuous"), between = identical(level, "between"))
+  level <- match.arg(`%||%`(s$level, "within"), c("within", "between", "cluster"))
+  list(continuous = identical(type, "continuous"), level = level, allocation = s$allocation)
+}
+
+# Allocation vector of 0/1 over `n` units. NULL keeps the historical balanced
+# alternating pattern (byte-identical); a proportion `p` assigns round(n * p)
+# units to 1 (block) for unequal allocation ratios.
+.mp_alloc <- function(n, allocation) {
+  if (is.null(allocation)) {
+    return(rep(c(0, 1), length.out = n))
+  }
+  n1 <- round(n * allocation)
+  c(rep(1, n1), rep(0, n - n1))
 }
 
 # Build one predictor column given its spec. Deterministic (no RNG), so the
@@ -110,21 +121,41 @@
 # byte-identical to the historical 0,1,0,1,... binary counter.
 #   * binary  / within  : bit `bit_index` of the within-subject position.
 #   * continuous / within: the within-subject position (time-like 0..t-1).
-#   * binary  / between : alternating 0/1 across subjects (balanced).
-#   * continuous / between: standard-normal quantiles across subjects (balanced).
-.mp_make_predictor_column <- function(spec, pos, subject_id, n_subject, bit_index) {
-  if (spec$between) {
-    base <- if (spec$continuous) {
-      stats::qnorm(stats::ppoints(n_subject))
-    } else {
-      rep(c(0, 1), length.out = n_subject)
+#   * binary  / between : 0/1 across subjects (balanced, or by `allocation`).
+#   * continuous / between: standard-normal quantiles across subjects.
+#   * .../ cluster: assigned at the nesting-parent level (cluster-randomized);
+#     constant within each cluster.
+.mp_make_predictor_column <- function(spec, pos, subject_id, parent_obs,
+                                      n_subject, n_parent, bit_index) {
+  if (identical(spec$level, "cluster")) {
+    if (is.null(parent_obs)) {
+      .stop("A cluster-level predictor requires a nesting parent (set `nesting` in mp_design()).")
     }
+    base <- if (spec$continuous) stats::qnorm(stats::ppoints(n_parent)) else .mp_alloc(n_parent, spec$allocation)
+    return(base[parent_obs])
+  }
+  if (identical(spec$level, "between")) {
+    base <- if (spec$continuous) stats::qnorm(stats::ppoints(n_subject)) else .mp_alloc(n_subject, spec$allocation)
     return(base[subject_id])
   }
   if (spec$continuous) {
     return(as.numeric(pos))
   }
   as.numeric(bitwAnd(bitwShiftR(pos, bit_index), 1L))
+}
+
+# Stationary AR(1) residuals with marginal SD `sd` and within-subject lag-1
+# correlation `rho`, ordered by `pos` (resets at pos == 0, i.e. each subject).
+.mp_ar1_resid <- function(pos, sd, rho) {
+  z <- stats::rnorm(length(pos))
+  innov_sd <- sd * sqrt(1 - rho^2)
+  e <- numeric(length(pos))
+  prev <- 0
+  for (i in seq_along(pos)) {
+    e[i] <- if (pos[i] == 0L) z[i] * sd else rho * prev + z[i] * innov_sd
+    prev <- e[i]
+  }
+  e
 }
 
 # Single data-generating process shared by every backend. Each non-intercept
@@ -186,6 +217,7 @@
   total_n <- sum(trials_vec)
   subject_id <- rep(seq_len(n_subject), times = trials_vec)
   pos <- unlist(lapply(trials_vec, function(t) seq_len(t) - 1L), use.names = FALSE)
+  parent_obs <- if (!is.null(parent)) subj_parent[subject_id] else NULL
 
   fe <- asm$fixed_effects
   predictors <- setdiff(names(fe), "(Intercept)")
@@ -205,8 +237,9 @@
   bit_index <- 0L
   for (p in predictors) {
     spec <- .mp_resolve_predictor_spec(p, des$predictors)
-    X[, p] <- .mp_make_predictor_column(spec, pos, subject_id, n_subject, bit_index)
-    if (!spec$between && !spec$continuous) bit_index <- bit_index + 1L
+    X[, p] <- .mp_make_predictor_column(spec, pos, subject_id, parent_obs,
+                                        n_subject, n_parent, bit_index)
+    if (identical(spec$level, "within") && !spec$continuous) bit_index <- bit_index + 1L
   }
 
   dat <- data.frame(.id = subject_id, stringsAsFactors = FALSE)
@@ -223,7 +256,6 @@
   )
 
   if (!is.null(parent)) {
-    parent_obs <- subj_parent[subject_id]
     eta <- eta + .mp_add_group_re(
       asm, parent, parent_obs, X, n_parent,
       intercept_default = intercept_default,
@@ -246,7 +278,16 @@
     dat[[item]] <- factor(item_id)
   }
 
-  dat[[outcome]] <- .mp_family_outcome(family, eta, asm, theta)
+  # Gaussian AR(1) residuals (longitudinal) when requested; otherwise the
+  # standard family-specific (iid-residual) draw.
+  ar1 <- asm$residual_ar1
+  if (identical(family, "gaussian") && !is.null(ar1) && ar1 != 0) {
+    resid_sd <- `%||%`(asm$residual_sd, 1)
+    .assert_is_nonneg_num(resid_sd, "residual_sd")
+    dat[[outcome]] <- eta + .mp_ar1_resid(pos, resid_sd, ar1)
+  } else {
+    dat[[outcome]] <- .mp_family_outcome(family, eta, asm, theta)
+  }
   dat[[subject]] <- factor(dat[[subject]])
   dat
 }

@@ -9,6 +9,7 @@ mp_assumptions(
   random_effects = NULL,
   icc = NULL,
   residual_sd = NULL,
+  residual_ar1 = NULL,
   notes = NULL
 )
 }
@@ -33,6 +34,11 @@ but used as a random-intercept SD. If supplied it is interpreted as
 \code{random_effects} instead.}
 
 \item{residual_sd}{Optional non-negative numeric residual SD (Gaussian).}
+
+\item{residual_ar1}{Optional within-subject lag-1 autocorrelation of the
+Gaussian residuals, in \verb{(-1, 1)}, for longitudinal designs (residuals are
+drawn as a stationary AR(1) process ordered within each subject). Ignored
+for non-Gaussian families.}
 
 \item{notes}{Optional free text.}
 }

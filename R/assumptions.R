@@ -21,6 +21,10 @@
 #'   `intercept_sd` and folded into `random_effects` with a warning. Use
 #'   `random_effects` instead.
 #' @param residual_sd Optional non-negative numeric residual SD (Gaussian).
+#' @param residual_ar1 Optional within-subject lag-1 autocorrelation of the
+#'   Gaussian residuals, in `(-1, 1)`, for longitudinal designs (residuals are
+#'   drawn as a stationary AR(1) process ordered within each subject). Ignored
+#'   for non-Gaussian families.
 #' @param notes Optional free text.
 #'
 #' @return An object of class `mp_assumptions`.
@@ -37,6 +41,7 @@ mp_assumptions <- function(fixed_effects,
                            random_effects = NULL,
                            icc = NULL,
                            residual_sd = NULL,
+                           residual_ar1 = NULL,
                            notes = NULL) {
   .assert_named_list(fixed_effects, "fixed_effects")
   for (nm in names(fixed_effects)) {
@@ -62,6 +67,13 @@ mp_assumptions <- function(fixed_effects,
 
   if (!is.null(residual_sd)) .assert_is_nonneg_num(residual_sd, "residual_sd")
 
+  if (!is.null(residual_ar1)) {
+    if (!is.numeric(residual_ar1) || length(residual_ar1) != 1L || is.na(residual_ar1) ||
+        residual_ar1 <= -1 || residual_ar1 >= 1) {
+      .stop("`residual_ar1` must be a single number in (-1, 1).")
+    }
+  }
+
   if (!is.null(notes) && (!is.character(notes) || length(notes) != 1)) {
     .stop("`notes` must be a length-1 character string or NULL.")
   }
@@ -72,6 +84,7 @@ mp_assumptions <- function(fixed_effects,
     # Legacy echo kept for back-compat with code reading `$icc` directly.
     icc = icc,
     residual_sd = residual_sd,
+    residual_ar1 = residual_ar1,
     notes = notes
   )
   class(out) <- "mp_assumptions"
@@ -108,6 +121,7 @@ print.mp_assumptions <- function(x, ...) {
     }
   }
   if (!is.null(x$residual_sd)) cat(sprintf("  residual_sd: %g\n", x$residual_sd))
+  if (!is.null(x$residual_ar1)) cat(sprintf("  residual_ar1: %g\n", x$residual_ar1))
   if (!is.null(x$notes)) cat(sprintf("  notes: %s\n", x$notes))
   invisible(x)
 }
