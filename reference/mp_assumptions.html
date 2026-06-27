@@ -51,6 +51,7 @@ predictor (the scale lme4 reports), via <code>random_effects</code>.</p>
 <span>  random_effects <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  icc <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  residual_sd <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  residual_ar1 <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  notes <span class="op">=</span> <span class="cn">NULL</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
@@ -86,6 +87,13 @@ but used as a random-intercept SD. If supplied it is interpreted as
 
 <dt id="arg-residual-sd">residual_sd<a class="anchor" aria-label="anchor" href="#arg-residual-sd"></a></dt>
 <dd><p>Optional non-negative numeric residual SD (Gaussian).</p></dd>
+
+
+<dt id="arg-residual-ar-">residual_ar1<a class="anchor" aria-label="anchor" href="#arg-residual-ar-"></a></dt>
+<dd><p>Optional within-subject lag-1 autocorrelation of the
+Gaussian residuals, in <code>(-1, 1)</code>, for longitudinal designs (residuals are
+drawn as a stationary AR(1) process ordered within each subject). Ignored
+for non-Gaussian families.</p></dd>
 
 
 <dt id="arg-notes">notes<a class="anchor" aria-label="anchor" href="#arg-notes"></a></dt>

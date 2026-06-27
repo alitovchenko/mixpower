@@ -38,12 +38,12 @@ res <- mp_power(scn, nsim = 12, seed = seed)
 manifest <- mp_manifest(scn, seed = seed, session = FALSE)
 manifest
 #> <mp_manifest>
-#>   scenario_digest: 20466ce7e4ab4946 ...
+#>   scenario_digest: fa4fbd6e1e4619ee ...
 #>   seed:123 (fixed)
-#>   timestamp: 2026-06-27 05:29:49 UTC 
+#>   timestamp: 2026-06-27 06:16:06 UTC 
 #>   r_version: 4.6.1 
 #>   mixpower_version: 1.2.0 
-#>   git_sha: 13f696c
+#>   git_sha: c949b21
 ```
 
 ## Bundle results and export
@@ -66,12 +66,12 @@ bundle
 #>   study_id: power_2024_01 
 #>   analyst: analyst 
 #> <mp_manifest>
-#>   scenario_digest: 20466ce7e4ab4946 ...
+#>   scenario_digest: fa4fbd6e1e4619ee ...
 #>   seed:123 (fixed)
-#>   timestamp: 2026-06-27 05:29:49 UTC 
+#>   timestamp: 2026-06-27 06:16:06 UTC 
 #>   r_version: 4.6.1 
 #>   mixpower_version: 1.2.0 
-#>   git_sha: 13f696c
+#>   git_sha: c949b21
 ```
 
 ``` r
@@ -138,9 +138,9 @@ df_row <- data.frame(
 )
 df_row
 #>                                                    scenario_digest seed
-#> 1 20466ce7e4ab49465c228d4ba24cd7c28e91a0b10f372a31584d17ac18f5325d  123
+#> 1 fa4fbd6e1e4619eed4adb4609f8f955b0104709d08c619159cebe50e7471ed2c  123
 #>   seed_strategy               timestamp r_version mixpower_version
-#> 1         fixed 2026-06-27 05:29:50 UTC     4.6.1            1.2.0
+#> 1         fixed 2026-06-27 06:16:06 UTC     4.6.1            1.2.0
 #>                                    git_sha
-#> 1 13f696cd4e8b257d9af6fbe2953fd8319b73eef9
+#> 1 c949b215a38d55d0c3384d808a7b8f9d35e9cf39
 ```

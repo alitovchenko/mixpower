@@ -69,6 +69,20 @@
   variance partition or the binomial latent-scale mapping internally, so
   you no longer hand-pick raw coefficients and SDs.
 
+### Richer design grammar
+
+- `mp_design(predictors = ...)` gains **cluster-level treatment
+  assignment** (`level = "cluster"`) for cluster-randomized designs —
+  the predictor is constant within each nesting cluster — and unequal
+  **`allocation`** ratios for binary between/cluster predictors.
+- `mp_assumptions(residual_ar1 = ...)` adds **AR(1) within-subject
+  residual autocorrelation** for longitudinal Gaussian models.
+- The design [`print()`](https://rdrr.io/r/base/print.html) now shows
+  each predictor’s type/level/allocation.
+- Deferred to future work: partially nested designs, multi-arm
+  categorical factors, nonlinear time, correlated predictors, and
+  user-supplied DGP hooks.
+
 ## mixpower 1.1.1
 
 CRAN release: 2026-06-25

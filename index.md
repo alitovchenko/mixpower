@@ -201,6 +201,16 @@ mp_design(list(site = 8, subject = 5), trials_per_cell = 4,
 
 # Unbalanced within-subject sizes (recycled across subjects):
 mp_design(list(subject = 20), trials_per_cell = c(3, 5, 8))
+
+# Cluster-randomized trial with 2:1 allocation (treatment assigned per site):
+mp_design(list(site = 20, subject = 10), trials_per_cell = 1,
+          nesting = c(subject = "site"),
+          predictors = list(arm = list(level = "cluster", allocation = 1/3)))
+
+# Longitudinal AR(1) residual autocorrelation (on the assumptions):
+mp_assumptions(list(`(Intercept)` = 0, time = 0.3),
+               random_effects = list(subject = list(intercept_sd = 0.5)),
+               residual_sd = 1, residual_ar1 = 0.5)
 ```
 
 ## Missing data and dropout

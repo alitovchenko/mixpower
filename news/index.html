@@ -69,6 +69,15 @@
 <ul><li>
 <code><a href="../reference/mp_elicit.html">mp_elicit()</a></code> builds a coherent <code>mp_assumptions</code> from the standardized quantities researchers actually reason about — per-group ICC, a standardized effect (Cohen’s d) or a baseline probability with an odds/risk ratio, and random-slope variability — and prints the implied model. It solves the Gaussian variance partition or the binomial latent-scale mapping internally, so you no longer hand-pick raw coefficients and SDs.</li>
 </ul></div>
+<div class="section level3">
+<h3 id="richer-design-grammar-1-2-0">Richer design grammar<a class="anchor" aria-label="anchor" href="#richer-design-grammar-1-2-0"></a></h3>
+<ul><li>
+<code>mp_design(predictors = ...)</code> gains <strong>cluster-level treatment assignment</strong> (<code>level = "cluster"</code>) for cluster-randomized designs — the predictor is constant within each nesting cluster — and unequal <strong><code>allocation</code></strong> ratios for binary between/cluster predictors.</li>
+<li>
+<code>mp_assumptions(residual_ar1 = ...)</code> adds <strong>AR(1) within-subject residual autocorrelation</strong> for longitudinal Gaussian models.</li>
+<li>The design <code><a href="https://rdrr.io/r/base/print.html" class="external-link">print()</a></code> now shows each predictor’s type/level/allocation.</li>
+<li>Deferred to future work: partially nested designs, multi-arm categorical factors, nonlinear time, correlated predictors, and user-supplied DGP hooks.</li>
+</ul></div>
 </div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="1.1.1" id="mixpower-111">mixpower 1.1.1<a class="anchor" aria-label="anchor" href="#mixpower-111"></a></h2><p class="text-muted">CRAN release: 2026-06-25</p>

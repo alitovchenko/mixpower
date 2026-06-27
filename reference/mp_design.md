@@ -35,10 +35,15 @@ mp_design(
 
   Optional named list giving the design type of each predictor (each
   non-intercept fixed effect). Each entry is either a string (`"binary"`
-  or `"continuous"`) or a list with `type` and `level` (`"within"` or
-  `"between"`). Unspecified predictors default to a balanced
-  within-subject binary factor. Example:
-  `list(time = list(type = "continuous", level = "within"), group = "binary")`.
+  or `"continuous"`) or a list with `type`, `level`, and an optional
+  `allocation`. `level` is `"within"` (varies within subject),
+  `"between"` (constant within subject, varies across subjects), or
+  `"cluster"` (assigned at the nesting parent, i.e. cluster-randomized;
+  requires `nesting`). `allocation` (a proportion in `(0, 1)`) sets an
+  unequal split for a binary between/cluster predictor (default
+  balanced). Unspecified predictors default to a balanced within-subject
+  binary factor. Example:
+  `list(time = list(type = "continuous", level = "within"), arm = list(level = "cluster", allocation = 0.5))`.
 
 - nesting:
 
