@@ -15,7 +15,8 @@ mp_power(
   keep = c("minimal", "fits", "data"),
   conf_level = 0.95,
   ci_method = c("clopper-pearson", "wald"),
-  aggregate = c("full", "streaming")
+  aggregate = c("full", "streaming"),
+  check_calibration = TRUE
 )
 ```
 
@@ -70,6 +71,15 @@ mp_power(
   accumulates counts only (lower memory); requires `keep = "minimal"`
   and returns an empty `sims` data frame with the same column names as
   the full run.
+
+- check_calibration:
+
+  If `TRUE` (default), warn once per session when the design is risky
+  for Type I error (few clusters and/or complex random effects) and no
+  calibration is on record, nudging toward
+  [`mp_calibrate()`](mp_calibrate.md) / [`mp_plan()`](mp_plan.md). The
+  advice is always available as `$calibration_advice` on the result. Set
+  `FALSE` to silence (used internally by parameter sweeps).
 
 ## Value
 

@@ -25,6 +25,7 @@
 <url><loc>/reference/index.html</loc></url>
 <url><loc>/reference/mixpower-package.html</loc></url>
 <url><loc>/reference/mp_assumptions.html</loc></url>
+<url><loc>/reference/mp_attach_calibration.html</loc></url>
 <url><loc>/reference/mp_backend.html</loc></url>
 <url><loc>/reference/mp_backend_glmmtmb.html</loc></url>
 <url><loc>/reference/mp_backend_lme4.html</loc></url>
@@ -42,7 +43,9 @@
 <url><loc>/reference/mp_methods_text.html</loc></url>
 <url><loc>/reference/mp_missing.html</loc></url>
 <url><loc>/reference/mp_parallel_cluster.html</loc></url>
+<url><loc>/reference/mp_plan.html</loc></url>
 <url><loc>/reference/mp_power.html</loc></url>
+<url><loc>/reference/mp_power_adaptive.html</loc></url>
 <url><loc>/reference/mp_power_checkpoint.html</loc></url>
 <url><loc>/reference/mp_power_curve.html</loc></url>
 <url><loc>/reference/mp_power_curve_parallel.html</loc></url>
@@ -61,6 +64,7 @@
 <url><loc>/reference/mp_sensitivity_parallel.html</loc></url>
 <url><loc>/reference/mp_sesoi.html</loc></url>
 <url><loc>/reference/mp_solve_sample_size.html</loc></url>
+<url><loc>/reference/mp_stop.html</loc></url>
 <url><loc>/reference/mp_write_results.html</loc></url>
 <url><loc>/reference/plot.mp_power.html</loc></url>
 <url><loc>/reference/plot.mp_power_curve.html</loc></url>

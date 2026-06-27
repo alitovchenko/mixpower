@@ -42,7 +42,7 @@ if (requireNamespace("lme4", quietly = TRUE)) {
   mp_methods_text(mp_power(scn, nsim = 50, seed = 1))
 }
 #> A simulation-based power analysis was conducted using the mixpower R package
-#> (version 1.1.1). Data were simulated under the model y ~ condition + (1 |
+#> (version 1.2.0). Data were simulated under the model y ~ condition + (1 |
 #> subject), with 30 subject (6 observations each). The focal effect (condition)
 #> was set to 0.4 and tested with a Wald z/t test at alpha = 0.05. Across 50
 #> simulated datasets, estimated power was 70.0% (95% Clopper-Pearson confidence

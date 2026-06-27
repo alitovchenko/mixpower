@@ -1,5 +1,40 @@
 # Changelog
 
+## mixpower 1.2.0
+
+### Calibration-first workflow
+
+- [`mp_plan()`](../reference/mp_plan.md) runs the recommended end-to-end
+  workflow — calibrate the null, recommend an inference method, and
+  estimate power — and reports them together, so a power estimate is
+  never shown without the Type I error check that says whether it is
+  trustworthy.
+- [`mp_power()`](../reference/mp_power.md) now nudges (once per session)
+  toward [`mp_calibrate()`](../reference/mp_calibrate.md) /
+  [`mp_plan()`](../reference/mp_plan.md) when run on a risky design (few
+  clusters or complex random effects) with no calibration on record. The
+  advice is always available as `$calibration_advice`; pass
+  `check_calibration = FALSE` to silence (internal parameter sweeps
+  already do).
+- [`mp_attach_calibration()`](../reference/mp_attach_calibration.md)
+  records a calibration result on a scenario.
+- [`mp_report_table()`](../reference/mp_report_table.md) gains an
+  `mp_plan` method.
+- DESCRIPTION now lists the CRAN URL.
+
+### Adaptive Monte Carlo stopping
+
+- [`mp_power_adaptive()`](../reference/mp_power_adaptive.md) runs
+  [`mp_power()`](../reference/mp_power.md) in batches and stops as soon
+  as the power interval is precise enough (`ci_halfwidth`) or the
+  accept/reject decision vs a `target` is unambiguous, instead of
+  relying on an arbitrary fixed `nsim`. It reports the achieved Monte
+  Carlo precision and the number of replicates actually used, and the
+  result is identical to a fixed
+  [`mp_power()`](../reference/mp_power.md) run at that `nsim`.
+- [`mp_stop()`](../reference/mp_stop.md) specifies the stopping rule
+  (`ci_halfwidth`, `target`, `min_nsim`, `max_nsim`, `batch`).
+
 ## mixpower 1.1.1
 
 CRAN release: 2026-06-25

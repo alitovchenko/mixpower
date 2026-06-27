@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">mixpower</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.1.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.2.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -33,6 +33,28 @@
       <small>Source: <a href="https://github.com/alitovchenko/mixpower/blob/main/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
     </div>
 
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="1.2.0" id="mixpower-120">mixpower 1.2.0<a class="anchor" aria-label="anchor" href="#mixpower-120"></a></h2>
+<div class="section level3">
+<h3 id="calibration-first-workflow-1-2-0">Calibration-first workflow<a class="anchor" aria-label="anchor" href="#calibration-first-workflow-1-2-0"></a></h3>
+<ul><li>
+<code><a href="../reference/mp_plan.html">mp_plan()</a></code> runs the recommended end-to-end workflow — calibrate the null, recommend an inference method, and estimate power — and reports them together, so a power estimate is never shown without the Type I error check that says whether it is trustworthy.</li>
+<li>
+<code><a href="../reference/mp_power.html">mp_power()</a></code> now nudges (once per session) toward <code><a href="../reference/mp_calibrate.html">mp_calibrate()</a></code> / <code><a href="../reference/mp_plan.html">mp_plan()</a></code> when run on a risky design (few clusters or complex random effects) with no calibration on record. The advice is always available as <code>$calibration_advice</code>; pass <code>check_calibration = FALSE</code> to silence (internal parameter sweeps already do).</li>
+<li>
+<code><a href="../reference/mp_attach_calibration.html">mp_attach_calibration()</a></code> records a calibration result on a scenario.</li>
+<li>
+<code><a href="../reference/mp_report_table.html">mp_report_table()</a></code> gains an <code>mp_plan</code> method.</li>
+<li>DESCRIPTION now lists the CRAN URL.</li>
+</ul></div>
+<div class="section level3">
+<h3 id="adaptive-monte-carlo-stopping-1-2-0">Adaptive Monte Carlo stopping<a class="anchor" aria-label="anchor" href="#adaptive-monte-carlo-stopping-1-2-0"></a></h3>
+<ul><li>
+<code><a href="../reference/mp_power_adaptive.html">mp_power_adaptive()</a></code> runs <code><a href="../reference/mp_power.html">mp_power()</a></code> in batches and stops as soon as the power interval is precise enough (<code>ci_halfwidth</code>) or the accept/reject decision vs a <code>target</code> is unambiguous, instead of relying on an arbitrary fixed <code>nsim</code>. It reports the achieved Monte Carlo precision and the number of replicates actually used, and the result is identical to a fixed <code><a href="../reference/mp_power.html">mp_power()</a></code> run at that <code>nsim</code>.</li>
+<li>
+<code><a href="../reference/mp_stop.html">mp_stop()</a></code> specifies the stopping rule (<code>ci_halfwidth</code>, <code>target</code>, <code>min_nsim</code>, <code>max_nsim</code>, <code>batch</code>).</li>
+</ul></div>
+</div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="1.1.1" id="mixpower-111">mixpower 1.1.1<a class="anchor" aria-label="anchor" href="#mixpower-111"></a></h2><p class="text-muted">CRAN release: 2026-06-25</p>
 <ul><li>Reduce overall <code>R CMD check</code> time well under CRAN’s budget: vignettes now use small toy designs and few iterations, and the heavy simulation/correctness tests are marked <code>skip_on_cran()</code> (they still run in continuous integration and the lme4 path is exercised by examples). No user-facing changes.</li>

@@ -117,3 +117,26 @@ mp_report_table(mp_calibrate(scn, nsim = 40, seed = 1))
 Run [`mp_calibrate()`](../reference/mp_calibrate.md) whenever you change
 the design size or the analysis model. A trustworthy power analysis
 reports both the power and the calibration that backs it.
+
+## Putting it together: `mp_plan()`
+
+[`mp_plan()`](../reference/mp_plan.md) is the one-call version of the
+recommended workflow: it calibrates the null, suggests an inference
+method, and estimates power, then reports all three together. If the
+design is anti-conservative, it says so prominently – because the power
+number would not be trustworthy.
+
+``` r
+mp_plan(scn, nsim = 40, calibrate_nsim = 40, seed = 1)
+#> <mp_plan>
+#>   alpha: 0.05
+#>   1. calibration (null): Type I = 0.0750 (95% CI 0.0157, 0.2039) -> well-calibrated
+#>   2. method: wald (consider kenward-roger, satterthwaite, pb)
+#>   3. power: 65.0% (95% CI 48.3%, 79.4%)
+```
+
+[`mp_power()`](../reference/mp_power.md) will also nudge you toward this
+check if you run it directly on a risky design (few clusters or complex
+random effects) without a calibration on record;
+[`mp_attach_calibration()`](../reference/mp_attach_calibration.md)
+records that the check was done.

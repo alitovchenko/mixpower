@@ -22,6 +22,51 @@ Or the development version from GitHub:
 remotes::install_github("alitovchenko/mixpower")
 ```
 
+## Recommended workflow: calibrate first
+
+A power number is only trustworthy if the test controls its Type I
+error. The recommended workflow is to **calibrate the null, choose an
+inference method, then estimate power** —
+[`mp_plan()`](reference/mp_plan.md) does all three and reports them
+together:
+
+``` r
+d <- mp_design(list(subject = 12), trials_per_cell = 8)
+a <- mp_assumptions(
+  fixed_effects = list(`(Intercept)` = 0, condition = 0.4),
+  random_effects = list(subject = list(intercept_sd = 0.5)),
+  residual_sd = 1
+)
+scn <- mp_scenario_lme4(y ~ condition + (1 | subject), design = d, assumptions = a)
+
+mp_plan(scn, nsim = 1000, seed = 1)
+#> 1. calibration (null): Type I = ... -> well-calibrated / anti-conservative
+#> 2. method: ...
+#> 3. power:  ...% (95% CI ...)
+```
+
+For risky designs (few clusters or complex random effects),
+[`mp_power()`](reference/mp_power.md) nudges you toward
+[`mp_calibrate()`](reference/mp_calibrate.md) if you skip this step;
+attach a calibration with
+[`mp_attach_calibration()`](reference/mp_attach_calibration.md) to
+record that the check was done, or pass `check_calibration = FALSE` to
+silence.
+
+## Adaptive stopping (no arbitrary `nsim`)
+
+[`mp_power_adaptive()`](reference/mp_power_adaptive.md) simulates in
+batches and stops as soon as the estimate is precise enough or the
+decision is clear, reporting how many replicates it actually needed:
+
+``` r
+# stop when the 95% CI half-width <= 0.02 (or at 5000 sims):
+mp_power_adaptive(scn, stop = mp_stop(ci_halfwidth = 0.02), seed = 1)
+
+# or stop as soon as the CI clearly clears a target power of 0.8:
+mp_power_adaptive(scn, stop = mp_stop(target = 0.8, ci_halfwidth = 0.03), seed = 1)
+```
+
 ## CI expectations
 
 - `R-CMD-check`: full multi-OS package checks (release, devel,

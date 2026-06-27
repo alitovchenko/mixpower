@@ -20,7 +20,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">mixpower</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.1.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.2.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -166,6 +166,27 @@ results:</p>
 <p>Run <code><a href="../reference/mp_calibrate.html">mp_calibrate()</a></code> whenever you change the design size
 or the analysis model. A trustworthy power analysis reports both the
 power and the calibration that backs it.</p>
+</div>
+<div class="section level2">
+<h2 id="putting-it-together-mp_plan">Putting it together: <code>mp_plan()</code><a class="anchor" aria-label="anchor" href="#putting-it-together-mp_plan"></a>
+</h2>
+<p><code><a href="../reference/mp_plan.html">mp_plan()</a></code> is the one-call version of the recommended
+workflow: it calibrates the null, suggests an inference method, and
+estimates power, then reports all three together. If the design is
+anti-conservative, it says so prominently – because the power number
+would not be trustworthy.</p>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/mp_plan.html">mp_plan</a></span><span class="op">(</span><span class="va">scn</span>, nsim <span class="op">=</span> <span class="fl">40</span>, calibrate_nsim <span class="op">=</span> <span class="fl">40</span>, seed <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
+<span><span class="co">#&gt; &lt;mp_plan&gt;</span></span>
+<span><span class="co">#&gt;   alpha: 0.05</span></span>
+<span><span class="co">#&gt;   1. calibration (null): Type I = 0.0750 (95% CI 0.0157, 0.2039) -&gt; well-calibrated</span></span>
+<span><span class="co">#&gt;   2. method: wald (consider kenward-roger, satterthwaite, pb)</span></span>
+<span><span class="co">#&gt;   3. power: 65.0% (95% CI 48.3%, 79.4%)</span></span></code></pre></div>
+<p><code><a href="../reference/mp_power.html">mp_power()</a></code> will also nudge you toward this check if you
+run it directly on a risky design (few clusters or complex random
+effects) without a calibration on record;
+<code><a href="../reference/mp_attach_calibration.html">mp_attach_calibration()</a></code> records that the check was
+done.</p>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>

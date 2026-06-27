@@ -65,6 +65,11 @@ scn_max <- mp_scenario_lme4(
 )
 
 mp_power(scn_max, nsim = 15, seed = 2024)$power
+#> Warning: This design has few clusters and/or a complex random-effects
+#> structure, where Type I error is easy to get wrong. Check it with
+#> mp_calibrate() (or run mp_plan(), which calibrates and powers together) and see
+#> mp_recommend_method() for the inference method. A power estimate is only
+#> trustworthy if the test holds its alpha.
 #> boundary (singular) fit: see help('isSingular')
 #> boundary (singular) fit: see help('isSingular')
 #> boundary (singular) fit: see help('isSingular')

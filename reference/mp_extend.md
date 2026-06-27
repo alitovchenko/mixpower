@@ -49,6 +49,7 @@ if (requireNamespace("lme4", quietly = TRUE)) {
   big <- mp_extend(scn, Subject = 40)
   mp_power(big, nsim = 20, seed = 1)
 }
+#> Warning: This design has few clusters and/or a complex random-effects structure, where Type I error is easy to get wrong. Check it with mp_calibrate() (or run mp_plan(), which calibrates and powers together) and see mp_recommend_method() for the inference method. A power estimate is only trustworthy if the test holds its alpha.
 #> <mp_power>
 #>   nsim: 20
 #>   alpha: 0.05

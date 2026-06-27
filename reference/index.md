@@ -50,8 +50,11 @@ Family- and engine-specific scenario/backend constructors.
 
 ## Credibility and validation
 
+- [`mp_plan()`](mp_plan.md) : Plan power the calibrate-first way
 - [`mp_calibrate()`](mp_calibrate.md) : Check the Type I error
   calibration of a scenario's test
+- [`mp_attach_calibration()`](mp_attach_calibration.md) : Record a
+  calibration result on a scenario
 - [`mp_recommend_method()`](mp_recommend_method.md) : Recommend an
   inference method for a scenario
 
@@ -93,6 +96,10 @@ Sensitivity, power curves, sample-size solvers, model comparison.
   models on the same simulated data
 - [`mp_power_checkpoint()`](mp_power_checkpoint.md) : Resumable,
   checkpointed power simulation
+- [`mp_power_adaptive()`](mp_power_adaptive.md) : Adaptive (sequential)
+  power simulation
+- [`mp_stop()`](mp_stop.md) : Stopping rule for adaptive power
+  simulation
 - [`mp_power_curve_parallel()`](mp_power_curve_parallel.md) : Parallel
   power curve evaluation
 - [`mp_sensitivity_parallel()`](mp_sensitivity_parallel.md) : Parallel

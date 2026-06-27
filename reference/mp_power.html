@@ -9,7 +9,7 @@ the scenario's test decision rule (typically p &amp;lt; alpha)."></head><body>
 
     <a class="navbar-brand me-2" href="../index.html">mixpower</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.1.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.2.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -52,7 +52,8 @@ the scenario's test decision rule (typically p &lt; alpha).</p>
 <span>  keep <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"minimal"</span>, <span class="st">"fits"</span>, <span class="st">"data"</span><span class="op">)</span>,</span>
 <span>  conf_level <span class="op">=</span> <span class="fl">0.95</span>,</span>
 <span>  ci_method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"clopper-pearson"</span>, <span class="st">"wald"</span><span class="op">)</span>,</span>
-<span>  aggregate <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"full"</span>, <span class="st">"streaming"</span><span class="op">)</span></span>
+<span>  aggregate <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"full"</span>, <span class="st">"streaming"</span><span class="op">)</span>,</span>
+<span>  check_calibration <span class="op">=</span> <span class="cn">TRUE</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -102,6 +103,14 @@ or <code>"wald"</code> (normal approximation).</p></dd>
 <dd><p><code>"full"</code> (default) stores every replicate in <code>sims</code>. <code>"streaming"</code>
 accumulates counts only (lower memory); requires <code>keep = "minimal"</code> and returns
 an empty <code>sims</code> data frame with the same column names as the full run.</p></dd>
+
+
+<dt id="arg-check-calibration">check_calibration<a class="anchor" aria-label="anchor" href="#arg-check-calibration"></a></dt>
+<dd><p>If <code>TRUE</code> (default), warn once per session when the
+design is risky for Type I error (few clusters and/or complex random
+effects) and no calibration is on record, nudging toward <code><a href="mp_calibrate.html">mp_calibrate()</a></code> /
+<code><a href="mp_plan.html">mp_plan()</a></code>. The advice is always available as <code>$calibration_advice</code> on the
+result. Set <code>FALSE</code> to silence (used internally by parameter sweeps).</p></dd>
 
 </dl></div>
     <div class="section level2">

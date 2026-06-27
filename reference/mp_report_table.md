@@ -17,7 +17,7 @@ mp_report_table(x, ...)
 - x:
 
   An object of class `mp_power`, `mp_sensitivity`, `mp_power_curve`,
-  `mp_calibration`, or from
+  `mp_calibration`, `mp_plan`, or from
   [`mp_bundle_results()`](mp_bundle_results.md).
 
 - ...:
