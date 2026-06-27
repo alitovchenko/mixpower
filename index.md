@@ -67,6 +67,20 @@ mp_power_adaptive(scn, stop = mp_stop(ci_halfwidth = 0.02), seed = 1)
 mp_power_adaptive(scn, stop = mp_stop(target = 0.8, ci_halfwidth = 0.03), seed = 1)
 ```
 
+## Reviewer-ready report
+
+[`mp_report()`](reference/mp_report.md) turns a result into a Markdown
+trust report — design, assumptions, calibration, power with interval and
+Monte Carlo precision, diagnostics, reproducibility manifest, and
+explicit caveats about fragile claims — ready to drop into a methods
+section, grant, or registered report:
+
+``` r
+report <- mp_report(mp_plan(scn, nsim = 1000, seed = 1))
+report                                   # prints the Markdown
+mp_write_report(report, "power-report.md")
+```
+
 ## CI expectations
 
 - `R-CMD-check`: full multi-OS package checks (release, devel,

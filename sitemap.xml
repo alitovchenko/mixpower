@@ -51,6 +51,7 @@
 <url><loc>/reference/mp_power_curve_parallel.html</loc></url>
 <url><loc>/reference/mp_quick_power.html</loc></url>
 <url><loc>/reference/mp_recommend_method.html</loc></url>
+<url><loc>/reference/mp_report.html</loc></url>
 <url><loc>/reference/mp_report_table.html</loc></url>
 <url><loc>/reference/mp_safeguard_effect.html</loc></url>
 <url><loc>/reference/mp_scenario.html</loc></url>
@@ -65,6 +66,7 @@
 <url><loc>/reference/mp_sesoi.html</loc></url>
 <url><loc>/reference/mp_solve_sample_size.html</loc></url>
 <url><loc>/reference/mp_stop.html</loc></url>
+<url><loc>/reference/mp_write_report.html</loc></url>
 <url><loc>/reference/mp_write_results.html</loc></url>
 <url><loc>/reference/plot.mp_power.html</loc></url>
 <url><loc>/reference/plot.mp_power_curve.html</loc></url>

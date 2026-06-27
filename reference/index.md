@@ -115,6 +115,10 @@ Sensitivity, power curves, sample-size solvers, model comparison.
 
 ## Reporting and reproducibility
 
+- [`mp_report()`](mp_report.md) : Build a full "trust report" for a
+  power analysis
+- [`mp_write_report()`](mp_write_report.md) : Write a power-analysis
+  report to a file
 - [`mp_report_table()`](mp_report_table.md) : Publication-ready summary
   table for power results
 - [`mp_methods_text()`](mp_methods_text.md) : Generate a methods
