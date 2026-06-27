@@ -217,7 +217,8 @@
 <span><span class="co"># Custom linear contrast (e.g. emmeans-style weights):</span></span>
 <span><span class="fu"><a href="reference/mp_scenario_lme4.html">mp_scenario_lme4</a></span><span class="op">(</span><span class="va">y</span> <span class="op">~</span> <span class="va">condition</span> <span class="op">+</span> <span class="op">(</span><span class="fl">1</span> <span class="op">|</span> <span class="va">subject</span><span class="op">)</span>, <span class="va">d</span>, <span class="va">a</span>, contrast <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>condition <span class="op">=</span> <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
-<span><span class="co"># Same-data comparison of a maximal vs reduced model:</span></span>
+<span><span class="co"># Same-data comparison: reports each model's power AND Type I error, and</span></span>
+<span><span class="co"># recommends the best-powered plan that still controls Type I:</span></span>
 <span><span class="fu"><a href="reference/mp_compare_models.html">mp_compare_models</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>maximal <span class="op">=</span> <span class="va">scn_max</span>, reduced <span class="op">=</span> <span class="va">scn_int</span><span class="op">)</span>, nsim <span class="op">=</span> <span class="fl">500</span>, seed <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">

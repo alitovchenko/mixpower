@@ -48,6 +48,17 @@
   [`mp_write_report()`](../reference/mp_write_report.md) writes Markdown
   (or HTML via rmarkdown/pandoc).
 
+### Model comparison: validity *and* power
+
+- [`mp_compare_models()`](../reference/mp_compare_models.md) now reports
+  each candidate analysis model’s **Type I error** (estimated under the
+  null on the same simulated data) alongside its power, with a
+  calibration verdict per model and a **recommended plan** (the
+  best-powered model that still controls Type I error). This answers the
+  planning question “which analysis is both valid and well powered?” —
+  useful for preregistration and grant methods sections. Set
+  `calibrate = FALSE` for power only.
+
 ## mixpower 1.1.1
 
 CRAN release: 2026-06-25

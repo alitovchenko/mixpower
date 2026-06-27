@@ -59,6 +59,11 @@
 <ul><li>
 <code><a href="../reference/mp_report.html">mp_report()</a></code> assembles a reviewer-ready Markdown report from a power (or <code><a href="../reference/mp_plan.html">mp_plan()</a></code>) result: design, model, data-generating assumptions, Type I calibration, inference-method guidance, power with interval and Monte Carlo precision, diagnostics (failure/singular rates, Type S/M), missing-data assumptions, a reproducibility manifest, and explicit warnings about fragile or unsupported claims. <code><a href="../reference/mp_write_report.html">mp_write_report()</a></code> writes Markdown (or HTML via rmarkdown/pandoc).</li>
 </ul></div>
+<div class="section level3">
+<h3 id="model-comparison-validity-and-power-1-2-0">Model comparison: validity <em>and</em> power<a class="anchor" aria-label="anchor" href="#model-comparison-validity-and-power-1-2-0"></a></h3>
+<ul><li>
+<code><a href="../reference/mp_compare_models.html">mp_compare_models()</a></code> now reports each candidate analysis model’s <strong>Type I error</strong> (estimated under the null on the same simulated data) alongside its power, with a calibration verdict per model and a <strong>recommended plan</strong> (the best-powered model that still controls Type I error). This answers the planning question “which analysis is both valid and well powered?” — useful for preregistration and grant methods sections. Set <code>calibrate = FALSE</code> for power only.</li>
+</ul></div>
 </div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="1.1.1" id="mixpower-111">mixpower 1.1.1<a class="anchor" aria-label="anchor" href="#mixpower-111"></a></h2><p class="text-muted">CRAN release: 2026-06-25</p>

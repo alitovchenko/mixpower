@@ -214,7 +214,8 @@ mp_scenario_lme4(y ~ x1 + x2 + (1 | subject), d, a, test_term = c("x1", "x2"))
 # Custom linear contrast (e.g. emmeans-style weights):
 mp_scenario_lme4(y ~ condition + (1 | subject), d, a, contrast = c(condition = 1))
 
-# Same-data comparison of a maximal vs reduced model:
+# Same-data comparison: reports each model's power AND Type I error, and
+# recommends the best-powered plan that still controls Type I:
 mp_compare_models(list(maximal = scn_max, reduced = scn_int), nsim = 500, seed = 1)
 ```
 
@@ -560,30 +561,44 @@ Sensitivity, power curves, sample-size solvers, model comparison.
 
 - [`mp_sensitivity()`](mp_sensitivity.md) : Run power sensitivity
   analysis over a parameter grid
+
 - [`mp_power_curve()`](mp_power_curve.md) : Power curve for a single
   design/assumption parameter
+
 - [`mp_solve_sample_size()`](mp_solve_sample_size.md) : Solve for
   minimum sample size achieving target power
+
 - [`mp_grid_sample_size()`](mp_grid_sample_size.md) : Create a grid of
   values for sample-size search
-- [`mp_compare_models()`](mp_compare_models.md) : Compare analysis
-  models on the same simulated data
+
+- [`mp_compare_models()`](mp_compare_models.md) :
+
+  Compare analysis models on the same data: power *and* Type I error
+
 - [`mp_power_checkpoint()`](mp_power_checkpoint.md) : Resumable,
   checkpointed power simulation
+
 - [`mp_power_adaptive()`](mp_power_adaptive.md) : Adaptive (sequential)
   power simulation
+
 - [`mp_stop()`](mp_stop.md) : Stopping rule for adaptive power
   simulation
+
 - [`mp_power_curve_parallel()`](mp_power_curve_parallel.md) : Parallel
   power curve evaluation
+
 - [`mp_sensitivity_parallel()`](mp_sensitivity_parallel.md) : Parallel
   sensitivity analysis over a parameter grid
+
 - [`run_parallel()`](run_parallel.md) : Placeholder for parallel
   execution
+
 - [`plot(`*`<mp_power_curve>`*`)`](plot.mp_power_curve.md) : Plot a
   power curve
+
 - [`plot(`*`<mp_sensitivity>`*`)`](plot.mp_sensitivity.md) : Plot a
   sensitivity analysis
+
 - [`autoplot(`*`<mp_sensitivity>`*`)`](autoplot.mp_sensitivity.md) :
   ggplot2 diagnostic plot for sensitivity or power curve
 

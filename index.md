@@ -214,7 +214,8 @@ mp_scenario_lme4(y ~ x1 + x2 + (1 | subject), d, a, test_term = c("x1", "x2"))
 # Custom linear contrast (e.g. emmeans-style weights):
 mp_scenario_lme4(y ~ condition + (1 | subject), d, a, contrast = c(condition = 1))
 
-# Same-data comparison of a maximal vs reduced model:
+# Same-data comparison: reports each model's power AND Type I error, and
+# recommends the best-powered plan that still controls Type I:
 mp_compare_models(list(maximal = scn_max, reduced = scn_int), nsim = 500, seed = 1)
 ```
 
