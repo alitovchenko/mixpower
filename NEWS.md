@@ -15,6 +15,17 @@
 - `mp_report_table()` gains an `mp_plan` method.
 - DESCRIPTION now lists the CRAN URL.
 
+## Adaptive Monte Carlo stopping
+
+- `mp_power_adaptive()` runs `mp_power()` in batches and stops as soon as the
+  power interval is precise enough (`ci_halfwidth`) or the accept/reject
+  decision vs a `target` is unambiguous, instead of relying on an arbitrary
+  fixed `nsim`. It reports the achieved Monte Carlo precision and the number of
+  replicates actually used, and the result is identical to a fixed `mp_power()`
+  run at that `nsim`.
+- `mp_stop()` specifies the stopping rule (`ci_halfwidth`, `target`, `min_nsim`,
+  `max_nsim`, `batch`).
+
 # mixpower 1.1.1
 
 - Reduce overall `R CMD check` time well under CRAN's budget: vignettes now use

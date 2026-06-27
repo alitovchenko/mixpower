@@ -100,13 +100,7 @@ mp_power <- function(scenario,
   # `$calibration_advice`; warned at most once per session (set
   # `options(mixpower.calibration_nudged = FALSE)` to re-arm), and suppressed by
   # `check_calibration = FALSE` (used by internal parameter sweeps).
-  advice <- .mp_calibration_advice(scenario)
-  if (isTRUE(check_calibration) && !is.null(advice) && is.null(scenario$calibration)) {
-    if (!isTRUE(getOption("mixpower.calibration_nudged", FALSE))) {
-      warning(advice, call. = FALSE)
-      options(mixpower.calibration_nudged = TRUE)
-    }
-  }
+  advice <- .mp_nudge_calibration(scenario, check_calibration)
 
   rep_seeds <- .rep_seeds(seed, nsim)
 

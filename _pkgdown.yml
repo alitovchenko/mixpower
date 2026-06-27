@@ -22,7 +22,9 @@ reference:
       - mp_extend
   - title: Credibility and validation
     contents:
+      - mp_plan
       - mp_calibrate
+      - mp_attach_calibration
       - mp_recommend_method
   - title: Effect sizes
     desc: Smallest-effect-of-interest, safeguard, and standardized converters.
@@ -48,6 +50,8 @@ reference:
       - mp_grid_sample_size
       - mp_compare_models
       - mp_power_checkpoint
+      - mp_power_adaptive
+      - mp_stop
       - matches("parallel")
       - plot.mp_power_curve
       - plot.mp_sensitivity

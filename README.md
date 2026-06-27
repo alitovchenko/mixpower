@@ -55,6 +55,20 @@ you toward `mp_calibrate()` if you skip this step; attach a calibration with
 `mp_attach_calibration()` to record that the check was done, or pass
 `check_calibration = FALSE` to silence.
 
+## Adaptive stopping (no arbitrary `nsim`)
+
+`mp_power_adaptive()` simulates in batches and stops as soon as the estimate is
+precise enough or the decision is clear, reporting how many replicates it
+actually needed:
+
+```r
+# stop when the 95% CI half-width <= 0.02 (or at 5000 sims):
+mp_power_adaptive(scn, stop = mp_stop(ci_halfwidth = 0.02), seed = 1)
+
+# or stop as soon as the CI clearly clears a target power of 0.8:
+mp_power_adaptive(scn, stop = mp_stop(target = 0.8, ci_halfwidth = 0.03), seed = 1)
+```
+
 ## CI expectations
 
 - `R-CMD-check`: full multi-OS package checks (release, devel, oldrel-1).

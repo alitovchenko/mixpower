@@ -124,6 +124,21 @@ mp_recommend_method <- function(scenario, small_clusters = 30L) {
   )
 }
 
+# Shared calibrate-first nudge for the power entry points. Returns the advice
+# string (or NULL) and, when `check` is TRUE and no calibration is attached,
+# warns at most once per session. Re-arm with
+# `options(mixpower.calibration_nudged = FALSE)`.
+.mp_nudge_calibration <- function(scenario, check) {
+  advice <- .mp_calibration_advice(scenario)
+  if (isTRUE(check) && !is.null(advice) && is.null(scenario$calibration)) {
+    if (!isTRUE(getOption("mixpower.calibration_nudged", FALSE))) {
+      warning(advice, call. = FALSE)
+      options(mixpower.calibration_nudged = TRUE)
+    }
+  }
+  advice
+}
+
 #' @export
 print.mp_recommendation <- function(x, ...) {
   cat("<mp_recommendation>\n")
