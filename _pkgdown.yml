@@ -27,8 +27,9 @@ reference:
       - mp_attach_calibration
       - mp_recommend_method
   - title: Effect sizes
-    desc: Smallest-effect-of-interest, safeguard, and standardized converters.
+    desc: Elicitation, smallest-effect-of-interest, safeguard, and converters.
     contents:
+      - mp_elicit
       - mp_sesoi
       - mp_safeguard_effect
       - matches("_to_beta$")

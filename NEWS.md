@@ -46,6 +46,15 @@
   for preregistration and grant methods sections. Set `calibrate = FALSE` for
   power only.
 
+## Effect-size elicitation grammar
+
+- `mp_elicit()` builds a coherent `mp_assumptions` from the standardized
+  quantities researchers actually reason about --- per-group ICC, a standardized
+  effect (Cohen's d) or a baseline probability with an odds/risk ratio, and
+  random-slope variability --- and prints the implied model. It solves the
+  Gaussian variance partition or the binomial latent-scale mapping internally,
+  so you no longer hand-pick raw coefficients and SDs.
+
 # mixpower 1.1.1
 
 - Reduce overall `R CMD check` time well under CRAN's budget: vignettes now use

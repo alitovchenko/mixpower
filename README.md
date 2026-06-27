@@ -119,6 +119,24 @@ mp_power_curve(scn, vary = list(`extend.Subject` = c(20, 40, 60, 80)),
                nsim = 200, seed = 1)
 ```
 
+## Elicit effects from standardized inputs
+
+Specify effects the way you reason about them — ICC, a standardized effect or a
+baseline probability and odds ratio — and `mp_elicit()` solves for a coherent
+set of assumptions and prints the implied model:
+
+```r
+# Gaussian: medium effect, ICC = 0.1
+a <- mp_elicit("gaussian", d = 0.5, icc = 0.1)
+
+# Binomial: 20% baseline rate, odds ratio 1.8, subject ICC 0.05
+a <- mp_elicit("binomial", baseline_prob = 0.2, odds_ratio = 1.8, icc = 0.05)
+
+scn <- mp_scenario_lme4(y ~ condition + (1 | subject),
+                        design = mp_design(list(subject = 30), trials_per_cell = 8),
+                        assumptions = a)
+```
+
 ## Smallest effect of interest & safeguard power
 
 Plan power around a *smallest effect size of interest* instead of an optimistic
