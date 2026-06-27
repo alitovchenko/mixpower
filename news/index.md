@@ -2,6 +2,8 @@
 
 ## mixpower 1.1.1
 
+CRAN release: 2026-06-25
+
 - Reduce overall `R CMD check` time well under CRAN’s budget: vignettes
   now use small toy designs and few iterations, and the heavy
   simulation/correctness tests are marked `skip_on_cran()` (they still

@@ -7,6 +7,21 @@ backend-agnostic simulation engine with publication-ready diagnostics:
 exact (Clopper-Pearson) power intervals, Monte Carlo standard errors,
 Type S/M error rates, and convergence/singular-fit reporting.
 
+## Installation
+
+Install the released version from CRAN:
+
+``` r
+install.packages("mixpower")
+```
+
+Or the development version from GitHub:
+
+``` r
+# install.packages("remotes")
+remotes::install_github("alitovchenko/mixpower")
+```
+
 ## CI expectations
 
 - `R-CMD-check`: full multi-OS package checks (release, devel,

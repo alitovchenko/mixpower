@@ -54,6 +54,17 @@
 
 <p>mixpower provides simulation-based power and sample-size analysis for linear and generalized linear mixed-effects models (Gaussian, binomial, Poisson, and negative-binomial families) fitted with <code>lme4</code>. It pairs a backend-agnostic simulation engine with publication-ready diagnostics: exact (Clopper-Pearson) power intervals, Monte Carlo standard errors, Type S/M error rates, and convergence/singular-fit reporting.</p>
 <div class="section level2">
+<h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
+</h2>
+<p>Install the released version from CRAN:</p>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"mixpower"</span><span class="op">)</span></span></code></pre></div>
+<p>Or the development version from GitHub:</p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># install.packages("remotes")</span></span>
+<span><span class="fu">remotes</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"alitovchenko/mixpower"</span><span class="op">)</span></span></code></pre></div>
+</div>
+<div class="section level2">
 <h2 id="ci-expectations">CI expectations<a class="anchor" aria-label="anchor" href="#ci-expectations"></a>
 </h2>
 <ul>
@@ -80,7 +91,7 @@
 <h2 id="power-from-a-fitted-model-pilot-data">Power from a fitted model (pilot data)<a class="anchor" aria-label="anchor" href="#power-from-a-fitted-model-pilot-data"></a>
 </h2>
 <p>If you already have a fitted <code>lmer</code>/<code>glmer</code> model, <code><a href="reference/mp_from_fit.html">mp_from_fit()</a></code> turns it into a scenario directly — like <code>simr</code>, but with mixpower’s diagnostics (Type S/M, exact CIs), df-corrected tests, and effect-size sensitivity.</p>
-<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/lme4/lme4/" class="external-link">lme4</a></span><span class="op">)</span></span>
 <span><span class="va">pilot</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/lme4/man/lmer.html" class="external-link">lmer</a></span><span class="op">(</span><span class="va">Reaction</span> <span class="op">~</span> <span class="va">Days</span> <span class="op">+</span> <span class="op">(</span><span class="va">Days</span> <span class="op">|</span> <span class="va">Subject</span><span class="op">)</span>, data <span class="op">=</span> <span class="va">sleepstudy</span><span class="op">)</span></span>
 <span></span>
@@ -101,7 +112,7 @@
 <h2 id="smallest-effect-of-interest--safeguard-power">Smallest effect of interest &amp; safeguard power<a class="anchor" aria-label="anchor" href="#smallest-effect-of-interest--safeguard-power"></a>
 </h2>
 <p>Plan power around a <em>smallest effect size of interest</em> instead of an optimistic pilot estimate. <code><a href="reference/mp_sesoi.html">mp_sesoi()</a></code> shrinks the focal effect (default 15%), and <code><a href="reference/mp_safeguard_effect.html">mp_safeguard_effect()</a></code> derives a conservative, uncertainty-aware effect from a fit’s confidence bound (Perugini et al., 2014).</p>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># 15% reduction (a conservative SESOI heuristic)</span></span>
 <span><span class="fu"><a href="reference/mp_power.html">mp_power</a></span><span class="op">(</span><span class="fu"><a href="reference/mp_sesoi.html">mp_sesoi</a></span><span class="op">(</span><span class="va">scn</span>, multiplier <span class="op">=</span> <span class="fl">0.85</span><span class="op">)</span>, nsim <span class="op">=</span> <span class="fl">200</span>, seed <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
 <span></span>
@@ -113,7 +124,7 @@
 <h2 id="maximal-models-correlated-random-slopes">Maximal models: correlated random slopes<a class="anchor" aria-label="anchor" href="#maximal-models-correlated-random-slopes"></a>
 </h2>
 <p><code>random_effects</code> supports one or more random slopes per grouping factor with a scalar or full-matrix correlation. Each fixed effect you name becomes a balanced design predictor, so several factors are crossed automatically.</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">a</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/mp_assumptions.html">mp_assumptions</a></span><span class="op">(</span></span>
 <span>  fixed_effects <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>`(Intercept)` <span class="op">=</span> <span class="fl">0</span>, x1 <span class="op">=</span> <span class="fl">0.5</span>, x2 <span class="op">=</span> <span class="fl">0.3</span><span class="op">)</span>,</span>
 <span>  random_effects <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>subject <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
@@ -132,7 +143,7 @@
 <h2 id="realistic-designs-continuous-covariates-nesting-imbalance">Realistic designs: continuous covariates, nesting, imbalance<a class="anchor" aria-label="anchor" href="#realistic-designs-continuous-covariates-nesting-imbalance"></a>
 </h2>
 <p><code><a href="reference/mp_design.html">mp_design()</a></code> goes beyond a single balanced binary factor: declare continuous or between-subject predictors, nest subjects in a higher grouping factor (three levels), or set unbalanced within-subject sample sizes.</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Continuous within-subject (time-like) predictor:</span></span>
 <span><span class="fu"><a href="reference/mp_design.html">mp_design</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>subject <span class="op">=</span> <span class="fl">30</span><span class="op">)</span>, trials_per_cell <span class="op">=</span> <span class="fl">6</span>,</span>
 <span>          predictors <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>time <span class="op">=</span> <span class="st">"continuous"</span><span class="op">)</span><span class="op">)</span></span>
@@ -148,7 +159,7 @@
 <h2 id="missing-data-and-dropout">Missing data and dropout<a class="anchor" aria-label="anchor" href="#missing-data-and-dropout"></a>
 </h2>
 <p>Reflect realistic incomplete data with <code><a href="reference/mp_missing.html">mp_missing()</a></code>: missing-completely-at-random, missing-at-random (probability depends on an observed column), or monotone longitudinal dropout (per-timepoint proportions or a Weibull dropout time).</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># 20% MCAR deletion:</span></span>
 <span><span class="fu"><a href="reference/mp_power.html">mp_power</a></span><span class="op">(</span><span class="fu"><a href="reference/mp_missing.html">mp_missing</a></span><span class="op">(</span><span class="va">scn</span>, <span class="st">"mcar"</span>, prob <span class="op">=</span> <span class="fl">0.2</span><span class="op">)</span>, nsim <span class="op">=</span> <span class="fl">200</span>, seed <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
 <span></span>
@@ -160,7 +171,7 @@
 <h2 id="flexible-analysis-omnibus-tests-contrasts-model-comparison">Flexible analysis: omnibus tests, contrasts, model comparison<a class="anchor" aria-label="anchor" href="#flexible-analysis-omnibus-tests-contrasts-model-comparison"></a>
 </h2>
 <p>Test several coefficients jointly (omnibus), a custom linear contrast, or compare competing analysis models on the <em>same</em> simulated data to expose Type I inflation from misspecification.</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Omnibus joint Wald test of two terms:</span></span>
 <span><span class="fu"><a href="reference/mp_scenario_lme4.html">mp_scenario_lme4</a></span><span class="op">(</span><span class="va">y</span> <span class="op">~</span> <span class="va">x1</span> <span class="op">+</span> <span class="va">x2</span> <span class="op">+</span> <span class="op">(</span><span class="fl">1</span> <span class="op">|</span> <span class="va">subject</span><span class="op">)</span>, <span class="va">d</span>, <span class="va">a</span>, test_term <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"x1"</span>, <span class="st">"x2"</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
@@ -173,7 +184,7 @@
 <div class="section level2">
 <h2 id="sensitivity-analysis">Sensitivity analysis<a class="anchor" aria-label="anchor" href="#sensitivity-analysis"></a>
 </h2>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">d</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/mp_design.html">mp_design</a></span><span class="op">(</span>clusters <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>subject <span class="op">=</span> <span class="fl">30</span><span class="op">)</span>, trials_per_cell <span class="op">=</span> <span class="fl">4</span><span class="op">)</span></span>
 <span><span class="va">a</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/mp_assumptions.html">mp_assumptions</a></span><span class="op">(</span></span>
 <span>  fixed_effects <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>`(Intercept)` <span class="op">=</span> <span class="fl">0</span>, condition <span class="op">=</span> <span class="fl">0.3</span><span class="op">)</span>,</span>
@@ -196,7 +207,7 @@
 <div class="section level2">
 <h2 id="power-curve-and-sample-size-solver">Power curve and sample-size solver<a class="anchor" aria-label="anchor" href="#power-curve-and-sample-size-solver"></a>
 </h2>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">d</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/mp_design.html">mp_design</a></span><span class="op">(</span>clusters <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>subject <span class="op">=</span> <span class="fl">30</span><span class="op">)</span>, trials_per_cell <span class="op">=</span> <span class="fl">4</span><span class="op">)</span></span>
 <span><span class="va">a</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/mp_assumptions.html">mp_assumptions</a></span><span class="op">(</span></span>
 <span>  fixed_effects <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>`(Intercept)` <span class="op">=</span> <span class="fl">0</span>, condition <span class="op">=</span> <span class="fl">0.3</span><span class="op">)</span>,</span>
@@ -229,7 +240,7 @@
 <div class="section level2">
 <h2 id="quick-wald-vs-lrt-compare">Quick Wald vs LRT compare<a class="anchor" aria-label="anchor" href="#quick-wald-vs-lrt-compare"></a>
 </h2>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">d</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/mp_design.html">mp_design</a></span><span class="op">(</span>clusters <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>subject <span class="op">=</span> <span class="fl">40</span><span class="op">)</span>, trials_per_cell <span class="op">=</span> <span class="fl">8</span><span class="op">)</span></span>
 <span><span class="va">a</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/mp_assumptions.html">mp_assumptions</a></span><span class="op">(</span></span>
 <span>  fixed_effects <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>`(Intercept)` <span class="op">=</span> <span class="fl">0</span>, condition <span class="op">=</span> <span class="fl">0.4</span><span class="op">)</span>,</span>
@@ -257,7 +268,7 @@
 <div class="section level2">
 <h2 id="wald-vs-lrt-sensitivity-comparison">Wald vs LRT sensitivity comparison<a class="anchor" aria-label="anchor" href="#wald-vs-lrt-sensitivity-comparison"></a>
 </h2>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">d</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/mp_design.html">mp_design</a></span><span class="op">(</span>clusters <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>subject <span class="op">=</span> <span class="fl">40</span><span class="op">)</span>, trials_per_cell <span class="op">=</span> <span class="fl">8</span><span class="op">)</span></span>
 <span><span class="va">a</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/mp_assumptions.html">mp_assumptions</a></span><span class="op">(</span></span>
 <span>  fixed_effects <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>`(Intercept)` <span class="op">=</span> <span class="fl">0</span>, condition <span class="op">=</span> <span class="fl">0.4</span><span class="op">)</span>,</span>
@@ -334,7 +345,7 @@
 <div class="section level2">
 <h2 id="binomial-glmm-power-binary-outcome">Binomial GLMM power (binary outcome)<a class="anchor" aria-label="anchor" href="#binomial-glmm-power-binary-outcome"></a>
 </h2>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">d</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/mp_design.html">mp_design</a></span><span class="op">(</span>clusters <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>subject <span class="op">=</span> <span class="fl">40</span><span class="op">)</span>, trials_per_cell <span class="op">=</span> <span class="fl">8</span><span class="op">)</span></span>
 <span><span class="va">a</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/mp_assumptions.html">mp_assumptions</a></span><span class="op">(</span></span>
 <span>  fixed_effects <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>`(Intercept)` <span class="op">=</span> <span class="fl">0</span>, condition <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span>,</span>
@@ -355,7 +366,7 @@
 <div class="section level2">
 <h2 id="count-outcomes-poisson-vs-negative-binomial">Count outcomes (Poisson vs Negative Binomial)<a class="anchor" aria-label="anchor" href="#count-outcomes-poisson-vs-negative-binomial"></a>
 </h2>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">d</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/mp_design.html">mp_design</a></span><span class="op">(</span>clusters <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>subject <span class="op">=</span> <span class="fl">40</span><span class="op">)</span>, trials_per_cell <span class="op">=</span> <span class="fl">8</span><span class="op">)</span></span>
 <span><span class="va">a</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/mp_assumptions.html">mp_assumptions</a></span><span class="op">(</span></span>
 <span>  fixed_effects <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>`(Intercept)` <span class="op">=</span> <span class="fl">0</span>, condition <span class="op">=</span> <span class="fl">0.4</span><span class="op">)</span>,</span>
@@ -384,7 +395,7 @@
 <div class="section level2">
 <h2 id="poisson-glmm-power-count-outcome">Poisson GLMM power (count outcome)<a class="anchor" aria-label="anchor" href="#poisson-glmm-power-count-outcome"></a>
 </h2>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">d</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/mp_design.html">mp_design</a></span><span class="op">(</span>clusters <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>subject <span class="op">=</span> <span class="fl">40</span><span class="op">)</span>, trials_per_cell <span class="op">=</span> <span class="fl">8</span><span class="op">)</span></span>
 <span><span class="va">a</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/mp_assumptions.html">mp_assumptions</a></span><span class="op">(</span></span>
 <span>  fixed_effects <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>`(Intercept)` <span class="op">=</span> <span class="fl">0</span>, condition <span class="op">=</span> <span class="fl">0.4</span><span class="op">)</span>,</span>
@@ -405,7 +416,7 @@
 <div class="section level2">
 <h2 id="negative-binomial-glmm-power-over-dispersed-counts">Negative Binomial GLMM power (over-dispersed counts)<a class="anchor" aria-label="anchor" href="#negative-binomial-glmm-power-over-dispersed-counts"></a>
 </h2>
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">d</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/mp_design.html">mp_design</a></span><span class="op">(</span>clusters <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>subject <span class="op">=</span> <span class="fl">40</span><span class="op">)</span>, trials_per_cell <span class="op">=</span> <span class="fl">8</span><span class="op">)</span></span>
 <span><span class="va">a</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/mp_assumptions.html">mp_assumptions</a></span><span class="op">(</span></span>
 <span>  fixed_effects <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>`(Intercept)` <span class="op">=</span> <span class="fl">0</span>, condition <span class="op">=</span> <span class="fl">0.4</span><span class="op">)</span>,</span>
@@ -467,6 +478,7 @@
 <div class="dev-status">
 <h2 data-toc-skip>Dev status</h2>
 <ul class="list-unstyled">
+<li><a href="https://CRAN.R-project.org/package=mixpower" class="external-link"><img src="https://www.r-pkg.org/badges/version/mixpower" alt="CRAN status"></a></li>
 <li><a href="https://github.com/alitovchenko/mixpower/actions/workflows/R-CMD-check.yaml" class="external-link"><img src="https://github.com/alitovchenko/mixpower/actions/workflows/R-CMD-check.yaml/badge.svg" alt="R-CMD-check"></a></li>
 <li><a href="https://app.codecov.io/gh/alitovchenko/mixpower" class="external-link"><img src="https://codecov.io/gh/alitovchenko/mixpower/branch/main/graph/badge.svg" alt="Codecov test coverage"></a></li>
 <li><a href="https://lifecycle.r-lib.org/articles/stages.html#stable" class="external-link"><img src="https://img.shields.io/badge/lifecycle-stable-brightgreen.svg" alt="Lifecycle: stable"></a></li>
