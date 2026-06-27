@@ -204,6 +204,20 @@ mp_assumptions(list(`(Intercept)` = 0, time = 0.3),
                residual_sd = 1, residual_ar1 = 0.5)
 ```
 
+For anything the built-in grammar doesn't cover natively — partially nested
+designs, multi-arm factors, nonlinear time, correlated predictors — supply a
+custom data-generating function; it's validated and runs through the full
+power / calibration / comparison / reporting pipeline:
+
+```r
+my_dgp <- function(scenario, seed = NULL) {
+  # ... return a data.frame with the formula's variables ...
+}
+mp_scenario_lme4(y ~ arm + (1 | subject), design = d, assumptions = a,
+                 simulate = my_dgp, test_method = "lrt",
+                 null_formula = y ~ 1 + (1 | subject))
+```
+
 ## Missing data and dropout
 
 Reflect realistic incomplete data with `mp_missing()`: missing-completely-at-random,

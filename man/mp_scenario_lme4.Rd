@@ -16,7 +16,8 @@ mp_scenario_lme4(
   test_method = c("wald", "lrt", "satterthwaite", "kenward-roger", "pb"),
   null_formula = NULL,
   pb_nsim = 100L,
-  contrast = NULL
+  contrast = NULL,
+  simulate = NULL
 )
 }
 \arguments{
@@ -50,6 +51,11 @@ defines the joint test).}
 defining a linear contrast \verb{L'beta} to test (e.g. weights from \code{emmeans}).
 When supplied it overrides \code{test_term}/\code{test_method} with a Wald test of
 the contrast.}
+
+\item{simulate}{Optional custom data-generating function
+\verb{function(scenario, seed = NULL)} returning a data frame; overrides the
+built-in simulator (keeping the lme4 fit/test) for designs the grammar does
+not cover natively. Wrapped and validated by \code{\link[=mp_custom_dgp]{mp_custom_dgp()}}.}
 }
 \value{
 An object of class \code{mp_scenario}.

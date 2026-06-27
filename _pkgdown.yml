@@ -15,6 +15,7 @@ reference:
     contents:
       - starts_with("mp_scenario_")
       - starts_with("mp_backend")
+      - mp_custom_dgp
       - validate_mp_backend
   - title: From a fitted pilot model
     contents:

@@ -91,6 +91,10 @@ mp_backend_lme4 <- function(predictor = "condition",
 #'   defining a linear contrast `L'beta` to test (e.g. weights from `emmeans`).
 #'   When supplied it overrides `test_term`/`test_method` with a Wald test of
 #'   the contrast.
+#' @param simulate Optional custom data-generating function
+#'   `function(scenario, seed = NULL)` returning a data frame; overrides the
+#'   built-in simulator (keeping the lme4 fit/test) for designs the grammar does
+#'   not cover natively. Wrapped and validated by [mp_custom_dgp()].
 #' @return An object of class `mp_scenario`.
 #' @export
 mp_scenario_lme4 <- function(formula,
@@ -105,7 +109,8 @@ mp_scenario_lme4 <- function(formula,
                                              "kenward-roger", "pb"),
                              null_formula = NULL,
                              pb_nsim = 100L,
-                             contrast = NULL) {
+                             contrast = NULL,
+                             simulate = NULL) {
   test_method <- .mp_resolve_test_method(test_method, null_formula, .mp_lme4_methods)
   if (!is.null(contrast) && (!is.numeric(contrast) || is.null(names(contrast)))) {
     .stop("`contrast` must be a named numeric vector of coefficient weights.")
@@ -120,6 +125,7 @@ mp_scenario_lme4 <- function(formula,
     null_formula = null_formula,
     pb_nsim = pb_nsim
   )
+  simulate_fun <- if (is.null(simulate)) backend$simulate_fun else mp_custom_dgp(simulate)
 
   mp_scenario(
     formula = formula,
@@ -132,7 +138,7 @@ mp_scenario_lme4 <- function(formula,
       pb_nsim = pb_nsim,
       contrast = contrast
     ),
-    simulate_fun = backend$simulate_fun,
+    simulate_fun = simulate_fun,
     fit_fun = backend$fit_fun,
     test_fun = backend$test_fun
   )
