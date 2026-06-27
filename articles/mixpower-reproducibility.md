@@ -40,10 +40,10 @@ manifest
 #> <mp_manifest>
 #>   scenario_digest: fa4fbd6e1e4619ee ...
 #>   seed:123 (fixed)
-#>   timestamp: 2026-06-27 06:16:06 UTC 
+#>   timestamp: 2026-06-27 18:21:06 UTC 
 #>   r_version: 4.6.1 
 #>   mixpower_version: 1.2.0 
-#>   git_sha: c949b21
+#>   git_sha: afdfbd3
 ```
 
 ## Bundle results and export
@@ -68,10 +68,10 @@ bundle
 #> <mp_manifest>
 #>   scenario_digest: fa4fbd6e1e4619ee ...
 #>   seed:123 (fixed)
-#>   timestamp: 2026-06-27 06:16:06 UTC 
+#>   timestamp: 2026-06-27 18:21:06 UTC 
 #>   r_version: 4.6.1 
 #>   mixpower_version: 1.2.0 
-#>   git_sha: c949b21
+#>   git_sha: afdfbd3
 ```
 
 ``` r
@@ -140,7 +140,7 @@ df_row
 #>                                                    scenario_digest seed
 #> 1 fa4fbd6e1e4619eed4adb4609f8f955b0104709d08c619159cebe50e7471ed2c  123
 #>   seed_strategy               timestamp r_version mixpower_version
-#> 1         fixed 2026-06-27 06:16:06 UTC     4.6.1            1.2.0
+#> 1         fixed 2026-06-27 18:21:06 UTC     4.6.1            1.2.0
 #>                                    git_sha
-#> 1 c949b215a38d55d0c3384d808a7b8f9d35e9cf39
+#> 1 afdfbd3feea58d94665a84ecd9c9238da1736767
 ```

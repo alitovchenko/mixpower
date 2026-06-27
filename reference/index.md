@@ -38,6 +38,8 @@ Family- and engine-specific scenario/backend constructors.
   backend for Negative Binomial GLMM scenarios
 - [`mp_backend_lme4_poisson()`](mp_backend_lme4_poisson.md) : Build an
   lme4 backend for Poisson GLMM scenarios
+- [`mp_custom_dgp()`](mp_custom_dgp.md) : Plug a custom data-generating
+  function into the mixpower pipeline
 - [`validate_mp_backend()`](validate_mp_backend.md) : Validate a
   MixPower backend
 

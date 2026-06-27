@@ -69,7 +69,7 @@ if (requireNamespace("lme4", quietly = TRUE)) {
 #> boundary (singular) fit: see help('isSingular')
 #> # Power analysis report
 #> 
-#> _Generated 2026-06-27 06:15 UTC with mixpower 1.2.0._
+#> _Generated 2026-06-27 18:20 UTC with mixpower 1.2.0._
 #> 
 #> ## Summary
 #> 
@@ -111,7 +111,7 @@ if (requireNamespace("lme4", quietly = TRUE)) {
 #> - seed: 1 (fixed)
 #> - R 4.6.1, mixpower 1.2.0
 #> - scenario digest: 54b3e4b77e73b5ea
-#> - git: c949b215a3
+#> - git: afdfbd3fee
 #> 
 #> ## Caveats and fragile claims
 #> 

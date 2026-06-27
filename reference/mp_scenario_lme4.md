@@ -17,7 +17,8 @@ mp_scenario_lme4(
   test_method = c("wald", "lrt", "satterthwaite", "kenward-roger", "pb"),
   null_formula = NULL,
   pb_nsim = 100L,
-  contrast = NULL
+  contrast = NULL,
+  simulate = NULL
 )
 ```
 
@@ -78,6 +79,14 @@ mp_scenario_lme4(
   linear contrast `L'beta` to test (e.g. weights from `emmeans`). When
   supplied it overrides `test_term`/`test_method` with a Wald test of
   the contrast.
+
+- simulate:
+
+  Optional custom data-generating function
+  `function(scenario, seed = NULL)` returning a data frame; overrides
+  the built-in simulator (keeping the lme4 fit/test) for designs the
+  grammar does not cover natively. Wrapped and validated by
+  [`mp_custom_dgp()`](mp_custom_dgp.md).
 
 ## Value
 

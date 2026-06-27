@@ -79,9 +79,17 @@
   residual autocorrelation** for longitudinal Gaussian models.
 - The design [`print()`](https://rdrr.io/r/base/print.html) now shows
   each predictor’s type/level/allocation.
-- Deferred to future work: partially nested designs, multi-arm
-  categorical factors, nonlinear time, correlated predictors, and
-  user-supplied DGP hooks.
+
+### Custom data-generating functions (open-ended design grammar)
+
+- [`mp_custom_dgp()`](../reference/mp_custom_dgp.md) wraps a
+  user-supplied data-generating function as a validated `simulate_fun`,
+  and `mp_scenario_lme4(simulate = ...)` plugs it in while keeping the
+  lme4 fit/test. Designs the built-in grammar does not cover natively —
+  partially nested designs, multi-arm factors, nonlinear time trends,
+  correlated predictors — now run through the full power / calibration /
+  comparison / reporting pipeline. The output is validated to contain
+  the model formula’s variables.
 
 ## mixpower 1.1.1
 

@@ -76,7 +76,11 @@
 <li>
 <code>mp_assumptions(residual_ar1 = ...)</code> adds <strong>AR(1) within-subject residual autocorrelation</strong> for longitudinal Gaussian models.</li>
 <li>The design <code><a href="https://rdrr.io/r/base/print.html" class="external-link">print()</a></code> now shows each predictor’s type/level/allocation.</li>
-<li>Deferred to future work: partially nested designs, multi-arm categorical factors, nonlinear time, correlated predictors, and user-supplied DGP hooks.</li>
+</ul></div>
+<div class="section level3">
+<h3 id="custom-data-generating-functions-open-ended-design-grammar-1-2-0">Custom data-generating functions (open-ended design grammar)<a class="anchor" aria-label="anchor" href="#custom-data-generating-functions-open-ended-design-grammar-1-2-0"></a></h3>
+<ul><li>
+<code><a href="../reference/mp_custom_dgp.html">mp_custom_dgp()</a></code> wraps a user-supplied data-generating function as a validated <code>simulate_fun</code>, and <code>mp_scenario_lme4(simulate = ...)</code> plugs it in while keeping the lme4 fit/test. Designs the built-in grammar does not cover natively — partially nested designs, multi-arm factors, nonlinear time trends, correlated predictors — now run through the full power / calibration / comparison / reporting pipeline. The output is validated to contain the model formula’s variables.</li>
 </ul></div>
 </div>
     <div class="section level2">

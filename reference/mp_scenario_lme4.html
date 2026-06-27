@@ -52,7 +52,8 @@
 <span>  test_method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"wald"</span>, <span class="st">"lrt"</span>, <span class="st">"satterthwaite"</span>, <span class="st">"kenward-roger"</span>, <span class="st">"pb"</span><span class="op">)</span>,</span>
 <span>  null_formula <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  pb_nsim <span class="op">=</span> <span class="fl">100L</span>,</span>
-<span>  contrast <span class="op">=</span> <span class="cn">NULL</span></span>
+<span>  contrast <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  simulate <span class="op">=</span> <span class="cn">NULL</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -113,6 +114,13 @@ defines the joint test).</p></dd>
 defining a linear contrast <code>L'beta</code> to test (e.g. weights from <code>emmeans</code>).
 When supplied it overrides <code>test_term</code>/<code>test_method</code> with a Wald test of
 the contrast.</p></dd>
+
+
+<dt id="arg-simulate">simulate<a class="anchor" aria-label="anchor" href="#arg-simulate"></a></dt>
+<dd><p>Optional custom data-generating function
+<code>function(scenario, seed = NULL)</code> returning a data frame; overrides the
+built-in simulator (keeping the lme4 fit/test) for designs the grammar does
+not cover natively. Wrapped and validated by <code><a href="mp_custom_dgp.html">mp_custom_dgp()</a></code>.</p></dd>
 
 </dl></div>
     <div class="section level2">
