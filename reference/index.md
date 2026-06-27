@@ -60,8 +60,10 @@ Family- and engine-specific scenario/backend constructors.
 
 ## Effect sizes
 
-Smallest-effect-of-interest, safeguard, and standardized converters.
+Elicitation, smallest-effect-of-interest, safeguard, and converters.
 
+- [`mp_elicit()`](mp_elicit.md) : Elicit assumptions from standardized
+  scientific quantities
 - [`mp_sesoi()`](mp_sesoi.md) : Set a smallest effect size of interest
   (SESOI) on a scenario
 - [`mp_safeguard_effect()`](mp_safeguard_effect.md) : Safeguard

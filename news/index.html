@@ -64,6 +64,11 @@
 <ul><li>
 <code><a href="../reference/mp_compare_models.html">mp_compare_models()</a></code> now reports each candidate analysis model’s <strong>Type I error</strong> (estimated under the null on the same simulated data) alongside its power, with a calibration verdict per model and a <strong>recommended plan</strong> (the best-powered model that still controls Type I error). This answers the planning question “which analysis is both valid and well powered?” — useful for preregistration and grant methods sections. Set <code>calibrate = FALSE</code> for power only.</li>
 </ul></div>
+<div class="section level3">
+<h3 id="effect-size-elicitation-grammar-1-2-0">Effect-size elicitation grammar<a class="anchor" aria-label="anchor" href="#effect-size-elicitation-grammar-1-2-0"></a></h3>
+<ul><li>
+<code><a href="../reference/mp_elicit.html">mp_elicit()</a></code> builds a coherent <code>mp_assumptions</code> from the standardized quantities researchers actually reason about — per-group ICC, a standardized effect (Cohen’s d) or a baseline probability with an odds/risk ratio, and random-slope variability — and prints the implied model. It solves the Gaussian variance partition or the binomial latent-scale mapping internally, so you no longer hand-pick raw coefficients and SDs.</li>
+</ul></div>
 </div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="1.1.1" id="mixpower-111">mixpower 1.1.1<a class="anchor" aria-label="anchor" href="#mixpower-111"></a></h2><p class="text-muted">CRAN release: 2026-06-25</p>
