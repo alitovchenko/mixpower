@@ -26,6 +26,16 @@
 - `mp_stop()` specifies the stopping rule (`ci_halfwidth`, `target`, `min_nsim`,
   `max_nsim`, `batch`).
 
+## Trust report
+
+- `mp_report()` assembles a reviewer-ready Markdown report from a power (or
+  `mp_plan()`) result: design, model, data-generating assumptions, Type I
+  calibration, inference-method guidance, power with interval and Monte Carlo
+  precision, diagnostics (failure/singular rates, Type S/M), missing-data
+  assumptions, a reproducibility manifest, and explicit warnings about fragile
+  or unsupported claims. `mp_write_report()` writes Markdown (or HTML via
+  rmarkdown/pandoc).
+
 # mixpower 1.1.1
 
 - Reduce overall `R CMD check` time well under CRAN's budget: vignettes now use

@@ -58,6 +58,8 @@ reference:
       - autoplot.mp_sensitivity
   - title: Reporting and reproducibility
     contents:
+      - mp_report
+      - mp_write_report
       - mp_report_table
       - mp_methods_text
       - plot.mp_power
