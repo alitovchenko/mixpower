@@ -24,6 +24,11 @@
 #' @param aggregate `"full"` (default) stores every replicate in `sims`. `"streaming"`
 #'   accumulates counts only (lower memory); requires `keep = "minimal"` and returns
 #'   an empty `sims` data frame with the same column names as the full run.
+#' @param check_calibration If `TRUE` (default), warn once per session when the
+#'   design is risky for Type I error (few clusters and/or complex random
+#'   effects) and no calibration is on record, nudging toward [mp_calibrate()] /
+#'   [mp_plan()]. The advice is always available as `$calibration_advice` on the
+#'   result. Set `FALSE` to silence (used internally by parameter sweeps).
 #'
 #' @details
 #' Diagnostics include Type S (wrong-sign) and Type M (exaggeration-ratio) errors
@@ -68,7 +73,8 @@ mp_power <- function(scenario,
                      keep = c("minimal", "fits", "data"),
                      conf_level = 0.95,
                      ci_method = c("clopper-pearson", "wald"),
-                     aggregate = c("full", "streaming")) {
+                     aggregate = c("full", "streaming"),
+                     check_calibration = TRUE) {
   .assert_class(scenario, "mp_scenario", "scenario")
   .assert_is_pos_int(nsim, "nsim")
   .assert_is_num(alpha, "alpha")
@@ -87,6 +93,19 @@ mp_power <- function(scenario,
   eng <- scenario$engine
   if (is.null(eng$simulate_fun) || is.null(eng$fit_fun) || is.null(eng$test_fun)) {
     .stop("Scenario engine is incomplete. Set `simulate_fun`, `fit_fun`, and `test_fun` in `mp_scenario()`.")
+  }
+
+  # Calibrate-first nudge: for risky designs with no calibration on record,
+  # advise checking Type I error. Always recorded on the result as
+  # `$calibration_advice`; warned at most once per session (set
+  # `options(mixpower.calibration_nudged = FALSE)` to re-arm), and suppressed by
+  # `check_calibration = FALSE` (used by internal parameter sweeps).
+  advice <- .mp_calibration_advice(scenario)
+  if (isTRUE(check_calibration) && !is.null(advice) && is.null(scenario$calibration)) {
+    if (!isTRUE(getOption("mixpower.calibration_nudged", FALSE))) {
+      warning(advice, call. = FALSE)
+      options(mixpower.calibration_nudged = TRUE)
+    }
   }
 
   rep_seeds <- .rep_seeds(seed, nsim)
@@ -171,6 +190,7 @@ mp_power <- function(scenario,
         type_s = type_s,
         type_m = type_m
       ),
+      calibration_advice = advice,
       fits = NULL,
       data = NULL
     )
@@ -192,10 +212,12 @@ mp_power <- function(scenario,
   }
 
   sim_tbl <- do.call(rbind, lapply(rows, as.data.frame))
-  .mp_aggregate_sims(
+  res <- .mp_aggregate_sims(
     sim_tbl, scenario, alpha, seed, failure_policy, keep,
     conf_level, ci_method, aggregate, nsim, true_effect, fits, datas
   )
+  res$calibration_advice <- advice
+  res
 }
 
 # Aggregate a table of per-replicate rows into an `mp_power` object. Shared by

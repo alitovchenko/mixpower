@@ -95,6 +95,35 @@ mp_recommend_method <- function(scenario, small_clusters = 30L) {
   out
 }
 
+# TRUE when a design is non-trivial enough that Type I error should be checked
+# before trusting power: few clusters with a Wald/LRT test, or a complex
+# random-effects structure (random slopes, >1 grouping factor, or nesting).
+.mp_calibration_risk <- function(scenario) {
+  re <- scenario$assumptions$random_effects
+  has_slopes <- !is.null(re) &&
+    any(vapply(re, function(g) !is.null(g$slopes) && length(g$slopes) > 0L, logical(1)))
+  multi_group <- !is.null(re) && length(re) > 1L
+  nested <- !is.null(scenario$design$nesting)
+  rec <- tryCatch(mp_recommend_method(scenario), error = function(e) NULL)
+  few_caution <- !is.null(rec) && isTRUE(rec$caution)
+  has_slopes || multi_group || nested || few_caution
+}
+
+# Advice string when a design warrants a calibration check, else NULL. Used by
+# mp_power() to nudge toward the calibrate-first workflow.
+.mp_calibration_advice <- function(scenario) {
+  if (!.mp_calibration_risk(scenario)) {
+    return(NULL)
+  }
+  paste0(
+    "This design has few clusters and/or a complex random-effects structure, ",
+    "where Type I error is easy to get wrong. Check it with mp_calibrate() ",
+    "(or run mp_plan(), which calibrates and powers together) and see ",
+    "mp_recommend_method() for the inference method. A power estimate is only ",
+    "trustworthy if the test holds its alpha."
+  )
+}
+
 #' @export
 print.mp_recommendation <- function(x, ...) {
   cat("<mp_recommendation>\n")

@@ -59,7 +59,8 @@ mp_power_curve_parallel <- function(scenario,
         alpha = alpha,
         seed = seed_i,
         failure_policy = failure_policy,
-        conf_level = conf_level
+        conf_level = conf_level,
+        check_calibration = FALSE
       )
       n_effective <- if (failure_policy == "exclude") {
         sum(!is.na(out$sims$p_value))
@@ -98,7 +99,8 @@ mp_power_curve_parallel <- function(scenario,
         alpha = alpha,
         seed = seed_i,
         failure_policy = failure_policy,
-        conf_level = conf_level
+        conf_level = conf_level,
+        check_calibration = FALSE
       )
       n_effective <- if (failure_policy == "exclude") {
         sum(!is.na(out$sims$p_value))

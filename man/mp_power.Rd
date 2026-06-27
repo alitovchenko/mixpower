@@ -13,7 +13,8 @@ mp_power(
   keep = c("minimal", "fits", "data"),
   conf_level = 0.95,
   ci_method = c("clopper-pearson", "wald"),
-  aggregate = c("full", "streaming")
+  aggregate = c("full", "streaming"),
+  check_calibration = TRUE
 )
 }
 \arguments{
@@ -46,6 +47,12 @@ or \code{"wald"} (normal approximation).}
 \item{aggregate}{\code{"full"} (default) stores every replicate in \code{sims}. \code{"streaming"}
 accumulates counts only (lower memory); requires \code{keep = "minimal"} and returns
 an empty \code{sims} data frame with the same column names as the full run.}
+
+\item{check_calibration}{If \code{TRUE} (default), warn once per session when the
+design is risky for Type I error (few clusters and/or complex random
+effects) and no calibration is on record, nudging toward \code{\link[=mp_calibrate]{mp_calibrate()}} /
+\code{\link[=mp_plan]{mp_plan()}}. The advice is always available as \verb{$calibration_advice} on the
+result. Set \code{FALSE} to silence (used internally by parameter sweeps).}
 }
 \value{
 An object of class \code{mp_power}.

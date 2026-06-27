@@ -29,6 +29,32 @@ Or the development version from GitHub:
 remotes::install_github("alitovchenko/mixpower")
 ```
 
+## Recommended workflow: calibrate first
+
+A power number is only trustworthy if the test controls its Type I error. The
+recommended workflow is to **calibrate the null, choose an inference method,
+then estimate power** — `mp_plan()` does all three and reports them together:
+
+```r
+d <- mp_design(list(subject = 12), trials_per_cell = 8)
+a <- mp_assumptions(
+  fixed_effects = list(`(Intercept)` = 0, condition = 0.4),
+  random_effects = list(subject = list(intercept_sd = 0.5)),
+  residual_sd = 1
+)
+scn <- mp_scenario_lme4(y ~ condition + (1 | subject), design = d, assumptions = a)
+
+mp_plan(scn, nsim = 1000, seed = 1)
+#> 1. calibration (null): Type I = ... -> well-calibrated / anti-conservative
+#> 2. method: ...
+#> 3. power:  ...% (95% CI ...)
+```
+
+For risky designs (few clusters or complex random effects), `mp_power()` nudges
+you toward `mp_calibrate()` if you skip this step; attach a calibration with
+`mp_attach_calibration()` to record that the check was done, or pass
+`check_calibration = FALSE` to silence.
+
 ## CI expectations
 
 - `R-CMD-check`: full multi-OS package checks (release, devel, oldrel-1).

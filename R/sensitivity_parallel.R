@@ -67,7 +67,8 @@ mp_sensitivity_cell_run <- function(i,
     alpha = alpha,
     seed = seed_i,
     failure_policy = failure_policy,
-    conf_level = conf_level
+    conf_level = conf_level,
+    check_calibration = FALSE
   )
 
   n_effective <- if (failure_policy == "exclude") {

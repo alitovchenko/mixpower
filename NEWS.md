@@ -1,3 +1,20 @@
+# mixpower 1.2.0
+
+## Calibration-first workflow
+
+- `mp_plan()` runs the recommended end-to-end workflow — calibrate the null,
+  recommend an inference method, and estimate power — and reports them together,
+  so a power estimate is never shown without the Type I error check that says
+  whether it is trustworthy.
+- `mp_power()` now nudges (once per session) toward `mp_calibrate()` /
+  `mp_plan()` when run on a risky design (few clusters or complex random
+  effects) with no calibration on record. The advice is always available as
+  `$calibration_advice`; pass `check_calibration = FALSE` to silence (internal
+  parameter sweeps already do).
+- `mp_attach_calibration()` records a calibration result on a scenario.
+- `mp_report_table()` gains an `mp_plan` method.
+- DESCRIPTION now lists the CRAN URL.
+
 # mixpower 1.1.1
 
 - Reduce overall `R CMD check` time well under CRAN's budget: vignettes now use

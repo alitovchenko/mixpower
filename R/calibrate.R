@@ -63,7 +63,8 @@ mp_calibrate <- function(scenario,
     seed = seed,
     conf_level = conf_level,
     ci_method = "clopper-pearson",
-    failure_policy = failure_policy
+    failure_policy = failure_policy,
+    check_calibration = FALSE
   )
 
   ci <- res$ci
@@ -116,6 +117,126 @@ summary.mp_calibration <- function(object, ...) {
     ci_high = object$ci[[2]],
     verdict = object$verdict,
     nsim = object$nsim,
+    stringsAsFactors = FALSE
+  )
+}
+
+#' Record a calibration result on a scenario
+#'
+#' Attaches an [mp_calibrate()] result to a scenario so that [mp_power()] knows
+#' the Type I error has been checked (and will not emit its calibrate-first
+#' nudge). The calibration is stored on the scenario and travels with it.
+#'
+#' @param scenario An `mp_scenario`.
+#' @param calibration An `mp_calibration` object (from [mp_calibrate()]).
+#' @return The scenario with `calibration` attached.
+#' @seealso [mp_calibrate()], [mp_plan()].
+#' @export
+mp_attach_calibration <- function(scenario, calibration) {
+  .assert_class(scenario, "mp_scenario", "scenario")
+  if (!inherits(calibration, "mp_calibration")) {
+    .stop("`calibration` must be an `mp_calibration` object (from mp_calibrate()).")
+  }
+  scenario$calibration <- calibration
+  scenario
+}
+
+#' Plan power the calibrate-first way
+#'
+#' The recommended end-to-end workflow: **calibrate the null, choose an
+#' inference method, then estimate power, and report both**. `mp_plan()` runs
+#' [mp_calibrate()] and [mp_power()] on the same scenario and bundles them with
+#' an [mp_recommend_method()] suggestion, so power is never reported without the
+#' Type I error check that tells you whether it is trustworthy.
+#'
+#' @param scenario An `mp_scenario`.
+#' @param nsim Simulations for the power estimate (default 1000).
+#' @param calibrate_nsim Simulations for the null calibration (default `nsim`).
+#' @param alpha Significance level (default 0.05).
+#' @param seed Optional seed for reproducibility.
+#' @param conf_level Confidence level for intervals (default 0.95).
+#' @param ci_method Power CI type (see [mp_power()]).
+#' @param failure_policy Failure policy (see [mp_power()]).
+#' @return An object of class `mp_plan`: a list with `calibration`, `power`,
+#'   `recommendation`, `scenario`, and `alpha`.
+#' @seealso [mp_calibrate()], [mp_power()], [mp_recommend_method()].
+#' @export
+#' @examples
+#' \donttest{
+#' if (requireNamespace("lme4", quietly = TRUE)) {
+#'   d <- mp_design(list(subject = 12), trials_per_cell = 8)
+#'   a <- mp_assumptions(
+#'     fixed_effects = list("(Intercept)" = 0, condition = 0.4),
+#'     random_effects = list(subject = list(intercept_sd = 0.5)),
+#'     residual_sd = 1
+#'   )
+#'   scn <- mp_scenario_lme4(y ~ condition + (1 | subject), design = d, assumptions = a)
+#'   mp_plan(scn, nsim = 100, seed = 1)
+#' }
+#' }
+mp_plan <- function(scenario,
+                    nsim = 1000,
+                    calibrate_nsim = nsim,
+                    alpha = 0.05,
+                    seed = NULL,
+                    conf_level = 0.95,
+                    ci_method = c("clopper-pearson", "wald"),
+                    failure_policy = c("count_as_nondetect", "exclude")) {
+  .assert_class(scenario, "mp_scenario", "scenario")
+  ci_method <- match.arg(ci_method)
+  failure_policy <- match.arg(failure_policy)
+
+  cal <- mp_calibrate(scenario, nsim = calibrate_nsim, alpha = alpha, seed = seed,
+                      conf_level = conf_level, failure_policy = failure_policy)
+  pow <- mp_power(scenario, nsim = nsim, alpha = alpha, seed = seed,
+                  conf_level = conf_level, ci_method = ci_method,
+                  failure_policy = failure_policy, check_calibration = FALSE)
+  rec <- tryCatch(mp_recommend_method(scenario), error = function(e) NULL)
+
+  out <- list(scenario = scenario, calibration = cal, power = pow,
+              recommendation = rec, alpha = alpha)
+  class(out) <- "mp_plan"
+  out
+}
+
+#' @export
+print.mp_plan <- function(x, ...) {
+  cat("<mp_plan>\n")
+  cat(sprintf("  alpha: %g\n", x$alpha))
+  cat(sprintf("  1. calibration (null): Type I = %.4f (%g%% CI %.4f, %.4f) -> %s\n",
+              x$calibration$type1, 100 * x$calibration$conf_level,
+              x$calibration$ci[[1]], x$calibration$ci[[2]], x$calibration$verdict))
+  if (!is.null(x$recommendation)) {
+    extra <- if (isTRUE(x$recommendation$caution)) {
+      sprintf(" (consider %s)", paste(x$recommendation$recommended, collapse = ", "))
+    } else {
+      ""
+    }
+    cat(sprintf("  2. method: %s%s\n", x$recommendation$method, extra))
+  }
+  cat(sprintf("  3. power: %.1f%% (%g%% CI %.1f%%, %.1f%%)\n",
+              100 * x$power$power, 100 * x$power$conf_level,
+              100 * x$power$ci[[1]], 100 * x$power$ci[[2]]))
+  if (identical(x$calibration$verdict, "anti-conservative")) {
+    cat("  ! Type I error is inflated for this design/test, so the power above is\n")
+    cat("    NOT trustworthy. Fix the model/method (see mp_recommend_method())\n")
+    cat("    and re-plan before relying on this number.\n")
+  }
+  invisible(x)
+}
+
+#' @export
+summary.mp_plan <- function(object, ...) {
+  data.frame(
+    term = object$calibration$term,
+    alpha = object$alpha,
+    type1 = object$calibration$type1,
+    calibration = object$calibration$verdict,
+    power = object$power$power,
+    power_ci_low = object$power$ci[[1]],
+    power_ci_high = object$power$ci[[2]],
+    method = if (!is.null(object$recommendation)) object$recommendation$method else NA_character_,
+    nsim = object$power$nsim,
     stringsAsFactors = FALSE
   )
 }

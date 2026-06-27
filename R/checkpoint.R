@@ -69,7 +69,8 @@ mp_power_checkpoint <- function(scenario,
     batch <- mp_power(
       scenario, nsim = this_n, alpha = alpha, seed = as.integer(seed) + n_done,
       failure_policy = failure_policy, conf_level = conf_level,
-      ci_method = ci_method, keep = "minimal", aggregate = "full"
+      ci_method = ci_method, keep = "minimal", aggregate = "full",
+      check_calibration = FALSE
     )
     sims <- if (is.null(sims)) batch$sims else rbind(sims, batch$sims)
     n_done <- n_done + this_n

@@ -8,7 +8,7 @@ mp_report_table(x, ...)
 }
 \arguments{
 \item{x}{An object of class \code{mp_power}, \code{mp_sensitivity}, \code{mp_power_curve},
-\code{mp_calibration}, or from \code{\link[=mp_bundle_results]{mp_bundle_results()}}.}
+\code{mp_calibration}, \code{mp_plan}, or from \code{\link[=mp_bundle_results]{mp_bundle_results()}}.}
 
 \item{...}{Unused; reserved for future arguments.}
 }
