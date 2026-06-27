@@ -1,6 +1,7 @@
 # mixpower
 
 <!-- badges: start -->
+[![CRAN status](https://www.r-pkg.org/badges/version/mixpower)](https://CRAN.R-project.org/package=mixpower)
 [![R-CMD-check](https://github.com/alitovchenko/mixpower/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/alitovchenko/mixpower/actions/workflows/R-CMD-check.yaml)
 [![Codecov test coverage](https://codecov.io/gh/alitovchenko/mixpower/branch/main/graph/badge.svg)](https://app.codecov.io/gh/alitovchenko/mixpower)
 [![Lifecycle: stable](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://lifecycle.r-lib.org/articles/stages.html#stable)
@@ -12,6 +13,21 @@ negative-binomial families) fitted with `lme4`. It pairs a backend-agnostic
 simulation engine with publication-ready diagnostics: exact (Clopper-Pearson)
 power intervals, Monte Carlo standard errors, Type S/M error rates, and
 convergence/singular-fit reporting.
+
+## Installation
+
+Install the released version from CRAN:
+
+```r
+install.packages("mixpower")
+```
+
+Or the development version from GitHub:
+
+```r
+# install.packages("remotes")
+remotes::install_github("alitovchenko/mixpower")
+```
 
 ## CI expectations
 
